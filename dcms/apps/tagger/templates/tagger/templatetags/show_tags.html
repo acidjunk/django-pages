@@ -1,0 +1,4 @@
+{% for item in tagged_items %}
+    <div class="ui label">{{ item.tag }}</div>
+{% endfor %}
+<br><a href="{% url 'tagger:tag-it' model pk %}">edit tags</a>

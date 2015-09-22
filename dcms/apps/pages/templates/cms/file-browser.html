@@ -1,0 +1,48 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>Embed file</title>
+        <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
+    </head>
+    <body>
+    <div class="table-responsive">
+        <table class="table">
+        <thead>
+            <tr>
+                <td class="col-md-8">File name</td>
+                <td class="col-md-2">File size</td>
+                <td class="col-md-2">File action</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+            <tr>
+                <td>{{ file.name }}</td>
+                <td>{{ file.file.size|filesizeformat }}</td>
+                <td><input href="{{ file.file.url }}" class="btn btn-primary btn-sm embed" type="submit" name="_embed" value="Use this File" /></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+        <script type="text/javascript">
+            // helper functions
+            function getUrlParam(paramName) {
+                var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+                var match = window.location.search.match(reParam) ;
+ 
+                return (match && match.length > 1) ? match[1] : '' ;
+            }
+            // embedder
+            $('.embed').on('click', function() {
+                var funcNum = getUrlParam('CKEditorFuncNum');
+                var fileUrl = $(this).attr('href');
+                window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                window.close();
+            });
+        </script>
+    </body>
+</html>

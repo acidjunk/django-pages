@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for row in row %}
+    <div class="row">
+    {% for column in row.columns %}
+        <div class="col-md-{{ column.width }}">
+            <div class="adminContent">
+            tekst
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+{% endblock %}

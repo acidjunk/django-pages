@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content_header %}
+    <section id="page-title">
+        <div class="container clearfix">
+            <h1>Photo's</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'cms' %}">Admin</a></li>
+                <li class="active">Photo's</li>
+            </ol>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+<div class="table-responsive">
+    <table class="table" id="table">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Photo name</th>
+                <th>Photo size</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for photo in photos %}
+            {% if photo.photo %}
+            <tr>
+                <td class="col-md-1"><img src="{{ photo.photo.url }}" style="max-width: 50px; max-height: 50px;" /></td>
+                <td class="col-md-4">{{ photo.name }}</td>
+                <td class="col-md-3">{{ photo.photo.size|filesizeformat }}</td>
+                <td class="col-md-4">
+                    <a href="{{ photo.photo.url }}" class="btn btn-info btn-sm"><em class="fa fa-external-link"></em> Open</a>
+                    <a href="#" class="btn btn-info btn-sm"><em class="fa fa-pencil-square-o"></em> Edit</a>
+                    <a href="#" class="btn btn-danger btn-sm" data-confirm="Are you sure you want to delete?"><em class="fa fa-times"></em> Delete</a>
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p>
+    <a href="{% url 'photo-add' %}" class="btn btn-primary btn-sm">Add</a>
+</p>
+{% endblock %}

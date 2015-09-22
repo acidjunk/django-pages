@@ -1,0 +1,27 @@
+{% if content_object %}
+    {% if content_object.content_type == 'content' %}
+        {% if is_staff %}
+            <div id="{{ content_object.pk }}" contenteditable="true">{{ content_object.content|safe }}</div>
+        {% else %}
+            {{ content_object.content|safe }}
+        {% endif %}
+    {% elif content_object.content_type == 'photo' %}
+        {% if content_object.photo %}
+        <img src="{{ content_object.photo.url }}" style="width: 100%" />
+        {% endif %}
+        {% if is_staff %}
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file">
+        <input type="hidden" name="content_id" value="{{ content_object.pk }}">
+        <input type="submit" name="submit" class="btn btn-xs btn-primary" value="Submit">
+        </form>
+        {% else %}
+        <br/>
+        &nbsp;
+        {% endif %}
+
+    {% endif %}
+{% else %}
+    {% if request.user.is_staff %}No module connected yet<br/><br/>{% endif %}
+{% endif %}

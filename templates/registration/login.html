@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Inloggen</h2>
+    <div class="block">
+    <form method="post" class="form">
+        {% csrf_token %}
+        <table style="width: 400px">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Login" class="btn btn-default btn-sm">
+    </form>
+    </div>
+{% endblock %}

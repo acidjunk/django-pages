@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load page %}
+{% block meta_title %}
+    {{ page.name }}
+{% endblock %}
+{% if request.user.is_staff %}
+    {% load staticfiles %}
+    {% block wysiwyg %}
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            });
+            $(function () {
+                {% for row in rows %}
+                    $("#container_{{row.id}}").sortable({
+                        forcePlaceholderSize: true,
+                        connectTo: "#container_{{ row.id }}",
+                        containment: "#container_{{ row.id }}",
+                        helper: 'clone',
+                        placeholder: '#container_{{ row.id }}',
+                        opacity: 0.5,
+                        handle: ".adminMove",
+                        start: function (event, ui) {
+                            ui.item.toggleClass("adminMovePlaceholder");
+                        },
+                        stop: function (event, ui) {
+                            ui.item.toggleClass("adminMovePlaceholder");
+                        },
+                        update: function (e, ui) {
+                            if (this === ui.item.parent()[0]) {
+                                var col_id = ui.item.attr('id');
+                                var row_id = ui.item.closest('.row').attr('id');
+                                var data = $(this).sortable('serialize') + '&col_id=' + col_id + '&row=' + row_id + '&csrfmiddlewaretoken=' + document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                                $.post("{% url 'column-sortable' %}", data, function () {
+                                });
+                            }
+                        }
+                    });
+                {% endfor %}
+                $("#content_wrap").sortable({
+                    forcePlaceholderSize: true,
+                    connectTo: "#content_wrap",
+                    containment: "#content_wrap",
+                    helper: 'clone',
+                    placeholder: '#content_wrap',
+                    opacity: 0.5,
+                    handle: ".adminMove",
+                    start: function (event, ui) {
+                        ui.item.toggleClass("adminMovePlaceholder");
+                    },
+                    stop: function (event, ui) {
+                        ui.item.toggleClass("adminMovePlaceholder");
+                    },
+                    update: function (e, ui) {
+                        if (this === ui.item.parent()[0]) {
+                            var data = $(this).sortable('serialize') + '&csrfmiddlewaretoken=' + document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                            $.post("{% url 'row-sortable' %}", data, function () {
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+        <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+        <script src="{% static 'ckeditor/adapters/jquery.js' %}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("div[contenteditable='true']").each(function () {
+
+                    var content_id = $(this).attr('id');
+
+                    CKEDITOR.inline(content_id, {
+                        filebrowserUploadUrl: '{% url 'file-uploader' %}',
+                        filebrowserBrowseUrl: '{% url 'file-browser' %}',
+                        filebrowserImageBrowseUrl: '{% url 'photo-browser' %}',
+                        filebrowserImageUploadUrl: '{% url 'photo-uploader' %}',
+                        scayt_autoStartup: true,
+                        scayt_sLang: 'nl',
+                        on: {
+                            blur: function (event) {
+                                var data = event.editor.getData();
+
+                                $.ajax({
+                                    url: "{% url 'content-save' %}",
+                                    type: "POST",
+                                    data: {
+                                        content: data,
+                                        content_id: content_id,
+                                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+                                    },
+                                    dataType: "html"
+                                });
+
+                            }
+                        }
+                    });
+
+                });
+            });
+        </script>
+        {% csrf_token %}
+    {% endblock %}
+{% endif %}
+{% block content_header %}
+    <section id="page-title">
+        <div class="container clearfix">
+            <h1>
+                {% if request.user.is_staff %}
+                <a href="{% url 'page-edit' page.url %}"><em class="fa fa-pencil-square-o"></em></a>
+                {% endif %}
+                {{ page.name }}
+            </h1>
+            <span>{{ page.slogan }}</span>
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                {% for item in breadcrumbs %}
+                    <li{% if forloop.last %} class="active">{{ item.title }}{% else %}>
+                        <a href="{% url 'page' item.url %}">{{ item.title }}</a>{% endif %}</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+    <div id="content_wrap">
+        {% for row in rows %}
+            <div class="row{% if request.user.is_staff %} adminBorder{% endif %}" id="row_{{ row.id }}">
+                {% if request.user.is_staff %}
+                    <div class="adminBar adminRow">
+                        <div class="adminLeft">
+                            <a href="{% url 'row-delete' page.url row.id %}" data-toggle="tooltip"
+                               data-placement="bottom" title="Delete row" data-confirm="Are you sure you want to delete this row?"><em class="fa fa-trash-o"></em></a>
+                            <span class="adminMove adminMoveRow" data-toggle="tooltip"
+                               data-placement="bottom" title="Move row"><em class="fa fa-arrows-v"></em></span>
+                        </div>
+                        <div class="adminCenter">
+                            <div class="centered">Row</div>
+                        </div>
+                        <div class="adminRight">{% if row.columns.count < 4 %}
+                            <a href="{% url 'column-add' page.url row.id %}" data-toggle="tooltip"
+                               data-placement="bottom"
+                               title="Add new column"><em class="fa fa-columns"></em></a>{% endif %}</div>
+                        <div style="clear: both"></div>
+                    </div>
+                {% endif %}
+                <div id="container_{{ row.id }}">
+                    {% for column in row.columns %}
+                        <div class="col-md-{{ column.width }}" id="col_{{ column.pk }}">
+                            {% if request.user.is_staff %}
+                                <div class="adminBorder">
+                                <div class="adminBar adminColumn">
+                                    <div class="adminLeft">
+                                        <a href="{% url 'column-delete' page.url row.id column.pk %}"
+                                           data-toggle="tooltip"
+                                           data-placement="bottom" title="Delete column" data-confirm="Are you sure you want to delete this column?"><em class="fa fa-trash-o"></em></a>
+                                        <span class="adminMove" data-toggle="tooltip"
+                               data-placement="bottom" title="Move column"><em class="fa fa-arrows-h"></em></span>
+                                    </div>
+                                    <div class="adminCenter">
+                                        <div class="centered">Column</div>
+                                    </div>
+                                    <div class="adminRight">
+                                        {% if not column.content_object %}
+                                            <a href="{% url 'item-add' page.url column.pk 'text' %}"
+                                               data-toggle="tooltip"
+                                               data-placement="bottom" title="Add text module"><em
+                                                    class="fa fa-font"></em></a>
+                                            <a href="{% url 'item-add' page.url column.pk 'photo' %}"
+                                               data-toggle="tooltip"
+                                               data-placement="bottom" title="Add photo module"><em
+                                                    class="fa fa-photo"></em></a>
+                                            <a href="{% url 'item-add' page.url column.pk 'form' %}"
+                                               data-toggle="tooltip"
+                                               data-placement="bottom" title="Add form module"><em
+                                                    class="fa fa-dot-circle-o"></em></a>
+                                        {% else %}
+                                            <a href="{% url 'item-remove' page.url column.pk column.content_object.content_type column.object_id %}"
+                                               data-toggle="tooltip" data-placement="bottom" title="Delete module" data-confirm="Are you sure you want to delete this module?"><em
+                                                    class="fa fa-times"></em></a>
+                                        {% endif %}</div>
+                                    <div style="clear:both"></div>
+                                </div>
+                            {% endif %}
+                            {% content_load column.content_object %}
+                            {% if request.user.is_staff %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if request.user.is_staff %}
+        <div class="row">
+            <div class="adminBar adminRow"><a href="{% url 'row-add' page.url %}" data-toggle="tooltip"
+                                              data-placement="bottom" title="Add new row"><em
+                    class="fa fa-plus-circle"></em></a></div>
+        </div>
+    {% endif %}
+    <br/><br/>
+    {% load show_tags %}
+    {% tag_this 'page' page.pk %}
+{% endblock %}
+{% if sidebar_right %}
+{% block sidebar_right %}
+<!-- Sidebar
+					============================================= -->
+					<div class="sidebar nobottommargin col_last clearfix">
+						<div class="sidebar-widgets-wrap">
+                        {% if sidebar_right.subpages %}
+							<div class="widget widget_links clearfix">
+
+								<h4>Subpages</h4>
+								<ul>
+                                {% for p in sidebar_right.subpages %}
+									<li><a href="{% url 'page' p.url %}"><div>{{ p.name }}</div></a></li>
+                                {% endfor %}
+								</ul>
+
+							</div>
+                            {% endif %}
+
+						</div>
+					</div>
+                    <!-- .sidebar end -->
+{% endblock %}
+{% endif %}

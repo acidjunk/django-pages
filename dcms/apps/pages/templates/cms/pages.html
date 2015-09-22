@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block wysiwyg %}
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#table tbody").sortable({
+                opacity: 0.5,
+                start: function (event, ui) {
+                    ui.item.toggleClass("adminMovePlaceholder");
+                },
+                stop: function (event, ui) {
+                    ui.item.toggleClass("adminMovePlaceholder");
+                },
+                update: function (e, ui) {
+                    if (this === ui.item.parent()[0]) {
+                        var data = $(this).sortable('serialize') + '&parent={{ parent }}&csrfmiddlewaretoken=' + document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                        $.post("{% url 'pages-sortable' %}", data, function () {
+                        });
+                    }
+                }
+            }).disableSelection();
+        });
+    </script>
+    {% csrf_token %}
+{% endblock %}
+{% block content_header %}
+    <section id="page-title">
+        <div class="container clearfix">
+            <h1>Pages</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'cms' %}">Admin</a></li>
+                <li class="active">Pages</li>
+            </ol>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+<p>
+    <a href="{% url 'page-add' %}" class="btn btn-primary btn-sm">Add page</a>
+    {% if parent %}
+    <a href="{% url 'pages' %}" class="btn btn-info btn-sm">Back</a>
+    {% endif %}
+</p>
+<div class="table-responsive">
+    <table class="table" id="table">
+        <thead>
+            <tr>
+                <th>Page name</th>
+                <th>Page url</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for page in tree %}
+            <tr id="page_{{ page.page.pk }}" class="adminHover">
+                <td class="col-md-4">{{ page.page.name }}</td>
+                <td class="col-md-4">{{ page.page.url }}</td>
+                <td class="col-md-4">{% if page.childs > 0 %}
+                    <a href="{% url 'pages-parent' page.page.pk %}" class="btn btn-info btn-sm"><em class="fa fa-list"></em> Show childs</a>
+                    {% endif %}
+                    <a href="#" class="btn btn-info btn-sm"><em class="fa fa-pencil-square-o"></em> Edit page</a>
+                    <a href="#" class="btn btn-danger btn-sm" data-confirm="Are you sure you want to delete?"><em class="fa fa-times"></em> Delete page</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

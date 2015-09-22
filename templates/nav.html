@@ -1,0 +1,108 @@
+{% load staticfiles %}
+<div id="header_menu">
+    <ul class="navbar_menu">
+        {% if user.is_authenticated %}
+        <li class="dropdown">
+            <a href="{% url 'index' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/dashboard.png' %}" />
+                Algemeen
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'index' %}">Dashboard</a></li>
+                <li><a href="{% url 'user_list' %}">Ledenlijst</a></li>
+                <li><a href="{% url 'user_list_online' %}">Leden online</a></li>
+                <li><a href="{% url 'news:list' %}">Nieuws</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/bomb.png' %}" />
+                Criminaliteit
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'index' %}">No item just yet</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/money-bag-euro.png' %}" />
+                Financieel
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'bank' %}">Bank</a></li>
+                <li><a href="{% url 'shop' %}">Winkel</a></li>
+                <li><a href="{% url 'credits' %}">Credits</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/balloon-ellipsis.png' %}" />
+                Berichten
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'forum:list' %}">Forum</a></li>
+                <li><a href="{% url 'pm:inbox' %}">Priv&eacute; berichten</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/direction.png' %}" />
+                Locaties
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'airport' %}">Luchthaven</a></li>
+                <li><a href="{% url 'trainstation' %}">Treinstation</a></li>
+                <li><a href="{% url 'hospital' %}">Ziekenhuis</a></li>
+                <li><a href="{% url 'casino' %}">Casino</a></li>
+                <li><a href="{% url 'whorehouse' %}">Hoerentent</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/user-business-boss.png' %}" />
+                Families
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'family:list' %}">Familie lijst</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/book-question.png' %}" />
+                Overige
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'index' %}">No items just yet</a></li>
+            </ul>
+        </li>
+        {% else %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <img src="{% static 'gfx/icons3/dashboard.png' %}" />
+                Algemeen
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'index' %}">Startpagina</a></li>
+            </ul>
+        </li>
+        {% endif %}
+    </ul>
+    <ul class="navbar_menu_right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                {% if user.is_authenticated %}{{ request.user }}{% else %}Login{% endif %}
+                <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' request.user.id %}">Profiel</a></li>
+                    <li><a href="{% url 'settings' %}">Instellingen</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url 'logout' %}">Uitloggen</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Inloggen</a></li>
+                    <li><a href="{% url 'signup' %}">Aanmelden</a></li>
+                {% endif %}
+            </ul>
+        </li>
+    </ul>
+</div>

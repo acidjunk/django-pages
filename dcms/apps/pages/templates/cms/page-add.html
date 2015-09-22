@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content_header %}
+    <section id="page-title">
+        <div class="container clearfix">
+            <h1>Page add</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'cms' %}">Admin</a></li>
+                <li class="active">Page add</li>
+            </ol>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+<p>
+    <a href="{% url 'page-add' %}" class="btn btn-primary btn-sm">Add page</a>
+    {% if parent %}
+    <a href="{% url 'pages' %}" class="btn btn-info btn-sm">Back</a>
+    {% endif %}
+</p>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Post" class="btn btn-primary btn-sm">
+        </form>
+    </div>
+</div>
+{% endblock %}

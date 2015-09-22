@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <h2>Registratie</h2>
+    <div class="block">
+    <form method="post" class="form">
+        {% csrf_token %}
+        <table style="width: 100%">
+        {{ form.as_table }}
+        </table>
+        {% buttons submit='OK' reset="Cancel" %}{% endbuttons %}
+    </form>
+    </div>
+{% endblock %}

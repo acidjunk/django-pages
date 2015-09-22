@@ -1,0 +1,32 @@
+{% if request.user.is_staff %}
+{#<script type="text/javascript">#}
+{#    $( "form" ).on( "submit", function( event ) {#}
+{#      event.preventDefault();#}
+{#      console.log( $( this ).serialize() );#}
+{#        return false;#}
+{#    });#}
+{#</script>#}
+<form method="post" id="form" name="form">
+<div class="adminBar">
+    <div class="row">
+        {% csrf_token %}
+        <div class="col-md-12">
+        {% for tag in tags %}
+            <span style="font-weight:bold">{{ tag.tag }}</span> <button type="submit" name="{{ tag.id }}" class="btn btn-xs btn-primary"><em class="fa fa-times"></em></button>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.tag }}
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" name="tag_new" placeholder="Tag" />
+        </div>
+        <div class="col-md-5">
+            <input type="submit" value="Tag" class="btn btn-primary btn-sm" name="submit" />
+        </div>
+    </div>
+</div>
+</form>
+{% endif %}

@@ -1,0 +1,67 @@
+
+.adminBar {
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    padding: 5px 10px;
+    background: #F5F5F5;
+    border-color: #F5F5F5;
+}
+.adminRow {
+    background: #efefef;
+    border-color: #efefef;
+}
+.adminColumn {
+    background: #F5F5F5;
+    border-color: #F5F5F5;
+}
+.adminBar .adminLeft {
+    float: left;
+    width: 20%;
+}
+.adminBar .adminCenter {
+    float: left;
+    width: 60%;
+}
+.adminBar .adminRight {
+    float: right;
+    width: 20%;
+    text-align: right;
+}
+.adminBar .adminRight a {
+    color: darkblue;
+}
+.adminBar a ul.dropdown {
+    display: none;
+}
+.adminBar a:hover ul.dropdown {
+    display: block;
+}
+.adminBorder {
+    /*border: 1px #efefef solid;*/
+    /*-webkit-border-radius: 7px;*/
+    /*-moz-border-radius: 7px;*/
+    /*border-radius: 7px;*/
+}
+
+.adminMove {
+    color: #1ABC9B;
+}
+.adminMove:hover {
+    cursor: col-resize;
+}
+.adminMoveRow:hover {
+    cursor: row-resize !important;
+}
+.adminMovePlaceholder {
+    border: 1px #1ABC9B dashed;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+.centered {
+    width: 30px; margin: 0 auto
+}
+tr.adminHover {
+    cursor: row-resize;
+}

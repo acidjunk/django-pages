@@ -1,0 +1,42 @@
+<ul>
+    {% for page in tree %}
+        <li>
+            <a href="{% url 'page' page.url %}"><div>{{ page.title }}</div></a>
+            {% if page.childs %}
+            <ul>
+                {% for child in page.childs %}
+                <li>
+                    <a href="{% url 'page' child.url %}"><div>{{ child.title }}</div></a>
+                    {% if child.childs %}
+                    <ul>
+                        {% for chil in child.childs %}
+                        <li>
+                            <a href="{% url 'page' chil.url %}"><div>{{ chil.title }}</div></a>
+                            {% if chil.childs %}
+                            <ul>
+                                {% for chi in chil.childs %}
+                                <li>
+                                    <a href="{% url 'page' chi.url %}"><div>{{ chi.title }}</div></a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+    {% if not request.user.is_authenticated %}
+    <li><a href="{% url 'login' %}"><div>Login</div></a></li>
+    {% else %}
+    {% if request.user.is_staff %}
+    <li><a href="{% url 'cms' %}">Admin</a></li>
+    {% endif %}
+    <li><a href="{% url 'logout' %}?next=/"><div>Uitloggen</div></a></li>
+    {% endif %}
+</ul>
