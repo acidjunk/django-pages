@@ -1,4 +1,5 @@
 from django import template
+from django.conf import settings
 
 register = template.Library()
 
@@ -31,3 +32,10 @@ def page_navigation(context):
 def content_load(context, content_object):
     is_staff = context['request'].user.is_staff
     return {'is_staff': is_staff, 'content_object': content_object}
+
+
+@register.simple_tag()
+def column_class_prefix():
+    if hasattr(settings, 'COLUMN_CLASS_PREFIX'):
+        return getattr(settings, 'COLUMN_CLASS_PREFIX')
+    return 'col-md-'
