@@ -55,6 +55,15 @@ urlpatterns = [
     url(r'^page/add/', views.PageAddView, name='page-add'),
     url(r'^page/edit/(?P<page_url>[-\w\d]+)/', views.PageEditView, name='page-edit'),
 
+
+
+    url(r'^page-article/$', views.PageArticleList.as_view(), name='page-article-list'),
+    url(r'^page-article/(?P<pk>\d+)$', views.PageArticleDetail.as_view(), name='page-article-detail'),
+    url(r'^page-article/new/$', views.PageArticleCreate.as_view(), name='page-article-new'),
+    url(r'^page-article/edit/(?P<pk>\d+)$', views.PageArticleUpdate.as_view(), name='page-article-edit'),
+    url(r'^page-article/delete/(?P<pk>\d+)$', views.PageArticleDelete.as_view(), name='page-article-delete'),
+
     url(r'^(?P<slug>[-\w\d]+)/$', views.PageView, name='page'),
     url(r'^', views.IndexView, name='default'),
+
 ]

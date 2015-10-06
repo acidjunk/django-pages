@@ -5,6 +5,7 @@ from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+
 class TimestampAble(models.Model):
     created_on = models.DateTimeField(_("date/time created"), editable=False, auto_now_add=True)
     modified_on = models.DateTimeField(_("date/time modified"), editable=False, auto_now=True)
@@ -21,10 +22,78 @@ class TimestampAble(models.Model):
         abstract = True
 
 
-class Page(TimestampAble):
+class AbstractPage(models.Model):
+    #language = models.CharField()
+    slug = models.SlugField(max_length=255, verbose_name='Url', unique=True)
+
+    class Meta:
+        abstract = True
+
+
+class PageFAQ(TimestampAble, AbstractPage):
+    question = models.TextField(verbose_name='Question')
+    answer = models.TextField(verbose_name='Answer')
+
+    class Meta:
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
+
+    def content_type(self):
+        return 'question','answer'
+
+    def __str__(self):
+        return str(self.pk)
+
+
+class PageLink(TimestampAble, AbstractPage):
+    title = models.TextField(verbose_name='Title')
+    link = models.TextField(verbose_name='Link')
+
+    class Meta:
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
+
+    def content_type(self):
+        return 'title','link'
+
+    def __str__(self):
+        return str(self.pk)
+
+
+class PageYoutubeLink(TimestampAble, AbstractPage):
+    title = models.TextField(verbose_name='Title')
+    link = models.TextField(verbose_name='Link')
+
+    class Meta:
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
+
+    def content_type(self):
+        return 'title','link'
+
+    def __str__(self):
+        return str(self.pk)
+
+
+class PageFacebookLink(TimestampAble, AbstractPage):
+    title = models.TextField(verbose_name='Title')
+    link = models.TextField(verbose_name='Link')
+
+    class Meta:
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
+
+    def content_type(self):
+        return 'title','link'
+
+    def __str__(self):
+        return str(self.pk)
+
+
+class Page(TimestampAble, AbstractPage):
     name = models.CharField(max_length=255, verbose_name='Name')
     slogan = models.CharField(max_length=255, verbose_name='Slogan')
-    url = models.SlugField(max_length=255, verbose_name='Url', unique=True)
+    url = models.SlugField(max_length=255, verbose_name='Url', unique=True)  # todo remove in favor of abstract slug
     parent = models.ForeignKey('Page', blank=True, null=True, verbose_name='Parent')
     ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
     sidebar_right = models.BooleanField(default=True, verbose_name='Sidebar right?')
@@ -67,7 +136,7 @@ class Column(TimestampAble):
         return str(self.row.pk) + ' - ' + str(self.pk) + ' - ' + str(self.width)
 
 
-class PageArticle(TimestampAble):
+class PageArticle(TimestampAble, AbstractPage):
     content = models.TextField()
 
     class Meta:
@@ -81,7 +150,7 @@ class PageArticle(TimestampAble):
         return str(self.pk)
 
 
-class PageFile(TimestampAble):
+class PageFile(TimestampAble, AbstractPage):
     name = models.CharField(max_length=255, verbose_name='Name')
     file = fields.FileField(upload_to='files/%Y/%m/%d', verbose_name='File')
 
@@ -96,7 +165,7 @@ class PageFile(TimestampAble):
         return self.name
 
 
-class PagePhoto(TimestampAble):
+class PagePhoto(TimestampAble, AbstractPage):
     name = models.CharField(max_length=255, verbose_name='Name')
     photo = fields.ImageField(upload_to='photos/%Y/%m/%d', verbose_name='Photo')
 
@@ -111,7 +180,7 @@ class PagePhoto(TimestampAble):
         return self.name
 
 
-class PageForm(TimestampAble):
+class PageForm(TimestampAble, AbstractPage):
     message = fields.TextField(verbose_name='Thank you message')
 
     class Meta:

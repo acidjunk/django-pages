@@ -39,8 +39,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'smartfields',
+    'crispy_forms',
     'dcms.apps.pages',
     'dcms.apps.tagger',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (

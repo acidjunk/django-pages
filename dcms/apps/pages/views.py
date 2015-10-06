@@ -1,11 +1,18 @@
 from django.shortcuts import render
-from .models import Page, Row, Column, PageArticle, PagePhoto, PageFile
+from .models import Page, Row, Column, PageArticle, PagePhoto, PageFile, PageFAQ, PageLink, PageYoutubeLink,\
+    PageFacebookLink
 from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 from django.conf import settings
 import forms
+
 
 
 def IndexView(request):
@@ -215,7 +222,10 @@ def PageAddView(request):
             # commit=False means the form doesn't save at this time.
             # commit defaults to True which means it normally saves.
             model_instance = form.save(commit=False)
-            model_instance.ordering = last_item.ordering+1
+            try:
+                model_instance.ordering = last_item.ordering+1
+            except:
+                model_instance.ordering = 0
             model_instance.created_by = request.user
             model_instance.save()
             return redirect('pages')
@@ -355,3 +365,168 @@ def FileUploadView(request):
         <script type='text/javascript'>
             window.parent.CKEDITOR.tools.callFunction({0}, '{1}');
         </script>""".format(request.GET['CKEditorFuncNum'], model_instance.file.url))
+
+
+class PageArticleList(ListView):
+    model = PageArticle
+    fields = ['name', 'description']
+    paginate_by = 10
+    template_name = 'pages/page-article-list.html'
+
+
+class PageArticleCreate(CreateView):
+    model = PageArticle
+    print('Hallo')
+    fields = ['slug', 'content']
+
+    success_url = reverse_lazy('page-article-list')
+    template_name = 'pages/form.html'
+
+
+class PageArticleUpdate(UpdateView):
+    model = PageArticle
+    fields = ['name', 'description']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageArticleDelete(DeleteView):
+    model = PageArticle
+    fields = ['name', 'description']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/confirm_delete.html'
+
+
+class PageArticleDetail(DetailView):
+    model = PageArticle
+
+
+class PageFAQList(ListView):
+    model = PageFAQ
+    fields = ['question', 'answer']
+    paginate_by = 10
+
+
+class PageFAQCreate(CreateView):
+    model = PageFAQ
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageFAQUpdate(UpdateView):
+    model = PageFAQ
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageFAQDelete(DeleteView):
+    model = PageFAQ
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/confirm_delete.html'
+
+
+class PageFAQDetail(DetailView):
+    model = PageFAQ
+
+
+class PageLinkList(ListView):
+    model = PageLink
+    fields = ['question', 'answer']
+    paginate_by = 10
+
+
+class PageLinkCreate(CreateView):
+    model = PageLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageLinkUpdate(UpdateView):
+    model = PageLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageLinkDelete(DeleteView):
+    model = PageLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/confirm_delete.html'
+
+
+class PageLinkDetail(DetailView):
+    model = PageLink
+
+
+class PageYoutubeLinkList(ListView):
+    model = PageYoutubeLink
+    fields = ['question', 'answer']
+    paginate_by = 10
+
+
+class PageYoutubeLinkCreate(CreateView):
+    model = PageYoutubeLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageYoutubeLinkUpdate(UpdateView):
+    model = PageYoutubeLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageYoutubeLinkDelete(DeleteView):
+    model = PageYoutubeLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/confirm_delete.html'
+
+
+class PageYoutubeLinkDetail(DetailView):
+    model = PageYoutubeLink
+
+
+
+
+
+
+class PageFacebookLinkList(ListView):
+    model = PageFacebookLink
+    fields = ['question', 'answer']
+    paginate_by = 10
+
+
+class PageFacebookLinkCreate(CreateView):
+    model = PageFacebookLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageFacebookLinkUpdate(UpdateView):
+    model = PageFacebookLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/form.html'
+
+
+class PageFacebookLinkDelete(DeleteView):
+    model = PageFacebookLink
+    fields = ['question', 'answer']
+    success_url = reverse_lazy('cms/index.html')
+    template_name = 'pages/confirm_delete.html'
+
+
+class PageFacebookLinkDetail(DetailView):
+    model = PageFacebookLink
+
+
+
