@@ -3,7 +3,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 class TimestampAble(models.Model):
@@ -68,7 +67,7 @@ class Column(TimestampAble):
         return str(self.row.pk) + ' - ' + str(self.pk) + ' - ' + str(self.width)
 
 
-class Content(TimestampAble):
+class PageArticle(TimestampAble):
     content = models.TextField()
 
     class Meta:
@@ -82,7 +81,7 @@ class Content(TimestampAble):
         return str(self.pk)
 
 
-class File(TimestampAble):
+class PageFile(TimestampAble):
     name = models.CharField(max_length=255, verbose_name='Name')
     file = fields.FileField(upload_to='files/%Y/%m/%d', verbose_name='File')
 
@@ -97,7 +96,7 @@ class File(TimestampAble):
         return self.name
 
 
-class Photo(TimestampAble):
+class PagePhoto(TimestampAble):
     name = models.CharField(max_length=255, verbose_name='Name')
     photo = fields.ImageField(upload_to='photos/%Y/%m/%d', verbose_name='Photo')
 
@@ -112,7 +111,7 @@ class Photo(TimestampAble):
         return self.name
 
 
-class Form(TimestampAble):
+class PageForm(TimestampAble):
     message = fields.TextField(verbose_name='Thank you message')
 
     class Meta:
@@ -126,8 +125,8 @@ class Form(TimestampAble):
         return str(self.pk)
 
 
-class FormElement(TimestampAble):
-    form = models.ForeignKey(Form, verbose_name='Form')
+class PageFormElement(TimestampAble):
+    form = models.ForeignKey(PageForm, verbose_name='Form')
     name = models.CharField(max_length=255, verbose_name='Element name')
     required = models.BooleanField(verbose_name='Required?')
 

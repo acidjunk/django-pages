@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from models import Page, File, Photo
+from models import Page, PageFile, PagePhoto
 
 
 class PageForm(ModelForm):
@@ -10,11 +10,11 @@ class PageForm(ModelForm):
 
 class FileForm(ModelForm):
     class Meta:
-        model = File
+        model = PageFile
         fields = '__all__'
 
 
 class PhotoForm(ModelForm):
     class Meta:
-        model = Photo
+        model = PagePhoto
         fields = '__all__'

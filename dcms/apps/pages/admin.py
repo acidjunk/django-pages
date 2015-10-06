@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Page, Row, Column, Content, Photo, Form, FormElement, File
+from .models import Page, Row, Column, PageArticle, PagePhoto, PageForm, PageFormElement, PageFile
 
 
 class PageAdmin(admin.ModelAdmin):
@@ -14,31 +14,31 @@ class ColumnAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'created_by', 'created_on', 'modified_on']
 
 
-class ContentAdmin(admin.ModelAdmin):
+class PageArticleAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'created_by', 'created_on', 'modified_on']
 
 
-class PhotoAdmin(admin.ModelAdmin):
+class PagePhotoAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'created_by', 'created_on', 'modified_on']
 
 
-class FormAdmin(admin.ModelAdmin):
+class PageFormAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'created_by', 'created_on', 'modified_on']
 
 
-class FormElementAdmin(admin.ModelAdmin):
+class PageFormElementAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'created_by', 'created_on', 'modified_on']
 
 
-class FileAdmin(admin.ModelAdmin):
+class PageFileAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'created_by', 'created_on', 'modified_on']
 
 
 admin.site.register(Page, PageAdmin)
 admin.site.register(Row, RowAdmin)
 admin.site.register(Column, ColumnAdmin)
-admin.site.register(Content, ContentAdmin)
-admin.site.register(Photo, PhotoAdmin)
-admin.site.register(Form, FormAdmin)
-admin.site.register(FormElement, FormElementAdmin)
-admin.site.register(File, FileAdmin)
+admin.site.register(PageArticle, PageArticleAdmin)
+admin.site.register(PagePhoto, PagePhotoAdmin)
+admin.site.register(PageForm, PageFormAdmin)
+admin.site.register(PageFormElement, PageFormElementAdmin)
+admin.site.register(PageFile, PageFileAdmin)

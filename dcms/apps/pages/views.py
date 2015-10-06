@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Page, Row, Column, Content, Photo, File
+from .models import Page, Row, Column, PageArticle, PagePhoto, PageFile
 from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
@@ -37,7 +37,7 @@ def PageView(request, slug):
             content_id = request.POST.get('content_id', None)
             file = request.FILES.get('file', None)
             if content_id and file:
-                photo = Photo.objects.get(pk=content_id)
+                photo = PagePhoto.objects.get(pk=content_id)
                 photo.photo = file
                 photo.created_by = request.user
                 photo.name = file.name
@@ -57,11 +57,11 @@ def PageView(request, slug):
 @staff_member_required
 def ItemAddView(request, page_url, colomn_id, content_type):
     if content_type == 'text':
-        item = Content.objects.create(created_by=request.user)
+        item = PageArticle.objects.create(created_by=request.user)
         item.content = 'Test tekst'
         item.save()
     if content_type == 'photo':
-        item = Photo.objects.create(created_by=request.user)
+        item = PagePhoto.objects.create(created_by=request.user)
         item.photo = None
         item.save()
     if content_type == 'form':
@@ -84,9 +84,9 @@ def ItemRemoveView(request, page_url, colomn_id, content_type, object_id):
     column.save()
 
     if content_type == 'content':
-        item = Content.objects.get(pk=object_id)
+        item = PageArticle.objects.get(pk=object_id)
     if content_type == 'photo':
-        item = Photo.objects.get(pk=object_id)
+        item = PagePhoto.objects.get(pk=object_id)
     #TODO make the item become inactive instead of being deleted
     item.delete()
 
@@ -99,7 +99,7 @@ def ContentSaveView(request):
         content = request.POST.get('content', None)
         content_id = request.POST.get('content_id', None)
 
-        con = Content.objects.get(pk=content_id)
+        con = PageArticle.objects.get(pk=content_id)
         if con:
             con.content = content
             con.save()
@@ -259,14 +259,14 @@ def PageSortableView(request):
 
 @staff_member_required
 def PhotosView(request):
-    photos = Photo.objects.all()
+    photos = PagePhoto.objects.all()
     context = {'photos': photos}
     return render(request, 'cms/photos.html', context=context)
 
 
 @staff_member_required
 def FilesView(request):
-    files = File.objects.all()
+    files = PageFile.objects.all()
     context = {'files': files}
     return render(request, 'cms/files.html', context=context)
 
@@ -309,14 +309,14 @@ def PhotoAddView(request):
 
 @staff_member_required
 def PhotoBrowserView(request):
-    photos = Photo.objects.all()
+    photos = PagePhoto.objects.all()
     context = {'photos': photos}
     return render(request, 'cms/photo-browser.html', context=context)
 
 
 @staff_member_required
 def FileBrowserView(request):
-    files = File.objects.all()
+    files = PageFile.objects.all()
     context = {'files': files}
     return render(request, 'cms/file-browser.html', context=context)
 
