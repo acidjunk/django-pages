@@ -4,19 +4,31 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
+
+class TimestampAble(models.Model):
+    created_on = models.DateTimeField(_("date/time created"), editable=False, auto_now_add=True)
+    modified_on = models.DateTimeField(_("date/time modified"), editable=False, auto_now=True)
+
+    # These fields will be populated automatically through dcim.apps.middleware.UserAuditMiddleware
+    # We will accept Null to make sure we can also populate the fields through shell, tests or anonymous users
+    created_by = models.ForeignKey(User, editable=False, related_name='%(app_label)s_%(class)s_created_by', null=True,
+                                   default=None)
+    modified_by = models.ForeignKey(User, editable=False, related_name='%(app_label)s_%(class)s_modified_by', null=True,
+                                    default=None)
 
 
-class Page(models.Model):
+    class Meta:
+        abstract = True
+
+
+class Page(TimestampAble):
     name = models.CharField(max_length=255, verbose_name='Name')
     slogan = models.CharField(max_length=255, verbose_name='Slogan')
     url = models.SlugField(max_length=255, verbose_name='Url', unique=True)
     parent = models.ForeignKey('Page', blank=True, null=True, verbose_name='Parent')
     ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
     sidebar_right = models.BooleanField(default=True, verbose_name='Sidebar right?')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Page'
@@ -26,13 +38,10 @@ class Page(models.Model):
         return self.name
 
 
-class Row(models.Model):
+# Todo: remove obsolete class in favor of Grid?
+class Row(TimestampAble):
     page = models.ForeignKey('Page', null=False, blank=False, verbose_name='Page')
     ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Row'
@@ -42,17 +51,14 @@ class Row(models.Model):
         return self.page.name + ' - ' + str(self.pk)
 
 
-class Column(models.Model):
+# Todo: remove obsolete class in favor of Grid?
+class Column(TimestampAble):
     row = models.ForeignKey(Row, verbose_name='Row')
     width = models.PositiveSmallIntegerField()
     content_type = models.ForeignKey(ContentType, null=True)
     object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
     ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Column'
@@ -62,12 +68,8 @@ class Column(models.Model):
         return str(self.row.pk) + ' - ' + str(self.pk) + ' - ' + str(self.width)
 
 
-class Content(models.Model):
+class Content(TimestampAble):
     content = models.TextField()
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Text'
@@ -80,13 +82,9 @@ class Content(models.Model):
         return str(self.pk)
 
 
-class File(models.Model):
+class File(TimestampAble):
     name = models.CharField(max_length=255, verbose_name='Name')
     file = fields.FileField(upload_to='files/%Y/%m/%d', verbose_name='File')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'File'
@@ -99,13 +97,9 @@ class File(models.Model):
         return self.name
 
 
-class Photo(models.Model):
+class Photo(TimestampAble):
     name = models.CharField(max_length=255, verbose_name='Name')
     photo = fields.ImageField(upload_to='photos/%Y/%m/%d', verbose_name='Photo')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Photo'
@@ -118,12 +112,8 @@ class Photo(models.Model):
         return self.name
 
 
-class Form(models.Model):
+class Form(TimestampAble):
     message = fields.TextField(verbose_name='Thank you message')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Form'
@@ -136,14 +126,10 @@ class Form(models.Model):
         return str(self.pk)
 
 
-class FormElement(models.Model):
+class FormElement(TimestampAble):
     form = models.ForeignKey(Form, verbose_name='Form')
     name = models.CharField(max_length=255, verbose_name='Element name')
     required = models.BooleanField(verbose_name='Required?')
-
-    created_by = models.ForeignKey(User, editable=False)
-    created_on = models.DateTimeField(auto_now_add=timezone.now)
-    modified_on = models.DateTimeField(auto_now=timezone.now)
 
     class Meta:
         verbose_name = 'Form element'

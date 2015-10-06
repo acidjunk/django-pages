@@ -9,7 +9,7 @@
         <script src="{% static 'js/jquery-ui.min.js' %}"></script>
         <script type="text/javascript">
             $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
+              $('[data-toggle="tooltip"]').tooltip()
             });
             $(function () {
                 {% for row in rows %}
@@ -107,7 +107,7 @@
         <div class="container clearfix">
             <h1>
                 {% if request.user.is_staff %}
-                    <a href="{% url 'page-edit' page.url %}"><em class="fa fa-pencil-square-o"></em></a>
+                <a href="{% url 'page-edit' page.url %}"><em class="fa fa-pencil-square-o"></em></a>
                 {% endif %}
                 {{ page.name }}
             </h1>
@@ -130,10 +130,9 @@
                     <div class="adminBar adminRow">
                         <div class="adminLeft">
                             <a href="{% url 'row-delete' page.url row.id %}" data-toggle="tooltip"
-                               data-placement="bottom" title="Delete row"
-                               data-confirm="Are you sure you want to delete this row?"><em class="fa fa-trash-o"></em></a>
+                               data-placement="bottom" title="Delete row" data-confirm="Are you sure you want to delete this row?"><em class="fa fa-trash-o"></em></a>
                             <span class="adminMove adminMoveRow" data-toggle="tooltip"
-                                  data-placement="bottom" title="Move row"><em class="fa fa-arrows-v"></em></span>
+                               data-placement="bottom" title="Move row"><em class="fa fa-arrows-v"></em></span>
                         </div>
                         <div class="adminCenter">
                             <div class="centered">Row</div>
@@ -147,19 +146,16 @@
                 {% endif %}
                 <div id="container_{{ row.id }}">
                     {% for column in row.columns %}
-                        <div class="{% column_class_prefix %}{{ column.width }}" id="col_{{ column.pk }}">
+                        <div class="col-md-{{ column.width }}" id="col_{{ column.pk }}">
                             {% if request.user.is_staff %}
                                 <div class="adminBorder">
                                 <div class="adminBar adminColumn">
                                     <div class="adminLeft">
                                         <a href="{% url 'column-delete' page.url row.id column.pk %}"
                                            data-toggle="tooltip"
-                                           data-placement="bottom" title="Delete column"
-                                           data-confirm="Are you sure you want to delete this column?"><em
-                                                class="fa fa-trash-o"></em></a>
+                                           data-placement="bottom" title="Delete column" data-confirm="Are you sure you want to delete this column?"><em class="fa fa-trash-o"></em></a>
                                         <span class="adminMove" data-toggle="tooltip"
-                                              data-placement="bottom" title="Move column"><em
-                                                class="fa fa-arrows-h"></em></span>
+                               data-placement="bottom" title="Move column"><em class="fa fa-arrows-h"></em></span>
                                     </div>
                                     <div class="adminCenter">
                                         <div class="centered">Column</div>
@@ -180,8 +176,7 @@
                                                     class="fa fa-dot-circle-o"></em></a>
                                         {% else %}
                                             <a href="{% url 'item-remove' page.url column.pk column.content_object.content_type column.object_id %}"
-                                               data-toggle="tooltip" data-placement="bottom" title="Delete module"
-                                               data-confirm="Are you sure you want to delete this module?"><em
+                                               data-toggle="tooltip" data-placement="bottom" title="Delete module" data-confirm="Are you sure you want to delete this module?"><em
                                                     class="fa fa-times"></em></a>
                                         {% endif %}</div>
                                     <div style="clear:both"></div>
@@ -209,28 +204,26 @@
     {% tag_this 'page' page.pk %}
 {% endblock %}
 {% if sidebar_right %}
-    {% block sidebar_right %}
-        <!-- Sidebar
-                            ============================================= -->
-        <div class="sidebar nobottommargin col_last clearfix">
-            <div class="sidebar-widgets-wrap">
-                {% if sidebar_right.subpages %}
-                    <div class="widget widget_links clearfix">
+{% block sidebar_right %}
+<!-- Sidebar
+					============================================= -->
+					<div class="sidebar nobottommargin col_last clearfix">
+						<div class="sidebar-widgets-wrap">
+                        {% if sidebar_right.subpages %}
+							<div class="widget widget_links clearfix">
 
-                        <h4>Subpages</h4>
-                        <ul>
-                            {% for p in sidebar_right.subpages %}
-                                <li><a href="{% url 'page' p.url %}">
-                                    <div>{{ p.name }}</div>
-                                </a></li>
-                            {% endfor %}
-                        </ul>
+								<h4>Subpages</h4>
+								<ul>
+                                {% for p in sidebar_right.subpages %}
+									<li><a href="{% url 'page' p.url %}"><div>{{ p.name }}</div></a></li>
+                                {% endfor %}
+								</ul>
 
-                    </div>
-                {% endif %}
+							</div>
+                            {% endif %}
 
-            </div>
-        </div>
-        <!-- .sidebar end -->
-    {% endblock %}
+						</div>
+					</div>
+                    <!-- .sidebar end -->
+{% endblock %}
 {% endif %}

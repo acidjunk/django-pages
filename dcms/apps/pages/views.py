@@ -64,6 +64,10 @@ def ItemAddView(request, page_url, colomn_id, content_type):
         item = Photo.objects.create(created_by=request.user)
         item.photo = None
         item.save()
+    if content_type == 'form':
+        item = None
+        #item.save()
+
 
     column = Column.objects.get(pk=colomn_id)
     column.content_object = item
@@ -83,7 +87,7 @@ def ItemRemoveView(request, page_url, colomn_id, content_type, object_id):
         item = Content.objects.get(pk=object_id)
     if content_type == 'photo':
         item = Photo.objects.get(pk=object_id)
-
+    #TODO make the item become inactive instead of being deleted
     item.delete()
 
     return redirect('page', page_url)
