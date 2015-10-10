@@ -380,21 +380,24 @@ class PageArticleCreate(CreateView):
     fields = ['slug', 'content']
 
     success_url = reverse_lazy('page-article-list')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-article-list.html'
+
 
 
 class PageArticleUpdate(UpdateView):
     model = PageArticle
-    fields = ['name', 'description']
+    fields = ['slug', 'content']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-article-list.html'
+
 
 
 class PageArticleDelete(DeleteView):
     model = PageArticle
-    fields = ['name', 'description']
+    fields = ['slug', 'content']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/confirm_delete.html'
+    template_name = 'pages/page-article-list.html'
+
 
 
 class PageArticleDetail(DetailView):
@@ -405,27 +408,27 @@ class PageFAQList(ListView):
     model = PageFAQ
     fields = ['question', 'answer']
     paginate_by = 10
-
+    template_name = 'pages/page-faq.html'
 
 class PageFAQCreate(CreateView):
     model = PageFAQ
     fields = ['question', 'answer']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-faq.html'
 
 
 class PageFAQUpdate(UpdateView):
     model = PageFAQ
     fields = ['question', 'answer']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-faq.html'
 
 
 class PageFAQDelete(DeleteView):
     model = PageFAQ
     fields = ['question', 'answer']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/confirm_delete.html'
+    template_name = 'pages/page-faq.html'
 
 
 class PageFAQDetail(DetailView):
@@ -436,27 +439,27 @@ class PageLinkList(ListView):
     model = PageLink
     fields = ['question', 'answer']
     paginate_by = 10
-
+    template_name = 'pages/page-link.html'
 
 class PageLinkCreate(CreateView):
     model = PageLink
     fields = ['question', 'answer']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-link.html'
 
 
 class PageLinkUpdate(UpdateView):
     model = PageLink
     fields = ['question', 'answer']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-link.html'
 
 
 class PageLinkDelete(DeleteView):
     model = PageLink
     fields = ['question', 'answer']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/confirm_delete.html'
+    template_name = 'pages/page-link.html'
 
 
 class PageLinkDetail(DetailView):
@@ -465,29 +468,28 @@ class PageLinkDetail(DetailView):
 
 class PageYoutubeLinkList(ListView):
     model = PageYoutubeLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     paginate_by = 10
-
+    template_name = 'pages/page-youtubelink.html'
 
 class PageYoutubeLinkCreate(CreateView):
     model = PageYoutubeLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
-
+    template_name = 'pages/page-youtubelink.html'
 
 class PageYoutubeLinkUpdate(UpdateView):
     model = PageYoutubeLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-youtubelink.html'
 
 
 class PageYoutubeLinkDelete(DeleteView):
     model = PageYoutubeLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/confirm_delete.html'
+    template_name = 'pages/page-youtubelink.html'
 
 
 class PageYoutubeLinkDetail(DetailView):
@@ -496,37 +498,33 @@ class PageYoutubeLinkDetail(DetailView):
 
 
 
-
-
 class PageFacebookLinkList(ListView):
     model = PageFacebookLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     paginate_by = 10
+    template_name = 'pages/page-facebooklink.html'
 
 
 class PageFacebookLinkCreate(CreateView):
     model = PageFacebookLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-facebooklink.html'
 
 
 class PageFacebookLinkUpdate(UpdateView):
     model = PageFacebookLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/form.html'
+    template_name = 'pages/page-facebooklink.html'
 
 
 class PageFacebookLinkDelete(DeleteView):
     model = PageFacebookLink
-    fields = ['question', 'answer']
+    fields = ['title', 'link']
     success_url = reverse_lazy('cms/index.html')
-    template_name = 'pages/confirm_delete.html'
+    template_name = 'pages/page-facebooklink.html'
 
 
 class PageFacebookLinkDetail(DetailView):
     model = PageFacebookLink
-
-
-

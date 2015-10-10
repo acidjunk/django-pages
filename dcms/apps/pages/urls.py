@@ -63,6 +63,35 @@ urlpatterns = [
     url(r'^page-article/edit/(?P<pk>\d+)$', views.PageArticleUpdate.as_view(), name='page-article-edit'),
     url(r'^page-article/delete/(?P<pk>\d+)$', views.PageArticleDelete.as_view(), name='page-article-delete'),
 
+
+    url(r'^page-faq/$', views.PageFAQList.as_view(), name='page-faq-list'),
+    url(r'^page-faq/(?P<pk>\d+)$', views.PageFAQDetail.as_view(), name='page-faq-detail'),
+    url(r'^page-faq/new/$', views.PageFAQCreate.as_view(), name='page-faq-new'),
+    url(r'^page-faq/edit/(?P<pk>\d+)$', views.PageFAQUpdate.as_view(), name='page-faq-edit'),
+    url(r'^page-faq/delete/(?P<pk>\d+)$', views.PageFAQDelete.as_view(), name='page-faq-delete'),
+
+
+    url(r'^page-link/$', views.PageLinkList.as_view(), name='page-link-list'),
+    url(r'^page-link/(?P<pk>\d+)$', views.PageLinkDetail.as_view(), name='page-link-detail'),
+    url(r'^page-link/new/$', views.PageLinkCreate.as_view(), name='page-link-new'),
+    url(r'^page-link/edit/(?P<pk>\d+)$', views.PageLinkUpdate.as_view(), name='page-link-edit'),
+    url(r'^page-link/delete/(?P<pk>\d+)$', views.PageLinkDelete.as_view(), name='page-link-delete'),
+
+
+    url(r'^page-youtubelink/$', views.PageYoutubeLinkList.as_view(), name='page-youtubelink-list'),
+    url(r'^page-youtubelink/(?P<pk>\d+)$', views.PageYoutubeLinkDetail.as_view(), name='page-youtubelink-detail'),
+    url(r'^page-youtubelink/new/$', views.PageYoutubeLinkCreate.as_view(), name='page-youtubelink-new'),
+    url(r'^page-youtubelink/edit/(?P<pk>\d+)$', views.PageYoutubeLinkUpdate.as_view(), name='page-youtubelink-edit'),
+    url(r'^page-youtubelink/delete/(?P<pk>\d+)$', views.PageYoutubeLinkDelete.as_view(), name='page-youtubelink-delete'),
+
+
+    url(r'^page-facebooklink/$', views.PageFacebookLinkList.as_view(), name='page-facebooklink-list'),
+    url(r'^page-facebooklink/(?P<pk>\d+)$', views.PageFacebookLinkDetail.as_view(), name='page-facebooklink-detail'),
+    url(r'^page-facebooklink/new/$', views.PageFacebookLinkCreate.as_view(), name='page-facebooklink-new'),
+    url(r'^page-facebooklink/edit/(?P<pk>\d+)$', views.PageFacebookLinkUpdate.as_view(), name='page-facebooklink-edit'),
+    url(r'^page-facebooklink/delete/(?P<pk>\d+)$', views.PageFacebookLinkDelete.as_view(), name='page-facebooklink-delete'),
+
+
     url(r'^(?P<slug>[-\w\d]+)/$', views.PageView, name='page'),
     url(r'^', views.IndexView, name='default'),
 
