@@ -23,10 +23,10 @@
                     {#                    <tr {% if wish.votes > 5 %}class="danger"{% elif wish.votes > 3 %}class="warning"{% elif wish.votes > 0 %}class="success"{% endif %}>#}
                     <tr>
                         <td>
-                            <span class="badge">{{ article.question }}</span>
+                            <span class="badge">{{ article.title }}</span>
                         </td>
                         <td>
-                            {{ article.answer }}
+                            {{ article.link }}
                         </td>
                         <td>
                             {{ article.created_on }}
@@ -43,6 +43,6 @@
 {#            {% load paginator %}#}
 {#            {% paginator page_obj request %}#}
         {% else %}
-            <div class="info">No articles found</div>
+            <div class="info">No page links found</div>
         {% endif %}
 {% endblock %}

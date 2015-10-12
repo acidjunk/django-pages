@@ -1,18 +1,3 @@
-"""dcms URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
 from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from dcms.apps.pages import views
@@ -55,14 +40,11 @@ urlpatterns = [
     url(r'^page/add/', views.PageAddView, name='page-add'),
     url(r'^page/edit/(?P<page_url>[-\w\d]+)/', views.PageEditView, name='page-edit'),
 
-
-
     url(r'^page-article/$', views.PageArticleList.as_view(), name='page-article-list'),
     url(r'^page-article/(?P<pk>\d+)$', views.PageArticleDetail.as_view(), name='page-article-detail'),
     url(r'^page-article/new/$', views.PageArticleCreate.as_view(), name='page-article-new'),
     url(r'^page-article/edit/(?P<pk>\d+)$', views.PageArticleUpdate.as_view(), name='page-article-edit'),
     url(r'^page-article/delete/(?P<pk>\d+)$', views.PageArticleDelete.as_view(), name='page-article-delete'),
-
 
     url(r'^page-faq/$', views.PageFAQList.as_view(), name='page-faq-list'),
     url(r'^page-faq/(?P<pk>\d+)$', views.PageFAQDetail.as_view(), name='page-faq-detail'),
@@ -70,13 +52,11 @@ urlpatterns = [
     url(r'^page-faq/edit/(?P<pk>\d+)$', views.PageFAQUpdate.as_view(), name='page-faq-edit'),
     url(r'^page-faq/delete/(?P<pk>\d+)$', views.PageFAQDelete.as_view(), name='page-faq-delete'),
 
-
     url(r'^page-link/$', views.PageLinkList.as_view(), name='page-link-list'),
     url(r'^page-link/(?P<pk>\d+)$', views.PageLinkDetail.as_view(), name='page-link-detail'),
     url(r'^page-link/new/$', views.PageLinkCreate.as_view(), name='page-link-new'),
     url(r'^page-link/edit/(?P<pk>\d+)$', views.PageLinkUpdate.as_view(), name='page-link-edit'),
     url(r'^page-link/delete/(?P<pk>\d+)$', views.PageLinkDelete.as_view(), name='page-link-delete'),
-
 
     url(r'^page-youtubelink/$', views.PageYoutubeLinkList.as_view(), name='page-youtubelink-list'),
     url(r'^page-youtubelink/(?P<pk>\d+)$', views.PageYoutubeLinkDetail.as_view(), name='page-youtubelink-detail'),
@@ -84,13 +64,11 @@ urlpatterns = [
     url(r'^page-youtubelink/edit/(?P<pk>\d+)$', views.PageYoutubeLinkUpdate.as_view(), name='page-youtubelink-edit'),
     url(r'^page-youtubelink/delete/(?P<pk>\d+)$', views.PageYoutubeLinkDelete.as_view(), name='page-youtubelink-delete'),
 
-
     url(r'^page-facebooklink/$', views.PageFacebookLinkList.as_view(), name='page-facebooklink-list'),
     url(r'^page-facebooklink/(?P<pk>\d+)$', views.PageFacebookLinkDetail.as_view(), name='page-facebooklink-detail'),
     url(r'^page-facebooklink/new/$', views.PageFacebookLinkCreate.as_view(), name='page-facebooklink-new'),
     url(r'^page-facebooklink/edit/(?P<pk>\d+)$', views.PageFacebookLinkUpdate.as_view(), name='page-facebooklink-edit'),
     url(r'^page-facebooklink/delete/(?P<pk>\d+)$', views.PageFacebookLinkDelete.as_view(), name='page-facebooklink-delete'),
-
 
     url(r'^(?P<slug>[-\w\d]+)/$', views.PageView, name='page'),
     url(r'^', views.IndexView, name='default'),

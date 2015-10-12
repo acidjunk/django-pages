@@ -19,17 +19,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for article in object_list %}
+                {% for faqs in object_list %}
                     {#                    <tr {% if wish.votes > 5 %}class="danger"{% elif wish.votes > 3 %}class="warning"{% elif wish.votes > 0 %}class="success"{% endif %}>#}
                     <tr>
                         <td>
-                            <span class="badge">{{ article.question }}</span>
+                            <span class="badge">{{ faqs.question }}</span>
                         </td>
                         <td>
-                            {{ article.answer }}
+                            {{ faqs.answer }}
                         </td>
                         <td>
-                            {{ article.created_on }}
+                            {{ faqs.created_on }}
                         </td>
                         <td class="right aligned">
 {#                            <a href="{% url "wishlist:wish-detail" wish.id %}"><i class="search icon"></i></a>#}
@@ -43,6 +43,6 @@
 {#            {% load paginator %}#}
 {#            {% paginator page_obj request %}#}
         {% else %}
-            <div class="info">No articles found</div>
+            <div class="info">No Faqs found</div>
         {% endif %}
 {% endblock %}

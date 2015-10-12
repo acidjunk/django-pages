@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content_header %}
+    <section id="page-title">
+        <div class="container clearfix">
+            <h1>New facebook link</h1>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content %}
+    <div class="ui segment">
+
+
+        <div class="ui divider"></div>
+        <div class="row">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="ui{% if message.tags == 'error' %} negative {% endif %}message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+
+            <div class="ui form">
+            <form method="post">{% csrf_token %}
+                {{ form|crispy }}
+                <input class="ui blue submit button" type="submit" value=" Submit "/>
+            </form>
+                </div>
+        </div>
+    </div>
+{% endblock %}
+
