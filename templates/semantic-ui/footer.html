@@ -1,0 +1,72 @@
+{% load i18n %}
+  <div class="ui inverted vertical footer segment">
+    <div class="ui container">
+      <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="three wide column">
+          <h4 class="ui inverted header">About</h4>
+          <div class="ui inverted link list">
+            <a href="/page/info-for-developers" class="item">Info for developers</a>
+            <a href="/page/info-for-recruiters" class="item">Info for developers</a>
+            <a href="/page/sitemap" class="item">Sitemap</a>
+            <a href="mailto: support@recruitmenow.nl" class="item">Contact Us</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header">Services</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Diclaimer</a>
+            <a href="#" class="item">Privacy</a>
+
+{#<div class="ui form">#}
+{#        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}#}
+{#            <input name="next" type="hidden" value="{{ redirect_to }}" />#}
+{#            <select name="language">#}
+{#                {% get_current_language as LANGUAGE_CODE %}#}
+{#                {% get_available_languages as LANGUAGES %}#}
+{#                {% get_language_info_list for LANGUAGES as languages %}#}
+{#                {% for language in languages %}#}
+{#                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>#}
+{#                        {{ language.name_local }} ({{ language.code }})#}
+{#                    </option>#}
+{#                {% endfor %}#}
+{#            </select>#}
+{#            <button class="ui tiny button">Go</button>#}
+{#        </form>#}
+{#</div>#}
+          </div>
+        </div>
+        <div class="seven wide column">
+          <h4 class="ui inverted header">Recruit Me Now</h4>
+          <p>Recruit Me Now is a free service. Donate now to keep it ad free.</p>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/nl_NL/NL/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal, de veilige en complete manier van online betalen.">
+<img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!--
+<div class="ui vertical fluid grid">
+    <div class="left floated left aligned eight wide column">
+        <div class="ui breadcrumb">
+            <a href="/"><i class="home icon"></i> Home</a>
+            <div class="divider"> | </div>
+            <a href="/page/about"><i class="info icon"></i> About</a>
+            <div class="divider"> | </div>
+            <a href="/page/sitemap"><i class="sitemap icon"></i> Sitemap</a>
+        </div>
+    </div>
+    <div class="right floated right aligned eight wide column">
+         <a href="https://github.com/acidjunk/django-scrumboard"><i class="github alternate icon"></i></a> Acidjunkies powertools - Copyright © {% now "Y" %}
+    </div>
+</div>
+-->

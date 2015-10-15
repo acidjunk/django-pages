@@ -119,3 +119,7 @@ LOGIN_REDIRECT_URL = 'default'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Set crispy forms to semantic ui
+CRISPY_TEMPLATE_PACK='crispy-forms-semantic-ui'
+# set CMS theme
+DJANGO_PAGES_THEME = 'semantic-ui'

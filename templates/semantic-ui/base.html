@@ -1,0 +1,45 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="A web application to automate network tasks.">
+    <meta name="author" content="Formatics">
+    <link rel="icon" href="/static/favicon.ico">
+    <title>Recruit Me Now - {% block title %}{% endblock %}</title>
+    <!--- Stylesheets --->
+    <link rel="stylesheet" type="text/css" href="{% static "semantic-ui/semantic.min.css" %}">
+    {% block css_header %}{% endblock %}
+    <!--- JavaScript --->
+    <script src="{% static "semantic-ui/js/jquery/jquery-2.1.3.min.js" %}"></script>
+    <script src="{% static "semantic-ui/semantic.min.js" %}"></script>
+    {% block javascript_header %}{% endblock %}
+</head>
+<body>
+    {% block menu_header %}
+        {% include "semantic-ui/menu_header.html" %}
+    {% endblock %}
+
+    {% block statusbar %}
+        {% include "semantic-ui/statusbar.html" %}
+    {% endblock %}
+
+
+    <div class="ui segment">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+    {% block footer %}
+        {% include "semantic-ui/footer.html" %}
+    {% endblock %}
+{% block javascript_footer %}{% endblock %}
+<script>
+    $('#version_popup').popup({position : 'bottom right'});
+    $('.ui.dropdown').dropdown();
+</script>
+</body>
+</html>

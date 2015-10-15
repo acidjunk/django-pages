@@ -1,0 +1,48 @@
+{% extends "semantic-ui/base.html" %}
+
+{% block content %}
+        {% if object_list %}
+            <table class="ui blue unstackable striped table">
+                <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Content
+                    </th>
+                    <th>
+                        Created on
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for article in object_list %}
+                    {#                    <tr {% if wish.votes > 5 %}class="danger"{% elif wish.votes > 3 %}class="warning"{% elif wish.votes > 0 %}class="success"{% endif %}>#}
+                    <tr>
+                        <td>
+                            <span class="badge">{{ article.title }}</span>
+                        </td>
+                        <td>
+                            {{ article.link }}
+                        </td>
+                        <td>
+                            {{ article.created_on }}
+                        </td>
+                        <td class="right aligned">
+{#                            <a href="{% url "wishlist:wish-detail" wish.id %}"><i class="search icon"></i></a>#}
+{#                            <a href="{% url "wishlist:wish-edit" wish.id %}"><i class="edit icon"></i></a>#}
+{#                            <a href="{% url "wishlist:wish-delete" wish.id %}"><i class="trash icon"></i></a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+{#            {% load paginator %}#}
+{#            {% paginator page_obj request %}#}
+        {% else %}
+            <div class="info">No facebook links found</div>
+        {% endif %}
+{% endblock %}
