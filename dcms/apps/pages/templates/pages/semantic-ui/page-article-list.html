@@ -1,6 +1,12 @@
 {% extends "semantic-ui/base.html" %}
-
 {% block content %}
+
+
+        <div>
+            <a href="{% url "page-article-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+        </div>
+
+
         {% if object_list %}
             <table class="ui blue unstackable striped table">
                 <thead>
@@ -14,7 +20,15 @@
                     <th>
                         Created on
                     </th>
+
                     <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
                     </th>
                 </tr>
                 </thead>
@@ -23,7 +37,7 @@
                     {#                    <tr {% if wish.votes > 5 %}class="danger"{% elif wish.votes > 3 %}class="warning"{% elif wish.votes > 0 %}class="success"{% endif %}>#}
                     <tr>
                         <td>
-                            <span class="badge">{{ article.slug }}</span>
+                            <span class="badge">{{ article.title }}</span>
                         </td>
                         <td>
                             {{ article.content }}
@@ -31,12 +45,41 @@
                         <td>
                             {{ article.created_on }}
                         </td>
+
+
                         <td class="right aligned">
 {#                            <a href="{% url "wishlist:wish-detail" wish.id %}"><i class="search icon"></i></a>#}
 {#                            <a href="{% url "wishlist:wish-edit" wish.id %}"><i class="edit icon"></i></a>#}
 {#                            <a href="{% url "wishlist:wish-delete" wish.id %}"><i class="trash icon"></i></a>#}
                         </td>
+
+
+
+
+                        <td>
+
+                            <div class="ui buttons">
+
+
+                                <a href="{% url "page-article-edit" article.id %}" class="ui positive button">Edit</a>
+
+                              <div class="or"></div>
+
+                                <a href="{% url "page-article-delete" article.id %}" class="ui negative button">Delete</a>
+
+
+                            </div>
+
+                        </td>
+
+
+
+
+
+
+
                     </tr>
+
                 {% endfor %}
                 </tbody>
             </table>

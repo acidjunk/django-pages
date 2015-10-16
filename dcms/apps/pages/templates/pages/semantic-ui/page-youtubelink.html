@@ -1,6 +1,11 @@
 {% extends "semantic-ui/base.html" %}
 
 {% block content %}
+
+        <div>
+            <a href="{% url "page-youtubelink-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+        </div>
+
         {% if object_list %}
             <table class="ui blue unstackable striped table">
                 <thead>
@@ -15,6 +20,13 @@
                         Created on
                     </th>
                     <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+
                     </th>
                 </tr>
                 </thead>
@@ -36,6 +48,27 @@
 {#                            <a href="{% url "wishlist:wish-edit" wish.id %}"><i class="edit icon"></i></a>#}
 {#                            <a href="{% url "wishlist:wish-delete" wish.id %}"><i class="trash icon"></i></a>#}
                         </td>
+
+
+
+
+
+                        <td>
+
+                            <div class="ui buttons">
+
+
+                                <a href="{% url "page-youtubelink-edit" article.id %}" class="ui positive button">Edit</a>
+
+                              <div class="or"></div>
+
+                                <a href="{% url "page-youtubelink-delete" article.id %}" class="ui negative button">Delete</a>
+
+
+                            </div>
+
+                        </td>
+
                     </tr>
                 {% endfor %}
                 </tbody>

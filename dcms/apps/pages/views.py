@@ -368,28 +368,28 @@ def FileUploadView(request):
 
 class PageArticleList(ListView):
     model = PageArticle
-    fields = ['name', 'description']
+    fields = ['title', 'content']
     paginate_by = 10
-    template_name = 'pages/%s/page-article-list.html' % settings.DJANGO_PAGES_THEME
+    template_name = 'pages/semantic-ui/page-article-list.html' #% = settings.DJANGO_PAGES_THEME
 
 
 class PageArticleCreate(CreateView):
     model = PageArticle
-    fields = ['slug', 'content']
+    fields = ['slug', 'title', 'content']
     success_url = reverse_lazy('page-article-list')
     template_name = 'pages/semantic-ui/page-article-form.html'
 
 
 class PageArticleUpdate(UpdateView):
     model = PageArticle
-    fields = ['slug', 'content']
+    fields = ['slug', 'title', 'content']
     success_url = reverse_lazy('page-article-list')
-    template_name = 'pages/semantic-ui/page-article-list.html'
+    template_name = 'pages/semantic-ui/page-article-form.html'
 
 
 class PageArticleDelete(DeleteView):
     model = PageArticle
-    fields = ['slug', 'content']
+    fields = ['title', 'content']
     success_url = reverse_lazy('page-article-list')
     template_name = 'pages/semantic-ui/page-article-delete.html'
 
@@ -476,7 +476,6 @@ class PageYoutubeLinkCreate(CreateView):
     template_name = 'pages/semantic-ui/page-youtubelink-form.html'
 
 
-
 class PageYoutubeLinkUpdate(UpdateView):
     model = PageYoutubeLink
     fields = ['slug', 'title', 'link']
@@ -507,7 +506,6 @@ class PageFacebookLinkCreate(CreateView):
     fields = ['slug', 'title', 'link']
     success_url = reverse_lazy('page-facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-form.html'
-
 
 
 class PageFacebookLinkUpdate(UpdateView):

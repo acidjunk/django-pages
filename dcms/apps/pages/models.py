@@ -135,14 +135,15 @@ class Column(TimestampAble):
 
 
 class PageArticle(TimestampAble, AbstractPage):
-    content = models.TextField()
+    title = models.TextField(verbose_name='Title')
+    content = models.TextField(verbose_name='Content')
 
     class Meta:
-        verbose_name = 'Text'
-        verbose_name_plural = 'Texts'
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
 
     def content_type(self):
-        return 'content'
+        return 'title','content'
 
     def __str__(self):
         return str(self.pk)
