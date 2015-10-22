@@ -9,8 +9,6 @@ from django.utils.translation import ugettext_lazy as _
 class TimestampAble(models.Model):
     created_on = models.DateTimeField(_("date/time created"), editable=False, auto_now_add=True)
     modified_on = models.DateTimeField(_("date/time modified"), editable=False, auto_now=True)
-    # These fields will be populated automatically through dcim.apps.middleware.UserAuditMiddleware
-    # We will accept Null to make sure we can also populate the fields through shell, tests or anonymous users
     created_by = models.ForeignKey(User, editable=False, related_name='%(app_label)s_%(class)s_created_by', null=True,
                                    default=None)
     modified_by = models.ForeignKey(User, editable=False, related_name='%(app_label)s_%(class)s_modified_by', null=True,
@@ -23,6 +21,14 @@ class TimestampAble(models.Model):
 class AbstractPage(models.Model):
     #language = models.CharField()
     slug = models.SlugField(max_length=255, verbose_name='Url', unique=True)
+
+    class Meta:
+        abstract = True
+
+
+class GridObject(models.Model):
+    horizontal = models.IntegerField(verbose_name='HorizontalPosition')
+    vertical = models.IntegerField(verbose_name='VerticalPosition')
 
     class Meta:
         abstract = True

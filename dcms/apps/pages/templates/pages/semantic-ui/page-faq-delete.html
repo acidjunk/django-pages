@@ -1,23 +1,11 @@
 {% extends "semantic-ui/base.html" %}
-
-
 {% block title %} Delete item {% endblock %}
-
 {% block statusbar %}
-
 {% endblock %}
-
 {% block sidebar %}
 {% endblock %}
-
 {% block content %}
     <div class="ui segment">
-
-        {#    Header#}
-
-
-        {#    End Header#}
-
         <form method="post">{% csrf_token %}
             <div class="ui negative message">
                 <div class="header">
@@ -27,5 +15,5 @@
             </div>
             <input class="ui red submit button" type="submit" value=" Delete "/>
         </form>
-
+    </div>
 {% endblock %}
