@@ -123,3 +123,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CRISPY_TEMPLATE_PACK='crispy-forms-semantic-ui'
 # set CMS theme
 DJANGO_PAGES_THEME = 'semantic-ui'
+DJANGO_PAGES_COLLS = 16
