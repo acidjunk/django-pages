@@ -3,6 +3,9 @@ from django.contrib.auth import views as auth_views
 from dcms.apps.pages import views
 
 urlpatterns = [
+    # Test stuff
+    url(r'^test-grid/$', views.TestGrid.as_view(), name='test-grid'),
+    # Real stuff
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^row/add/(?P<page_url>[-\w\d]+)/', views.RowAddView, name='row-add'),

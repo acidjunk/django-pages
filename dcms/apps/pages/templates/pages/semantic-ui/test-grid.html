@@ -1,0 +1,21 @@
+{% extends "semantic-ui/base.html" %}
+
+{% block content %}
+
+    <div class="ui twelve column grid">
+        <div class="twelve column row">
+        <div class="two wide column"></div>
+        <div class="eight wide column" style="border: 1px solid;">
+            {% lorem 2 p %}
+        </div>
+        <div class="two wide column"></div>
+</div>
+        <div class="column" style="border: 1px solid;">{% lorem 2 p %}</div>
+        <div class="column" style="border: 1px solid;">{% lorem 2 p %}</div>
+        <div class="column" style="border: 1px solid;">{% lorem 2 p %}</div>
+        <div class="column" style="border: 1px solid;">{% lorem 2 p %}</div>
+    </div>
+
+
+
+{% endblock %}

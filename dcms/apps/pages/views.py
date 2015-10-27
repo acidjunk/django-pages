@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -524,3 +524,6 @@ class PageFacebookLinkDelete(DeleteView):
 
 class PageFacebookLinkDetail(DetailView):
     model = PageFacebookLink
+
+class TestGrid(TemplateView):
+    template_name = 'pages/semantic-ui/test-grid.html'
