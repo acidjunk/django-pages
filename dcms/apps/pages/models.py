@@ -26,12 +26,32 @@ class AbstractPage(models.Model):
         abstract = True
 
 
-class GridObject(models.Model):
-    horizontal = models.IntegerField(verbose_name='HorizontalPosition')
-    vertical = models.IntegerField(verbose_name='VerticalPosition')
+class GridRow(models.Model):
+    horizontalSize = models.IntegerField(verbose_name='HorizontalPosition')
+    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition')
+    verticalSize = models.IntegerField(verbose_name='VerticalPosition')
+    verticalPosition = models.IntegerField(verbose_name='VerticalPosition')
 
     class Meta:
         abstract = True
+
+
+class GridObject(models.Model):
+    horizontalSize = models.IntegerField(verbose_name='HorizontalPosition')
+    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition')
+    verticalSize = models.IntegerField(verbose_name='VerticalPosition')
+    verticalPosition = models.IntegerField(verbose_name='VerticalPosition')
+    Title = models.TextField(verbose_name='Title')
+    Content = models.TextField(verbose_name='Content')
+
+    class Meta:
+        verbose_name = 'Content'
+        verbose_name_plural = 'Content'
+
+    def content_type(self):
+        return 'HorizontalPosition', 'HorizontalPosition', 'VerticalPosition', 'VerticalPosition', 'Title', 'Content'
+    def __str__(self):
+        return str(self.pk)
 
 
 class PageFAQ(TimestampAble, AbstractPage):

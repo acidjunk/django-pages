@@ -4,7 +4,9 @@ from dcms.apps.pages import views
 
 urlpatterns = [
     # Test stuff
-    url(r'^test-grid/$', views.TestGrid.as_view(), name='test-grid'),
+    url(r'^page-grid/$', views.PageGrid.as_view(), name='page-grid'),
+    url(r'^page-grid/new/$', views.PageGridCreate.as_view(), name='page-grid-new'),
+
     # Real stuff
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),

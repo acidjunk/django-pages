@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.shortcuts import render
 from .models import Page, Row, Column, PageArticle, PagePhoto, PageFile, PageFAQ, PageLink, PageYoutubeLink,\
-    PageFacebookLink
+    PageFacebookLink, GridObject, GridRow
 from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
@@ -525,5 +525,14 @@ class PageFacebookLinkDelete(DeleteView):
 class PageFacebookLinkDetail(DetailView):
     model = PageFacebookLink
 
-class TestGrid(TemplateView):
-    template_name = 'pages/semantic-ui/test-grid.html'
+
+class PageGridCreate(CreateView):
+    model = GridObject
+    fields = ['HorizontalPosition', 'HorizontalPosition', 'VerticalPosition', 'VerticalPosition', 'Title', 'Content']
+    success_url = reverse_lazy('page-grid')
+    template_name = 'pages/semantic-ui/page-grid-form.html'
+
+
+class PageGrid(TemplateView):
+    model = GridObject
+    template_name = 'pages/semantic-ui/page-grid.html'
