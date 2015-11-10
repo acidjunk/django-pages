@@ -1,66 +1,45 @@
 {% extends "semantic-ui/base.html" %}
-
 {% block content %}
-
-
-        <div>
-            <a href="{% url "page-grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
-        </div>
-
-
-
-    <div class="ui stackable twelve column grid">
-
-        <div class="sixteen column row">
-            <div class="red four wide column" style="border: 1px solid;"></div>
-            <div class="grey eight wide column" style="border: 1px solid;">
-              {% lorem 2 p %}
-            </div>
-        <div class="red four wide column" style="border: 1px solid;"></div>
-
-        </div>
-
-
-        <div class="sixteen column row">
-
-            <div class="four wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide grey column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide grey column" style="border: 1px solid;">{% lorem 2 p %}</div>
-
-        </div>
-
-
-         <div class="sixteen column row">
-
-            <div class="three wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide grey column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="five wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide grey column" style="border: 1px solid;">{% lorem 2 p %}</div>
-
-        </div>
-
-
-
-         <div class="sixteen column row">
-
-            <div class="sixteen wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-
-        </div>
-
-
-        <div class="sixteen column row">
-
-            <div class="three wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide grey column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="five wide red column" style="border: 1px solid;">{% lorem 2 p %}</div>
-            <div class="four wide grey column" style="border: 1px solid;">{% lorem 2 p %}</div>
-
-        </div>
-
-
+    <div>
+        <a href="{% url "page-grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
     </div>
+    {% if object_list %}
+        <tbody>
+            <div class="ui stackable twelve column grid">
+                {% for faqs in object_list %}
+                    <div class="sixteen column row">
+                        <div class="ten wide red column" style="border: 1px solid;">  <p> {{faqs.Content}} </p> </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </tbody>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% else %}
+        <div class="info">No Grid Objects found</div>
+    {% endif %}
 
 
 {% endblock %}

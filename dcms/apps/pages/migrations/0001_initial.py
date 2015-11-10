@@ -5,6 +5,7 @@ from django.db import migrations, models
 import smartfields.fields
 import smartfields.models
 from django.conf import settings
+import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -34,11 +35,33 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='GridObject',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
+                ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
+                ('horizontalSize', models.IntegerField(default=1, verbose_name=b'HorizontalSize', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(12)])),
+                ('horizontalPosition', models.IntegerField(default=0, verbose_name=b'HorizontalPosition')),
+                ('verticalSize', models.IntegerField(default=1, verbose_name=b'VerticalSize', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(12)])),
+                ('verticalPosition', models.IntegerField(default=0, verbose_name=b'VerticalPosition')),
+                ('Title', models.TextField(verbose_name=b'Title')),
+                ('Content', models.TextField(verbose_name=b'Content')),
+                ('created_by', models.ForeignKey(related_name='pages_gridobject_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='pages_gridobject_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Content',
+                'verbose_name_plural': 'Content',
+            },
+        ),
+        migrations.CreateModel(
             name='Page',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
                 ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
                 ('name', models.CharField(max_length=255, verbose_name=b'Name')),
                 ('slogan', models.CharField(max_length=255, verbose_name=b'Slogan')),
                 ('url', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
@@ -59,13 +82,49 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
                 ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
-                ('content', models.TextField()),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
+                ('title', models.TextField(verbose_name=b'Title')),
+                ('content', models.TextField(verbose_name=b'Content')),
                 ('created_by', models.ForeignKey(related_name='pages_pagearticle_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
                 ('modified_by', models.ForeignKey(related_name='pages_pagearticle_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
-                'verbose_name': 'Text',
-                'verbose_name_plural': 'Texts',
+                'verbose_name': 'Content',
+                'verbose_name_plural': 'Content',
+            },
+        ),
+        migrations.CreateModel(
+            name='PageFacebookLink',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
+                ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
+                ('title', models.TextField(verbose_name=b'Title')),
+                ('link', models.TextField(verbose_name=b'Link')),
+                ('created_by', models.ForeignKey(related_name='pages_pagefacebooklink_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='pages_pagefacebooklink_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Content',
+                'verbose_name_plural': 'Content',
+            },
+        ),
+        migrations.CreateModel(
+            name='PageFAQ',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
+                ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
+                ('question', models.TextField(verbose_name=b'Question')),
+                ('answer', models.TextField(verbose_name=b'Answer')),
+                ('created_by', models.ForeignKey(related_name='pages_pagefaq_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='pages_pagefaq_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Content',
+                'verbose_name_plural': 'Content',
             },
         ),
         migrations.CreateModel(
@@ -74,6 +133,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
                 ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
                 ('name', models.CharField(max_length=255, verbose_name=b'Name')),
                 ('file', smartfields.fields.FileField(upload_to=b'files/%Y/%m/%d', verbose_name=b'File')),
                 ('created_by', models.ForeignKey(related_name='pages_pagefile_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
@@ -91,6 +151,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
                 ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
                 ('message', smartfields.fields.TextField(verbose_name=b'Thank you message')),
                 ('created_by', models.ForeignKey(related_name='pages_pageform_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
                 ('modified_by', models.ForeignKey(related_name='pages_pageform_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
@@ -119,11 +180,29 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='PageLink',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
+                ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
+                ('title', models.TextField(verbose_name=b'Title')),
+                ('link', models.TextField(verbose_name=b'Link')),
+                ('created_by', models.ForeignKey(related_name='pages_pagelink_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='pages_pagelink_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Content',
+                'verbose_name_plural': 'Content',
+            },
+        ),
+        migrations.CreateModel(
             name='PagePhoto',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
                 ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
                 ('name', models.CharField(max_length=255, verbose_name=b'Name')),
                 ('photo', smartfields.fields.ImageField(upload_to=b'photos/%Y/%m/%d', verbose_name=b'Photo')),
                 ('created_by', models.ForeignKey(related_name='pages_pagephoto_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
@@ -134,6 +213,23 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': "Photo's",
             },
             bases=(smartfields.models.SmartfieldsModelMixin, models.Model),
+        ),
+        migrations.CreateModel(
+            name='PageYoutubeLink',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
+                ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
+                ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
+                ('title', models.TextField(verbose_name=b'Title')),
+                ('link', models.TextField(verbose_name=b'Link')),
+                ('created_by', models.ForeignKey(related_name='pages_pageyoutubelink_created_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+                ('modified_by', models.ForeignKey(related_name='pages_pageyoutubelink_modified_by', default=None, editable=False, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'verbose_name': 'Content',
+                'verbose_name_plural': 'Content',
+            },
         ),
         migrations.CreateModel(
             name='Row',

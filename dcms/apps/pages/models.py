@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class TimestampAble(models.Model):
@@ -26,21 +27,29 @@ class AbstractPage(models.Model):
         abstract = True
 
 
-class GridRow(models.Model):
-    horizontalSize = models.IntegerField(verbose_name='HorizontalPosition')
+class GridRow(TimestampAble, AbstractPage):
+    horizontalSize = models.IntegerField(verbose_name='HorizontalSize')
     horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition')
-    verticalSize = models.IntegerField(verbose_name='VerticalPosition')
+    verticalSize = models.IntegerField(verbose_name='VerticalSize')
     verticalPosition = models.IntegerField(verbose_name='VerticalPosition')
 
     class Meta:
         abstract = True
 
+    def content_type(self):
+        return ''
 
-class GridObject(models.Model):
-    horizontalSize = models.IntegerField(verbose_name='HorizontalPosition')
-    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition')
-    verticalSize = models.IntegerField(verbose_name='VerticalPosition')
-    verticalPosition = models.IntegerField(verbose_name='VerticalPosition')
+    def __str__(self):
+        return str(self.pk)
+
+
+class GridObject(TimestampAble, AbstractPage):
+    horizontalSize = models.IntegerField(verbose_name='HorizontalSize', default=1, validators=[MinValueValidator(1),
+                                                                                               MaxValueValidator(12)])
+    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', default=0)
+    verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1, validators=[MinValueValidator(1),
+                                                                                           MaxValueValidator(12)])
+    verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
     Title = models.TextField(verbose_name='Title')
     Content = models.TextField(verbose_name='Content')
 
@@ -49,7 +58,8 @@ class GridObject(models.Model):
         verbose_name_plural = 'Content'
 
     def content_type(self):
-        return 'HorizontalPosition', 'HorizontalPosition', 'VerticalPosition', 'VerticalPosition', 'Title', 'Content'
+        return 'horizontalSize', 'Title', 'Content'
+
     def __str__(self):
         return str(self.pk)
 
@@ -63,7 +73,7 @@ class PageFAQ(TimestampAble, AbstractPage):
         verbose_name_plural = 'Content'
 
     def content_type(self):
-        return 'question','answer'
+        return 'question', 'answer'
 
     def __str__(self):
         return str(self.pk)

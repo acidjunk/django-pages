@@ -526,13 +526,24 @@ class PageFacebookLinkDetail(DetailView):
     model = PageFacebookLink
 
 
+class PageGrid2(TemplateView):
+    model = GridObject
+    template_name = 'pages/semantic-ui/page-grid.html'
+
+
+class PageGrid(ListView):
+    model = GridObject
+    fields = ['title', 'link']
+    paginate_by = 10
+    template_name = 'pages/semantic-ui/page-grid.html'
+
+
 class PageGridCreate(CreateView):
     model = GridObject
-    fields = ['HorizontalPosition', 'HorizontalPosition', 'VerticalPosition', 'VerticalPosition', 'Title', 'Content']
+    fields = ['slug', 'horizontalSize', 'Title', 'Content']
     success_url = reverse_lazy('page-grid')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
-class PageGrid(TemplateView):
-    model = GridObject
-    template_name = 'pages/semantic-ui/page-grid.html'
+
+
