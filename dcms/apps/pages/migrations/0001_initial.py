@@ -5,7 +5,6 @@ from django.db import migrations, models
 import smartfields.fields
 import smartfields.models
 from django.conf import settings
-import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -41,9 +40,9 @@ class Migration(migrations.Migration):
                 ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='date/time created')),
                 ('modified_on', models.DateTimeField(auto_now=True, verbose_name='date/time modified')),
                 ('slug', models.SlugField(unique=True, max_length=255, verbose_name=b'Url')),
-                ('horizontalSize', models.IntegerField(default=1, verbose_name=b'HorizontalSize', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(12)])),
+                ('horizontalSize', models.CharField(default=1, max_length=2, verbose_name=b'HorizontalSize', choices=[(1, b'one'), (2, b'two'), (3, b'three'), (4, b'four'), (5, b'five'), (6, b'six'), (7, b'seven'), (8, b'eight'), (9, b'nine'), (10, b'ten'), (11, b'eleven'), (12, b'twelve'), (13, b'thirteen'), (14, b'fourteen'), (15, b'fifteen'), (16, b'sixteen')])),
                 ('horizontalPosition', models.IntegerField(default=0, verbose_name=b'HorizontalPosition')),
-                ('verticalSize', models.IntegerField(default=1, verbose_name=b'VerticalSize', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(12)])),
+                ('verticalSize', models.CharField(default=1, max_length=2, verbose_name=b'VerticalSize')),
                 ('verticalPosition', models.IntegerField(default=0, verbose_name=b'VerticalPosition')),
                 ('Title', models.TextField(verbose_name=b'Title')),
                 ('Content', models.TextField(verbose_name=b'Content')),

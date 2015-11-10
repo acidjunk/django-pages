@@ -7,8 +7,8 @@
         <tbody>
             <div class="ui stackable twelve column grid">
                 {% for faqs in object_list %}
-                    <div class="sixteen column row">
-                        <div class="ten wide red column" style="border: 1px solid;">  <p> {{faqs.Content}} </p> </div>
+                    <div class= "sixteen column row" >
+                        <div class="{{ faqs.horizontalSize }} wide red column" style="border: 1px solid;"> <p> {{faqs.Content}} </p> </div>
                     </div>
                 {% endfor %}
             </div>

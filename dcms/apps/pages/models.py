@@ -44,11 +44,29 @@ class GridRow(TimestampAble, AbstractPage):
 
 
 class GridObject(TimestampAble, AbstractPage):
-    horizontalSize = models.IntegerField(verbose_name='HorizontalSize', default=1, validators=[MinValueValidator(1),
-                                                                                               MaxValueValidator(12)])
+    CHOICES = (
+        ('one', 1),
+        ('two', 2),
+        ('three', 3),
+        ('four', 4),
+        ('five', 5),
+        ('six', 6),
+        ('seven', 7),
+        ('eight', 8),
+        ('nine', 9),
+        ('ten', 10),
+        ('eleven', 11),
+        ('twelve', 12),
+        ('thirteen', 13),
+        ('fourteen', 14),
+        ('fifteen', 15),
+        ('sixteen', 16),
+    )
+
+    horizontalSize = models.CharField(verbose_name='HorizontalSize', max_length = 20, choices=CHOICES, default=1)
     horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', default=0)
-    verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1, validators=[MinValueValidator(1),
-                                                                                           MaxValueValidator(12)])
+    verticalSize = models.CharField(verbose_name='VerticalSize', max_length=2, default=1)
+
     verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
     Title = models.TextField(verbose_name='Title')
     Content = models.TextField(verbose_name='Content')
