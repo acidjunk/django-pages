@@ -3,31 +3,44 @@
     <div>
         <a href="{% url "page-grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
     </div>
+
     {% if object_list %}
         <tbody>
             <div class="ui stackable twelve column grid">
+
+
+
+
+
+
+
+
+
+
+
+
+            var width = 0
                 {% for faqs in object_list %}
+
+
+
+
+                    {% if faqs.horizontalSize - 16 > faqs.horizontalSize %}
+                        width = width + faqs.horizontalSize
                     <div class= "sixteen column row" >
+
                         <div class="{{ faqs.horizontalSize }} wide red column" style="border: 1px solid;"> <p> {{faqs.Content}} </p> </div>
+
                     </div>
+
+                    {% endif %}
+
+
+
+
                 {% endfor %}
             </div>
         </tbody>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
