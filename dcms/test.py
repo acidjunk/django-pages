@@ -16,7 +16,6 @@ class GridCell(object):
 
         return result
 
-
 class Grid(object):
     height = 2
     width = 16
@@ -26,7 +25,7 @@ class Grid(object):
         print(self._data)
 
     def __str__(self):
-        result=''
+        result = ''
         for k in range(self.height):
             for i in range(self.width):
                 result = result + '.'
@@ -40,23 +39,37 @@ class Grid(object):
             return False
 
     def check_override(self, cell):
-        #TODO make it check the correct location insteadof the whole grid.
-        #TODO make it check squares from 1 by 1 , per row. count until size is reached
-        overrides = 0
+        objects_in_row = 0
+        long_enough = False
+
         for row in self._data:
-            for col in range(cell.horizontal_position, cell.horizontal_position + cell.horizontal_size):
-                print col
-                if col == 1:
-                    overrides = overrides + 1
-        if overrides > 0:
-            return True
-        else:
-            return False
+            for object in row:
+                if row[object] == 0:
+                    if objects_in_row == cell.horizontal_size:
+                        long_enough = True
+                    else:
+                        objects_in_row = objects_in_row + 1
+
+        return long_enough
+
+    def check_for_free_space(self, cell):
+        objects_in_row = 0
+        free_spaces = []
+        for row in self._data:
+            for object in row:
+                if row[object] == 0:
+                    if objects_in_row == cell.horizontal_size:
+                        free_spaces = free_spaces + row
+                        objects_in_row = 0
+                    else:
+                        objects_in_row = objects_in_row + 1
+
+        return free_spaces
 
     def add_cell(self, cell):
         # do stuff with self._data
         if self.check_size(cell) == False: #false = fits
-            if self.check_override(cell) == False:
+            if self.check_override(cell) == True:
                 #fits...
                 self._data = self._data + [cell]
                 pass
@@ -64,7 +77,6 @@ class Grid(object):
                 print("cell overrides another")
         else:
             print("cell is too big")
-
 
 if __name__ == '__main__':
     my_cell = GridCell(0, 0, 6, 1)
