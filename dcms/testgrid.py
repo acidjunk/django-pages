@@ -67,7 +67,6 @@ class Grid(object):
         return free_spaces
 
     def add_cell(self, cell):
-        # do stuff with self._data
         if self.check_size(cell) == False: #false = fits
             if self.check_override(cell) == True:
                 #fits...
@@ -78,10 +77,10 @@ class Grid(object):
         else:
             print("cell is too big")
 
-if __name__ == '__main__':
-    my_cell = GridCell(0, 0, 6, 1)
-    print(my_cell)
-
-    my_grid = Grid()
-    print(my_grid)
-    my_grid.add_cell(my_cell)
+#TODO, Tests....
+#if __name__ == '__main__':
+   # my_cell = GridCell(0, 0, 16, 2)
+   # print(my_cell)
+  #  my_grid = Grid()
+   # print(my_grid)
+   # my_grid.add_cell(my_cell)
