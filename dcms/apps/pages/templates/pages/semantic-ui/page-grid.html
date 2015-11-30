@@ -1,15 +1,33 @@
 {% extends "semantic-ui/base.html" %}
 {% block content %}
-    <div>
-        <a href="{% url "page-grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
-    </div>
     {% if object_list %}
         <tbody>
             <div class="ui stackable twelve column grid">
                 {% for faqs in object_list %}
                     <div class= "sixteen column row" >
+
+                        <script>
+                            CHOICES = (
+                                (1, 'one'),
+                                (2, 'two'),
+                                (3, 'three'),
+                                (4, 'four'),
+                                (5, 'five'),
+                                (6, 'six'),
+                                (7, 'seven'),
+                                (8, 'eight'),
+                                (9, 'nine'),
+                                (10, 'ten'),
+                                (11, 'eleven'),
+                                (12, 'twelve'),
+                                (13, 'thirteen'),
+                                (14, 'fourteen'),
+                                (15, 'fifteen'),
+                                (16, 'sixteen'),)
+                        </script>
+
                         <div class="{{ faqs.horizontalSize }} wide red column" style="border: 1px solid;"> <p> {{faqs.Content}} </p>  </div>
-                        {% if faqs.horizontalSize != "sixteen" %}
+                        {% if faqs.horizontalSize != 16 %}
                                <div>
                                     <a href="{% url "page-grid-new" %}" class="tiny blue ui icon button"><i class="add icon"></i></a>
                                </div>
@@ -19,6 +37,9 @@
             </div>
         </tbody>
     {% else %}
+        <div>
+            <a href="{% url "page-grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+        </div>
         <div class="info">No Grid Objects found</div>
     {% endif %}
 {% endblock %}

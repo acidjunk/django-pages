@@ -32,12 +32,5 @@ class MyTest(unittest.TestCase):
         my_grid.add_cell(my_cell)
 
 
-    # TODO, je maakt een grid aan wat al vol is en je probeert een cell te plaatsen
-    # TODO, je maakt een grid aan dat leeg is en je probeert een te brede cell te plaatsen
-    # TODO, je maakt een grid aan dat leeg is en je probeert een cell te plaatsen die past, direct daarna probeer je nog een cell te plaatsen die niet meer past
-
-
-
-
 if __name__ == '__main__':
     unittest.main()

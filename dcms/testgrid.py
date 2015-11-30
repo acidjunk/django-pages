@@ -5,23 +5,24 @@ class GridCell(object):
         self.horizontal_position = horizontal_position
         self.vertical_position = vertical_position
 
-        self.data = [[0 for x in range(self.horizontal_size)] for x in range(self.vertical_size)]
+        self.data = [[0 for _ in range(self.horizontal_size)] for _ in range(self.vertical_size)]
 
     def __str__(self):
-        result=''
+        result = ''
         for row in self.data:
-            for col in row:
+            for _ in row:
                 result += 'x'
             result += '\n'
 
         return result
+
 
 class Grid(object):
     height = 2
     width = 16
 
     def __init__(self):
-        self._data = [[0 for x in range(self.width)] for x in range(self.height)]
+        self._data = [[0 for _ in range(self.width)] for _ in range(self.height)]
         print(self._data)
 
     def __str__(self):
@@ -46,12 +47,11 @@ class Grid(object):
     def check_override(self, cell, save):
         objects_in_row = 0
         long_enough = False
-        print('all',self._data)
-        for row in self._data[cell.vertical_position]: #, range(cell.horizontal_position,
-                                                             #cell.horizontal_position+cell.horizontal_size):
+        print('all', self._data)
+        for row in self._data[cell.vertical_position]:
             print('row', row)
-            for col in range(cell.horizontal_position,cell.horizontal_position+cell.horizontal_size):
-                print('col',self._data[row][col])
+            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
+                print('col', self._data[row][col])
                 if self._data[row][col] == 0:
                     if objects_in_row == cell.horizontal_size:
                         long_enough = True
@@ -69,10 +69,9 @@ class Grid(object):
     def remove_cell(self, cell, save):
         objects_in_row = 0
         long_enough = False
-        for row in self._data[cell.vertical_position]: #, range(cell.horizontal_position,
-                                                             #cell.horizontal_position+cell.horizontal_size):
-            for col in range(cell.horizontal_position,cell.horizontal_position+cell.horizontal_size):
-                print('col',self._data[row][col])
+        for row in self._data[cell.vertical_position]:
+            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
+                print('col', self._data[row][col])
                 if self._data[row][col] == 1:
                     if objects_in_row == cell.horizontal_size:
                         long_enough = True
@@ -89,10 +88,9 @@ class Grid(object):
 
     def check_row_for_free_places(self, cell):
         free_places = 0
-        for row in self._data[cell.vertical_position]: #, range(cell.horizontal_position,
-                                                             #cell.horizontal_position+cell.horizontal_size):
-            for col in range(cell.horizontal_position,cell.horizontal_position+cell.horizontal_size):
-                print('col',self._data[row][col])
+        for row in self._data[cell.vertical_position]:
+            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
+                print('col', self._data[row][col])
                 if self._data[row][col] == 0:
                         free_places += 1
                         # print(free_places)
@@ -117,11 +115,8 @@ class Grid(object):
     def add_cell(self, cell):
         if self.is_place_able(cell):  # false = fits
             if self.check_override(cell, False):
-                # fits...
                 # TODO add specific location for cells? and not randomly assigned
-                # cell fits, recall the function and save it.
                 self.check_override(cell, True)
-
                 pass
             else:
                 print("cell overrides another")
@@ -132,27 +127,22 @@ class Grid(object):
         if self.check_override(cell, False):
             if self.remove_cell(cell, False):
                 self.remove_cell(cell, True)
-
                 # TODO make something to choose the new location
-
                 self.add_cell(cell)
         else:
             print("cell does not fit somewhere else")
 
-
 # TODO, Tests....
 if __name__ == '__main__':
-    my_cell = GridCell(5, 1, 30, 1) # H - V / Hs - Vs
+    my_cell = GridCell(5, 1, 30, 1)  # H - V / Hs - Vs
     my_grid = Grid()
     my_grid.add_cell(my_cell)
     print("grid should now be full")
     print(my_grid)
-
-    my_cell = GridCell(35, 0, 30, 1) # H - V / Hs - Vs
+    my_cell = GridCell(35, 0, 30, 1)  # H - V / Hs - Vs
     my_grid.add_cell(my_cell)
     print("grid should now be full")
     print(my_grid)
-
-   # my_cell2 = GridCell(0, 0, 16, 1) # H - V / Hs - Vs
+   # my_cell2 = GridCell(0, 0, 16, 1)  H - V / Hs - Vs
    # my_grid.add_cell(my_cell2)
    # print(my_grid)

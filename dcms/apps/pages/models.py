@@ -44,6 +44,9 @@ class GridRow(TimestampAble, AbstractPage):
 
 
 class GridObject(TimestampAble, AbstractPage):
+
+    # TODO, make this dynamic.
+
     CHOICES = (
         (1, 'one'),
         (2, 'two'),
