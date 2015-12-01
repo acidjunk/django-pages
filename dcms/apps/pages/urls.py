@@ -6,6 +6,9 @@ urlpatterns = [
     # Test stuff
     url(r'^page-grid/$', views.PageGrid.as_view(), name='page-grid'),
     url(r'^page-grid/new/$', views.PageGridCreate.as_view(), name='page-grid-new'),
+    url(r'^page-grid/edit/(?P<pk>\d+)$', views.PageGridUpdate.as_view(), name='page-grid-edit'),
+    url(r'^page-grid/delete/(?P<pk>\d+)$', views.PageGridDelete.as_view(), name='page-grid-delete'),
+
     # Real stuff
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),

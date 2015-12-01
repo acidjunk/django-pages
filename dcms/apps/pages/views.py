@@ -545,5 +545,15 @@ class PageGridCreate(CreateView):
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
+class PageGridUpdate(UpdateView):
+    model = GridObject
+    fields = ['slug', 'horizontalSize', 'Title', 'Content']
+    success_url = reverse_lazy('page-grid')
+    template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
+class PageGridDelete(DeleteView):
+    model = GridObject
+    fields = ['slug', 'horizontalSize', 'Title', 'Content']
+    success_url = reverse_lazy('page-grid')
+    template_name = 'pages/semantic-ui/page-grid-delete.html'

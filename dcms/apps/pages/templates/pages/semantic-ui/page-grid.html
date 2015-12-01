@@ -23,14 +23,26 @@
                                 (13, 'thirteen'),
                                 (14, 'fourteen'),
                                 (15, 'fifteen'),
-                                (16, 'sixteen'),)
+                                (16, 'sixteen')
+                            )
                         </script>
 
                         <div class="{{ faqs.horizontalSize }} wide red column" style="border: 1px solid;"> <p> {{faqs.Content}} </p>  </div>
                         {% if faqs.horizontalSize != 16 %}
-                               <div>
-                                    <a href="{% url "page-grid-new" %}" class="tiny blue ui icon button"><i class="add icon"></i></a>
-                               </div>
+
+
+                            <div class="tiny ui buttons">
+                                    <a href="{% url "page-grid-edit" faqs.id %}" class="ui positive button">Edit</a>
+                                <div class="or"></div>
+                                    <a href="{% url "page-grid-delete" faqs.id %}" class="ui negative button">Delete</a>
+
+                                <div class="or"></div>
+                                    <a href="{% url "page-grid-new" %}" class="blue ui button">Add</a>
+
+                                <
+                            </div>
+
+
                         {%  endif %}
                     </div>
                 {% endfor %}
