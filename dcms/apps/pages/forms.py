@@ -1,7 +1,6 @@
 from django.forms import ModelForm
 from models import Page, PageFile, PagePhoto
 
-
 class PageForm(ModelForm):
     class Meta:
         model = Page
@@ -18,3 +17,4 @@ class PhotoForm(ModelForm):
     class Meta:
         model = PagePhoto
         fields = '__all__'
+

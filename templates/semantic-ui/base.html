@@ -17,6 +17,7 @@
     <script src="{% static "semantic-ui/js/jquery/jquery-2.1.3.min.js" %}"></script>
     <script src="{% static "semantic-ui/semantic.min.js" %}"></script>
     {% block javascript_header %}{% endblock %}
+
 </head>
 <body>
     {% block menu_header %}
@@ -32,6 +33,11 @@
     {% block content %}
     {% endblock %}
     </div>
+
+
+    <!-- SIDE BAR -->
+
+
 
     {% block footer %}
         {% include "semantic-ui/footer.html" %}

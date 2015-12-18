@@ -132,6 +132,10 @@ class Grid(object):
         else:
             print("cell does not fit somewhere else")
 
+    def createlist(self,cell):
+        for _ in self._data:
+            print(cell.horizontal_position)
+
 # TODO, Tests....
 if __name__ == '__main__':
     my_cell = GridCell(5, 1, 30, 1)  # H - V / Hs - Vs
