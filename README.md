@@ -1,14 +1,20 @@
-# dcms
-Django CMS made for the new generation developers.
-# demo
-http://www.criminalsclub.net with admin account: stefan:admin
-# build for
-Bootstrap 3 based websites
-# modules in columns currently
-Text editor module (makes use of ckeditor inline editing) and Photo upload module (makes use of django-smartfields)
-# Coming soon:
-More modules which can be added into columns, Aggegrator module, Form module, Facebook module and django-reversion
-## Makes use of:
-- Bootstrap theme based classes like .col-md-4, .row and .btn
-- Jquery UI sortable like .sortable()
-- Ckeditor inline editor
+Django-pages
+============
+A simple CMS extension for Django. It features a GRID to structure content on pages. The backend uses semantic-ui for
+it's templates. You can use it for the frontend also but by configuring the GRID to use 12 columns you can bootstrap 
+your way to heaven when integrating the pages into your own design/template.
+
+Pages are using an hierarchical structure so it's easy to create crumblepaths and nested menu's
+
+GRID?
+-----
+A GRID can consist out of up to 16 columns. Cells can contain a variety of content:
+- text (makes use of ckeditor inline editing)
+- images
+- FAQ
+- imageslider
+- address
+
+Todo
+----
+More tests, documentation via Sphinx and the release of v0.1
