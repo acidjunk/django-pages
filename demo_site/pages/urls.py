@@ -4,8 +4,8 @@ from demo_site.pages import views
 
 urlpatterns = [
     # Test stuff
-    url(r'^grid/$', views.PageGrid.as_view(), name='grid'),
-    url(r'^grid/new/$', views.PageGridCreate.as_view(), name='grid-new'),
+    url(r'^grid$', views.PageGrid.as_view(), name='grid'),
+    url(r'^grid/new$', views.PageGridCreate.as_view(), name='grid-new'),
     url(r'^grid/edit/(?P<pk>\d+)$', views.PageGridUpdate.as_view(), name='grid-edit'),
     url(r'^grid/delete/(?P<pk>\d+)$', views.PageGridDelete.as_view(), name='grid-delete'),
 

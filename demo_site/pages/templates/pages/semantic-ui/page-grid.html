@@ -1,53 +1,63 @@
 {% extends "semantic-ui/base.html" %}
 {% block content %}
-    {% if object_list %}
-        <tbody>
-            <div class="ui stackable twelve column grid">
-                {% for faqs in object_list %}
-                    <div class= "sixteen column row" >
-                        <script>
-                            CHOICES = (
-                                (1, 'one'),
-                                (2, 'two'),
-                                (3, 'three'),
-                                (4, 'four'),
-                                (5, 'five'),
-                                (6, 'six'),
-                                (7, 'seven'),
-                                (8, 'eight'),
-                                (9, 'nine'),
-                                (10, 'ten'),
-                                (11, 'eleven'),
-                                (12, 'twelve'),
-                                (13, 'thirteen'),
-                                (14, 'fourteen'),
-                                (15, 'fifteen'),
-                                (16, 'sixteen')
-
-                            )
-
-
-
-
-                        </script>
-                        <div class="one wide red column" style="border: 1px solid;"> <p> {{faqs.Content}} </p>  </div>
-                        {% if faqs.horizontalSize != 16 %}
-                            <div class="tiny ui buttons">
-                                    <a href="{% url "pages:grid-edit" faqs.id %}" class="ui positive button">Edit</a>
-                                <div class="or"></div>
-                                    <a href="{% url "pages:grid-delete" faqs.id %}" class="ui negative button">Delete</a>
-                                <div class="or"></div>
-                                    <a href="{% url "pages:grid-new" %}" class="blue ui button">Add</a>
-                            </div>
-                        {%  endif %}
-                    </div>
-                {% endfor %}
-            </div>
-        </tbody>
-    {% else %}
         <div>
             <a href="{% url "pages:grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
         </div>
-        <div class="info">No Grid Objects found</div>
-    {% endif %}
+        {% if object_list %}
+            <table class="ui blue unstackable striped table">
+                <thead>
+                <tr>
+                    <th>
+                        horizontal position
+                    </th>
+                    <th>
+                        horizontal size
+                    </th>
+                    <th>
+                        vertical position
+                    </th>
+                    <th>
+                        vertical size
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for cell in object_list %}
+                    <tr>
+                        <td>
+                            <span class="badge">{{ cell.horizontalPosition }}</span>
+                        </td>
+                        <td>
+                            {{ cell.horizontalSize }}
+                        </td>
+                        <td>
+                            {{ cell.verticalPosition }}
+                        </td>
+                        <td>
+                            {{ cell.verticalSize }}
+                        </td>
+                        <td class="right aligned">
+                        </td>
+                        <td>
+                            <div class="tiny ui buttons">
+                                    <a href="{% url "pages:grid-edit" cell.id %}" class="ui positive button">Edit</a>
+                                <div class="or"></div>
+                                    <a href="{% url "pages:grid-delete" cell.id %}" class="ui negative button">Delete</a>
+                                <div class="or"></div>
+                                    <a href="{% url "pages:grid-new" %}" class="blue ui button">Add</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="info">No Faqs found</div>
+        {% endif %}
 {% endblock %}
