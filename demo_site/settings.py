@@ -22,7 +22,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'suit',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,7 +34,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'demo_site.pages',
     'debug_toolbar',
-)
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
