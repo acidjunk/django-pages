@@ -23,9 +23,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
-
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     #'suit',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,8 +34,8 @@ INSTALLED_APPS = (
     'smartfields',
     'crispy_forms',
     'demo_site.pages',
-    'debug_toolbar',
-)
+    #'debug_toolbar',
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
