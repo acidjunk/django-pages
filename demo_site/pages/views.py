@@ -526,6 +526,48 @@ class PageFacebookLinkDetail(DetailView):
     model = PageFacebookLink
 
 
+
+
+
+
+
+class PageList(ListView):
+    model = Page
+    fields = ['name', 'slug']
+    paginate_by = 10
+    template_name = 'pages/semantic-ui/page-list.html'
+
+
+class PageListCreate(CreateView):
+    model = Page
+    fields = ['name', 'slogan', 'ordering', 'slug']
+    success_url = reverse_lazy('pages:page-list')
+    template_name = 'pages/semantic-ui/page-form.html'
+
+
+class PageUpdate(UpdateView):
+    model = Page
+    fields = ['name', 'slogan', 'ordering', 'slug']
+    success_url = reverse_lazy('pages:page-list')
+    template_name = 'pages/semantic-ui/page-form.html'
+
+
+class PageDelete(DeleteView):
+    model = Page
+    fields = ['name', 'slug']
+    success_url = reverse_lazy('pages:page-list')
+    template_name = 'pages/semantic-ui/page-delete.html'
+
+
+class PageDetail(DetailView):
+    model = Page
+
+
+
+
+
+
+
 class PageGrid2(TemplateView):
     model = GridObject
     template_name = 'pages/semantic-ui/page-grid.html'

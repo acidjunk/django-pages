@@ -3,6 +3,17 @@
   <a class="item active">
     Overview
   </a>
+
+
+    <div class="ui dropdown item">
+        Pages <i class="dropdown icon"></i>
+        <div class="menu">
+            <a href="{% url "pages:page-list" %}" class="item"> <i class="align justify icon"></i>View Pages</a>
+            <a href="{% url "pages:page-new" %}" class="item"> <i class="add icon"></i>Create Pages</a>
+        </div>
+    </div>
+
+
     <div class="ui dropdown item">
         Articles <i class="dropdown icon"></i>
         <div class="menu">
@@ -43,6 +54,7 @@
             <a href="{% url "pages:youtubelink-new" %}" class="item"> <i class="add icon"></i>Create Youtube Link</a>
         </div>
     </div>
+
 
 
 
