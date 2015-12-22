@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
+from django.db.models import Max
 #import forms
 
 
@@ -227,17 +227,30 @@ class PageFacebookLinkDetail(DetailView):
 
 class PageList(ListView):
     model = Page
-    fields = ['name', 'slug']
+    fields = ['name', 'slug', 'ordering']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-list.html'
 
 
 class PageListCreate(CreateView):
     model = Page
-    fields = ['name', 'slogan', 'ordering', 'slug']
+    fields = ['name', 'slogan', 'slug']
     success_url = reverse_lazy('pages:page-list')
     template_name = 'pages/semantic-ui/page-form.html'
 
+    def form_valid(self, form):
+        self.object = form.save(commit = False)
+        # get highest current order nummer
+        max_order = Page.objects.all().aggregate(Max('ordering'))['ordering__max']
+
+        #max_order = Page.objects.filter('ordering').max
+        #Page.objects.values('ordering').annotate(count=Count('pk'))
+        # store new highest order nummer to DB
+
+        self.object.ordering = max_order + 1
+        #self.ordering = max_order + 1
+        self.object.save()
+        return super(PageListCreate, self).form_valid(form)
 
 class PageUpdate(UpdateView):
     model = Page
