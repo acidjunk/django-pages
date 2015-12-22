@@ -368,28 +368,28 @@ def FileUploadView(request):
 
 class PageArticleList(ListView):
     model = PageArticle
-    fields = ['title', 'content']
+    fields = ['name', 'content']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-article-list.html' #% = settings.DJANGO_PAGES_THEME
 
 
 class PageArticleCreate(CreateView):
     model = PageArticle
-    fields = ['slug', 'title', 'content']
+    fields = ['slug', 'name', 'content']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-article-form.html'
 
 
 class PageArticleUpdate(UpdateView):
     model = PageArticle
-    fields = ['slug', 'title', 'content']
+    fields = ['slug', 'name', 'content']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-article-form.html'
 
 
 class PageArticleDelete(DeleteView):
     model = PageArticle
-    fields = ['title', 'content']
+    fields = ['name', 'content']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-article-delete.html'
 
@@ -432,28 +432,28 @@ class PageFAQDetail(DetailView):
 
 class PageLinkList(ListView):
     model = PageLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-link.html'
 
 
 class PageLinkCreate(CreateView):
     model = PageLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:link-list')
     template_name = 'pages/semantic-ui/page-link-form.html'
 
 
 class PageLinkUpdate(UpdateView):
     model = PageLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:link-list')
     template_name = 'pages/semantic-ui/page-link-form.html'
 
 
 class PageLinkDelete(DeleteView):
     model = PageLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     success_url = reverse_lazy('pages:link-list')
     template_name = 'pages/semantic-ui/page-link-delete.html'
 
@@ -464,28 +464,28 @@ class PageLinkDetail(DetailView):
 
 class PageYoutubeLinkList(ListView):
     model = PageYoutubeLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-youtubelink.html'
 
 
 class PageYoutubeLinkCreate(CreateView):
     model = PageYoutubeLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:youtubelink-list')
     template_name = 'pages/semantic-ui/page-youtubelink-form.html'
 
 
 class PageYoutubeLinkUpdate(UpdateView):
     model = PageYoutubeLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:youtubelink-list')
     template_name = 'pages/semantic-ui/page-youtubelink-form.html'
 
 
 class PageYoutubeLinkDelete(DeleteView):
     model = PageYoutubeLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     success_url = reverse_lazy('pages:youtubelink-list')
     template_name = 'pages/semantic-ui/page-youtubelink-delete.html'
 
@@ -496,28 +496,28 @@ class PageYoutubeLinkDetail(DetailView):
 
 class PageFacebookLinkList(ListView):
     model = PageFacebookLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-facebooklink.html'
 
 
 class PageFacebookLinkCreate(CreateView):
     model = PageFacebookLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-form.html'
 
 
 class PageFacebookLinkUpdate(UpdateView):
     model = PageFacebookLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-form.html'
 
 
 class PageFacebookLinkDelete(DeleteView):
     model = PageFacebookLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     success_url = reverse_lazy('pages:facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-delete.html'
 
@@ -575,7 +575,7 @@ class PageGrid2(TemplateView):
 
 class PageGrid(ListView):
     model = GridObject
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-grid.html'
 
