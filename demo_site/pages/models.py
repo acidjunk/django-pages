@@ -26,45 +26,6 @@ class AbstractPage(models.Model):
         abstract = True
 
 
-class GridObject(TimestampAble, AbstractPage):
-    CHOICES = (
-        (1, 'one'),
-        (2, 'two'),
-        (3, 'three'),
-        (4, 'four'),
-        (5, 'five'),
-        (6, 'six'),
-        (7, 'seven'),
-        (8, 'eight'),
-        (9, 'nine'),
-        (10, 'ten'),
-        (11, 'eleven'),
-        (12, 'twelve'),
-        (13, 'thirteen'),
-        (14, 'fourteen'),
-        (15, 'fifteen'),
-        (16, 'sixteen'),
-    )
-
-    horizontalSize = models.IntegerField(verbose_name='HorizontalSize', choices=CHOICES, default=1)
-    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', choices=CHOICES, default=1)
-    verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
-
-    verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
-    name = models.TextField(verbose_name='Title') 
-    content = models.TextField(verbose_name='Content')
-
-    class Meta:
-        verbose_name = 'Grid'
-        verbose_name_plural = 'Grids'
-
-    def content_type(self):
-        return 'horizontalSize', 'Title', 'Content'
-
-    def __str__(self):
-        return str(self.pk)
-
-
 class PageFAQ(TimestampAble, AbstractPage):
     question = models.TextField(verbose_name='Question')
     answer = models.TextField(verbose_name='Answer')
@@ -139,6 +100,44 @@ class Page(TimestampAble, AbstractPage):
 
     def __str__(self):
         return self.name
+
+
+class GridCell(TimestampAble):
+    CHOICES = (
+        (1, 'one'),
+        (2, 'two'),
+        (3, 'three'),
+        (4, 'four'),
+        (5, 'five'),
+        (6, 'six'),
+        (7, 'seven'),
+        (8, 'eight'),
+        (9, 'nine'),
+        (10, 'ten'),
+        (11, 'eleven'),
+        (12, 'twelve'),
+        (13, 'thirteen'),
+        (14, 'fourteen'),
+        (15, 'fifteen'),
+        (16, 'sixteen'),
+    )
+
+    page = models.ForeignKey(Page, related_name='grid_cells') # todo: add editable=False
+    horizontalSize = models.IntegerField(verbose_name='HorizontalSize', choices=CHOICES, default=1)
+    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', choices=CHOICES, default=1)
+    verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
+
+    verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
+
+    class Meta:
+        verbose_name = 'Grid'
+        verbose_name_plural = 'Grids'
+
+    def content_type(self):
+        return 'horizontalSize', 'Title', 'Content'
+
+    def __str__(self):
+        return str(self.pk)
 
 
 # Todo: remove obsolete class in favor of Grid?

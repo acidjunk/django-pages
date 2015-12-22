@@ -1,12 +1,19 @@
 {% extends "semantic-ui/base.html" %}
+
 {% block content %}
         <div>
             <a href="{% url "pages:grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
         </div>
+
+        <h1 class="ui header">Editing grid for {{ page.name }}</h1>
+
         {% if object_list %}
             <table class="ui blue unstackable striped table">
                 <thead>
                 <tr>
+                    <th>
+                        page
+                    </th>
                     <th>
                         horizontal position
                     </th>
@@ -21,15 +28,14 @@
                     </th>
                     <th>
                     </th>
-                    <th>
-                    </th>
-                    <th>
-                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for cell in object_list %}
                     <tr>
+                        <td>
+                            {{  cell.page }}
+                        </td>
                         <td>
                             <span class="badge">{{ cell.horizontalPosition }}</span>
                         </td>
@@ -57,7 +63,23 @@
                 {% endfor %}
                 </tbody>
             </table>
+
+            <h3>Preview</h3>
+
+
+    <div>
+    {% for cell in object_list %}
+        <div style="position: relative;
+                width: {% widthratio cell.horizontalSize 1 64 %}px;
+                height: {% widthratio cell.verticalSize 1 30 %}px;
+                left: {% widthratio cell.horizontalPosition 1 64 %};
+                top: {% widthratio cell.verticalPosition 1 30 %};
+                border-style: solid; border-width: 1px; border-color: red;">{{ cell.verticalPosition }}</div>
+    {% endfor %}
+</div>
+
+
         {% else %}
-            <div class="info">No Faqs found</div>
+            <div class="info">No grid cells/content found</div>
         {% endif %}
 {% endblock %}

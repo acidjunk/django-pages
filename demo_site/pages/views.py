@@ -1,17 +1,13 @@
-from django.conf import settings
-from django.shortcuts import render
-from .models import Page, Row, Column, PageArticle, PagePhoto, PageFile, PageFAQ, PageLink, PageYoutubeLink,\
-    PageFacebookLink, GridObject
-from django.shortcuts import redirect
-from django.contrib.admin.views.decorators import staff_member_required
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.utils.functional import cached_property
+from django.shortcuts import render, get_object_or_404
+from .models import Page, PageArticle, PageFAQ, PageLink, PageYoutubeLink,\
+    PageFacebookLink, GridCell
+
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Max
-#import forms
 
 
 def IndexView(request):
@@ -25,39 +21,6 @@ def parent_pages(pk):
     if page.parent:
         tree = parent_pages(page.parent_id) + tree
     return tree
-
-
-def PageView(request, slug):
-    page = Page.objects.get(url=slug)
-
-    rows_ = []
-    rows = Row.objects.filter(page=page).order_by('ordering').all()
-    for row in rows:
-        columns = Column.objects.filter(row=row).order_by('ordering').all()
-        rows_.append({'id': row.id, 'columns': columns})
-
-    breadcrumbs = parent_pages(page.id)
-
-    if request.user.is_staff:
-        if request.method == 'POST':
-            content_id = request.POST.get('content_id', None)
-            file = request.FILES.get('file', None)
-            if content_id and file:
-                photo = PagePhoto.objects.get(pk=content_id)
-                photo.photo = file
-                photo.created_by = request.user
-                photo.name = file.name
-                photo.save()
-
-    if page.sidebar_right:
-        subpages = Page.objects.filter(parent=page.pk).order_by('ordering').all()
-        sidebar_right = {'subpages': subpages}
-    else:
-        sidebar_right = None
-
-    context = {'breadcrumbs': breadcrumbs, 'page': page, 'rows': rows_, 'sidebar_right': sidebar_right}
-
-    return render(request, 'page.html', context=context)
 
 
 class PageArticleList(ListView):
@@ -220,11 +183,6 @@ class PageFacebookLinkDetail(DetailView):
     model = PageFacebookLink
 
 
-
-
-
-
-
 class PageList(ListView):
     model = Page
     fields = ['name', 'slug', 'ordering']
@@ -246,6 +204,7 @@ class PageListCreate(CreateView):
         self.object.save()
         return super(PageListCreate, self).form_valid(form)
 
+
 class PageUpdate(UpdateView):
     model = Page
     fields = ['name', 'slogan', 'ordering', 'slug']
@@ -264,35 +223,49 @@ class PageDetail(DetailView):
     model = Page
 
 
-
-
-
-
-
-
 class PageGrid(ListView):
-    model = GridObject
-    fields = ['horizontalPosition','horizontalSize','verticalPosition','verticalSize']
+    model = GridCell
+    fields = ['page', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-grid.html'
 
+    @cached_property
+    def page(self):
+        return get_object_or_404(Page, slug=self.kwargs['slug'])
+
+    def get_queryset(self):
+        return GridCell.objects.filter(page=self.page)
+
+    def get_context_data(self, **kwargs):
+        context = super(PageGrid, self).get_context_data(**kwargs)
+        context['page'] = self.page
+        return context
+
 
 class PageGridCreate(CreateView):
-    model = GridObject
-    fields = ['horizontalPosition','horizontalSize','verticalPosition','verticalSize']
+    model = GridCell
+    fields = ['page', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     success_url = reverse_lazy('pages:grid')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
 class PageGridUpdate(UpdateView):
-    model = GridObject
+    model = GridCell
     fields = ['slug', 'horizontalSize', 'name', 'content']
     success_url = reverse_lazy('pages:grid')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
 class PageGridDelete(DeleteView):
-    model = GridObject
+    model = GridCell
     fields = ['slug', 'horizontalSize', 'name', 'content']
     success_url = reverse_lazy('pages:grid')
     template_name = 'pages/semantic-ui/page-grid-delete.html'
+
+
+class Preview(DetailView):
+    model = Page
+    slug_field = 'slug'
+    template_name = 'pages/semantic-ui/preview.html'
+
+

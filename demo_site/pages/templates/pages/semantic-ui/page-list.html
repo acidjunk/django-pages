@@ -11,42 +11,52 @@
                         Name
                     </th>
                     <th>
+                        Parent
+                    </th>
+                    <th>
+                        Slug
+                    </th>
+                    <th>
+                        Slogan
+                    </th>
+                    <th>
                         Ordering
                     </th>
                     <th>
                         Created on
                     </th>
-
                     <th>
-
-                    </th>
-                    <th>
-
-                    </th>
-                    <th>
-
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for article in object_list %}
+                {% for object in object_list %}
                     <tr>
                         <td>
-                            <span class="badge">{{ article.slug }}</span>
+                            {{ object.name }}
                         </td>
                         <td>
-                            {{ article.ordering }}
+                            {{ object.parent }}
                         </td>
                         <td>
-                            {{ article.created_on }}
+                            <span class="ui label">{{ object.slug }}</span>
+                        </td>
+                        <td>
+                            {{ object.slogan }}
+                        </td>
+                        <td>
+                            {{ object.ordering }}
+                        </td>
+                        <td>
+                            {{ object.created_on }}
                         </td>
                         <td class="right aligned">
-                        </td>
-                        <td>
                             <div class="ui buttons">
-                                <a href="{% url "pages:page-edit" article.id %}" class="ui positive button">Edit</a>
+                                <a href="{% url "pages:page-edit" object.id %}" class="ui positive button">Edit</a>
                               <div class="or"></div>
-                                <a href="{% url "pages:page-delete" article.id %}" class="ui negative button">Delete</a>
+                                <a href="{% url "pages:page-delete" object.id %}" class="ui negative button">Delete</a>
+                              <div class="or"></div>
+                                <a href="{% url "pages:grid-list" object.slug %}" class="ui purple button">Show grid</a>
                             </div>
                         </td>
                     </tr>
