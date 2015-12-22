@@ -4,7 +4,6 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class TimestampAble(models.Model):
@@ -71,12 +70,12 @@ class GridObject(TimestampAble, AbstractPage):
     verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
 
     verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
-    Title = models.TextField(verbose_name='Title')
-    Content = models.TextField(verbose_name='Content')
+    name = models.TextField(verbose_name='Title') 
+    content = models.TextField(verbose_name='Content')
 
     class Meta:
-        verbose_name = 'Content'
-        verbose_name_plural = 'Content'
+        verbose_name = 'Grid'
+        verbose_name_plural = 'Grids'
 
     def content_type(self):
         return 'horizontalSize', 'Title', 'Content'
@@ -90,8 +89,8 @@ class PageFAQ(TimestampAble, AbstractPage):
     answer = models.TextField(verbose_name='Answer')
 
     class Meta:
-        verbose_name = 'Content'
-        verbose_name_plural = 'Content'
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
 
     def content_type(self):
         return 'question', 'answer'
@@ -101,12 +100,12 @@ class PageFAQ(TimestampAble, AbstractPage):
 
 
 class PageLink(TimestampAble, AbstractPage):
-    title = models.TextField(verbose_name='Title')
+    name = models.TextField(verbose_name='Title') 
     link = models.TextField(verbose_name='Link')
 
     class Meta:
-        verbose_name = 'Content'
-        verbose_name_plural = 'Content'
+        verbose_name = 'Link'
+        verbose_name_plural = 'Links'
 
     def content_type(self):
         return 'title','link'
@@ -116,12 +115,12 @@ class PageLink(TimestampAble, AbstractPage):
 
 
 class PageYoutubeLink(TimestampAble, AbstractPage):
-    title = models.TextField(verbose_name='Title')
+    name = models.TextField(verbose_name='Title') 
     link = models.TextField(verbose_name='Link')
 
     class Meta:
-        verbose_name = 'Content'
-        verbose_name_plural = 'Content'
+        verbose_name = 'Youtube link'
+        verbose_name_plural = 'Youtube links'
 
     def content_type(self):
         return 'title','link'
@@ -131,12 +130,12 @@ class PageYoutubeLink(TimestampAble, AbstractPage):
 
 
 class PageFacebookLink(TimestampAble, AbstractPage):
-    title = models.TextField(verbose_name='Title')
+    name = models.TextField(verbose_name='Title') 
     link = models.TextField(verbose_name='Link')
 
     class Meta:
-        verbose_name = 'Content'
-        verbose_name_plural = 'Content'
+        verbose_name = 'Facebook link'
+        verbose_name_plural = 'Facebook links'
 
     def content_type(self):
         return 'title','link'
@@ -192,7 +191,7 @@ class Column(TimestampAble):
 
 
 class PageArticle(TimestampAble, AbstractPage):
-    title = models.TextField(verbose_name='Title')
+    name = models.TextField(verbose_name='Title') 
     content = models.TextField(verbose_name='Content')
 
     class Meta:
