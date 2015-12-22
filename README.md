@@ -18,8 +18,9 @@ A GRID can consist out of up to 16 columns. Cells can contain a variety of conte
 
 Populate stuff
 --------------
-Run 
-python manage.py populatepages
+.. code-block:none
+
+    python manage.py populatepages
 
 
 Todo
