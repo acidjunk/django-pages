@@ -15,6 +15,13 @@ A GRID can consist out of up to 16 columns. Cells can contain a variety of conte
 - imageslider
 - address
 
+
+Populate stuff
+--------------
+Run 
+python manage.py populatepages
+
+
 Todo
 ----
 More tests, documentation via Sphinx and the release of v0.1
