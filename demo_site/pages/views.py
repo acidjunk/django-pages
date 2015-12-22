@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.shortcuts import render
 from .models import Page, Row, Column, PageArticle, PagePhoto, PageFile, PageFAQ, PageLink, PageYoutubeLink,\
-    PageFacebookLink, GridObject, GridRow
+    PageFacebookLink, GridObject
 from django.shortcuts import redirect
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
+from django.db.models import Max
 #import forms
 
 
@@ -60,336 +60,30 @@ def PageView(request, slug):
     return render(request, 'page.html', context=context)
 
 
-@staff_member_required
-def ItemAddView(request, page_url, colomn_id, content_type):
-    if content_type == 'text':
-        item = PageArticle.objects.create(created_by=request.user)
-        item.content = 'Test tekst'
-        item.save()
-    if content_type == 'photo':
-        item = PagePhoto.objects.create(created_by=request.user)
-        item.photo = None
-        item.save()
-    if content_type == 'form':
-        item = None
-        #item.save()
-
-
-    column = Column.objects.get(pk=colomn_id)
-    column.content_object = item
-    column.save()
-
-    return redirect('page', page_url)
-
-
-@staff_member_required
-def ItemRemoveView(request, page_url, colomn_id, content_type, object_id):
-
-    column = Column.objects.get(pk=colomn_id)
-    column.content_object = None
-    column.save()
-
-    if content_type == 'content':
-        item = PageArticle.objects.get(pk=object_id)
-    if content_type == 'photo':
-        item = PagePhoto.objects.get(pk=object_id)
-    #TODO make the item become inactive instead of being deleted
-    item.delete()
-
-    return redirect('page', page_url)
-
-
-@staff_member_required
-def ContentSaveView(request):
-    if request.method == 'POST':
-        content = request.POST.get('content', None)
-        content_id = request.POST.get('content_id', None)
-
-        con = PageArticle.objects.get(pk=content_id)
-        if con:
-            con.content = content
-            con.save()
-            return render(request, 'response_200.html')
-        else:
-            return render(request, 'response_404.html')
-    else:
-        return render(request, 'response_404.html')
-
-
-@staff_member_required
-def RowAddView(request, page_url):
-    page = Page.objects.get(url=page_url)
-    orders = Row.objects.filter(page=page).count()
-    row = Row.objects.create(page=page, ordering=orders+1, created_by=request.user)
-    row.save()
-    return redirect('page', page_url)
-
-
-@staff_member_required
-def RowDeleteView(request, page_url, row_id):
-    row = Row.objects.get(pk=row_id)
-    columns = Column.objects.filter(row=row).all()
-    for x in columns:
-        if x.content_type:
-            x.content_object.delete()
-        x.delete()
-    row.delete()
-    return redirect('page', page_url)
-
-
-@staff_member_required
-def ColumnAddView(request, page_url, row_id):
-    columns = Column.objects.filter(row_id=row_id).all()
-    count = Column.objects.filter(row_id=row_id).count()
-    if count > 0:
-        for x in columns:
-            x.width = 12/(count+1)
-            x.save()
-        width = 12/(count+1)
-    else:
-        width = 12
-
-    column = Column.objects.create(row_id=row_id, width=width, ordering=count+1, created_by=request.user)
-    column.save()
-    return redirect('page', page_url)
-
-
-@staff_member_required
-def ColumnDeleteView(request, page_url, row_id, column_id):
-    columns = Column.objects.filter(row_id=row_id).all()
-    count = Column.objects.filter(row_id=row_id).count()
-    column = Column.objects.get(pk=column_id)
-    for x in columns:
-        if x != column:
-            x.width = 12/(count-1)
-            x.save()
-
-    if column.content_object:
-        column.content_object.delete()
-    column.delete()
-    return redirect('page', page_url)
-
-
-@staff_member_required
-def ColumnSortableView(request):
-    col = request.POST.get('col_id', None)
-    row = request.POST.get('row', None)
-    ordering = 0
-    for key in request.POST.getlist('col[]'):
-        column = Column.objects.get(pk=key)
-        column.ordering = ordering
-        column.save()
-        ordering += 1
-
-    return render(request, 'response_200.html')
-
-
-@staff_member_required
-def RowSortableView(request):
-    ordering = 0
-    for key in request.POST.getlist('row[]'):
-        row = Row.objects.get(pk=key)
-        row.ordering = ordering
-        row.save()
-        ordering += 1
-
-    return render(request, 'response_200.html')
-
-
-@staff_member_required
-def PagesView(request, parent=None):
-    pages = Page.objects.filter(parent=parent).order_by('ordering').all()
-    tree = []
-    for x in pages:
-        tree.append({'page': x, 'childs': Page.objects.filter(parent=x.pk).count()})
-    context = {'tree': tree, 'parent': parent}
-    return render(request, 'cms/pages.html', context=context)
-
-
-@staff_member_required
-def CMSIndexView(request):
-    context = {}
-    return render(request, 'cms/index.html', context=context)
-
-
-@staff_member_required
-def PageAddView(request):
-    if request.method == "POST":
-        form = forms.PageForm(request.POST)
-        if form.is_valid():
-            last_item = Page.objects.order_by('-ordering').first()
-            # commit=False means the form doesn't save at this time.
-            # commit defaults to True which means it normally saves.
-            model_instance = form.save(commit=False)
-            try:
-                model_instance.ordering = last_item.ordering+1
-            except:
-                model_instance.ordering = 0
-            model_instance.created_by = request.user
-            model_instance.save()
-            return redirect('pages')
-    else:
-        form = forms.PageForm()
-    context = {'form': form}
-    return render(request, 'cms/page-add.html', context=context)
-
-
-@staff_member_required
-def PageEditView(request, page_url):
-    page = Page.objects.get(url=page_url)
-    if request.method == "POST":
-        form = forms.PageForm(request.POST, instance=page)
-        if form.is_valid():
-            # last_item = Page.objects.order_by('-ordering').first()
-            # # commit=False means the form doesn't save at this time.
-            # commit defaults to True which means it normally saves.
-            model_instance = form.save(commit=False)
-            # model_instance.ordering = last_item.ordering+1
-            model_instance.save()
-            return redirect('page', page_url)
-    else:
-        form = forms.PageForm(instance=page)
-    context = {'form': form, 'page': page}
-    return render(request, 'cms/page-edit.html', context=context)
-
-
-@staff_member_required
-def PageSortableView(request):
-    parent = request.POST.get('parent', None)
-    ordering = 0
-    for key in request.POST.getlist('page[]'):
-        page = Page.objects.get(pk=key)
-        page.ordering = ordering
-        page.save()
-        ordering += 1
-
-    return render(request, 'response_200.html')
-
-
-@staff_member_required
-def PhotosView(request):
-    photos = PagePhoto.objects.all()
-    context = {'photos': photos}
-    return render(request, 'cms/photos.html', context=context)
-
-
-@staff_member_required
-def FilesView(request):
-    files = PageFile.objects.all()
-    context = {'files': files}
-    return render(request, 'cms/files.html', context=context)
-
-
-@staff_member_required
-def FormsView(request):
-    return render(request, 'cms/forms.html')
-
-
-@staff_member_required
-def FileAddView(request):
-    if request.method == "POST":
-        form = forms.FileForm(request.POST, request.FILES)
-        if form.is_valid():
-            model_instance = form.save(commit=False)
-            model_instance.created_by = request.user
-            model_instance.save()
-
-            return redirect('files')
-    else:
-        form = forms.FileForm()
-    context = {'form': form}
-    return render(request, 'cms/file-add.html', context=context)
-
-
-@staff_member_required
-def PhotoAddView(request):
-    if request.method == "POST":
-        form = forms.PhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            model_instance = form.save(commit=False)
-            model_instance.created_by = request.user
-            model_instance.save()
-            return redirect('photos')
-    else:
-        form = forms.PhotoForm()
-    context = {'form': form}
-    return render(request, 'cms/photo-add.html', context=context)
-
-
-@staff_member_required
-def PhotoBrowserView(request):
-    photos = PagePhoto.objects.all()
-    context = {'photos': photos}
-    return render(request, 'cms/photo-browser.html', context=context)
-
-
-@staff_member_required
-def FileBrowserView(request):
-    files = PageFile.objects.all()
-    context = {'files': files}
-    return render(request, 'cms/file-browser.html', context=context)
-
-
-@csrf_exempt
-@staff_member_required
-def PhotoUploadView(request):
-    if request.FILES['upload']:
-        request.FILES['photo'] = request.FILES['upload']
-        request.POST['name'] = 'name'
-    form = forms.PhotoForm(request.POST, request.FILES)
-    if form.is_valid():
-        model_instance = form.save(commit=False)
-        model_instance.name = request.FILES['upload'].name.split('.')[0]
-        model_instance.created_by = request.user
-        model_instance.save()
-        return HttpResponse("""
-        <script type='text/javascript'>
-            window.parent.CKEDITOR.tools.callFunction({0}, '{1}');
-        </script>""".format(request.GET['CKEditorFuncNum'], model_instance.photo.url))
-
-
-@csrf_exempt
-@staff_member_required
-def FileUploadView(request):
-    if request.FILES['upload']:
-        request.FILES['file'] = request.FILES['upload']
-        request.POST['name'] = 'name'
-    form = forms.FileForm(request.POST, request.FILES)
-    if form.is_valid():
-        model_instance = form.save(commit=False)
-        model_instance.name = request.FILES['upload'].name.split('.')[0]
-        model_instance.created_by = request.user
-        model_instance.save()
-        return HttpResponse("""
-        <script type='text/javascript'>
-            window.parent.CKEDITOR.tools.callFunction({0}, '{1}');
-        </script>""".format(request.GET['CKEditorFuncNum'], model_instance.file.url))
-
-
 class PageArticleList(ListView):
     model = PageArticle
-    fields = ['title', 'content']
+    fields = ['name', 'content']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-article-list.html' #% = settings.DJANGO_PAGES_THEME
 
 
 class PageArticleCreate(CreateView):
     model = PageArticle
-    fields = ['slug', 'title', 'content']
+    fields = ['slug', 'name', 'content']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-article-form.html'
 
 
 class PageArticleUpdate(UpdateView):
     model = PageArticle
-    fields = ['slug', 'title', 'content']
+    fields = ['slug', 'name', 'content']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-article-form.html'
 
 
 class PageArticleDelete(DeleteView):
     model = PageArticle
-    fields = ['title', 'content']
+    fields = ['name', 'content']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-article-delete.html'
 
@@ -432,28 +126,28 @@ class PageFAQDetail(DetailView):
 
 class PageLinkList(ListView):
     model = PageLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-link.html'
 
 
 class PageLinkCreate(CreateView):
     model = PageLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:link-list')
     template_name = 'pages/semantic-ui/page-link-form.html'
 
 
 class PageLinkUpdate(UpdateView):
     model = PageLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:link-list')
     template_name = 'pages/semantic-ui/page-link-form.html'
 
 
 class PageLinkDelete(DeleteView):
     model = PageLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     success_url = reverse_lazy('pages:link-list')
     template_name = 'pages/semantic-ui/page-link-delete.html'
 
@@ -464,28 +158,28 @@ class PageLinkDetail(DetailView):
 
 class PageYoutubeLinkList(ListView):
     model = PageYoutubeLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-youtubelink.html'
 
 
 class PageYoutubeLinkCreate(CreateView):
     model = PageYoutubeLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:youtubelink-list')
     template_name = 'pages/semantic-ui/page-youtubelink-form.html'
 
 
 class PageYoutubeLinkUpdate(UpdateView):
     model = PageYoutubeLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:youtubelink-list')
     template_name = 'pages/semantic-ui/page-youtubelink-form.html'
 
 
 class PageYoutubeLinkDelete(DeleteView):
     model = PageYoutubeLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     success_url = reverse_lazy('pages:youtubelink-list')
     template_name = 'pages/semantic-ui/page-youtubelink-delete.html'
 
@@ -496,28 +190,28 @@ class PageYoutubeLinkDetail(DetailView):
 
 class PageFacebookLinkList(ListView):
     model = PageFacebookLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-facebooklink.html'
 
 
 class PageFacebookLinkCreate(CreateView):
     model = PageFacebookLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-form.html'
 
 
 class PageFacebookLinkUpdate(UpdateView):
     model = PageFacebookLink
-    fields = ['slug', 'title', 'link']
+    fields = ['slug', 'name', 'link']
     success_url = reverse_lazy('pages:facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-form.html'
 
 
 class PageFacebookLinkDelete(DeleteView):
     model = PageFacebookLink
-    fields = ['title', 'link']
+    fields = ['name', 'link']
     success_url = reverse_lazy('pages:facebooklink-list')
     template_name = 'pages/semantic-ui/page-facebooklink-delete.html'
 
@@ -533,17 +227,24 @@ class PageFacebookLinkDetail(DetailView):
 
 class PageList(ListView):
     model = Page
-    fields = ['name', 'slug']
+    fields = ['name', 'slug', 'ordering']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-list.html'
 
 
 class PageListCreate(CreateView):
     model = Page
-    fields = ['name', 'slogan', 'ordering', 'slug']
+    fields = ['name', 'slogan', 'slug']
     success_url = reverse_lazy('pages:page-list')
     template_name = 'pages/semantic-ui/page-form.html'
 
+    def form_valid(self, form):
+        self.object = form.save(commit = False)
+        # get highest current order nummer
+        max_order = Page.objects.all().aggregate(Max('ordering'))['ordering__max']
+        self.object.ordering = max_order + 1
+        self.object.save()
+        return super(PageListCreate, self).form_valid(form)
 
 class PageUpdate(UpdateView):
     model = Page
@@ -568,169 +269,30 @@ class PageDetail(DetailView):
 
 
 
-class PageGrid2(TemplateView):
-    model = GridObject
-    template_name = 'pages/semantic-ui/page-grid.html'
-
 
 class PageGrid(ListView):
     model = GridObject
-    fields = ['title', 'link']
+    fields = ['horizontalPosition','horizontalSize','verticalPosition','verticalSize']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-grid.html'
 
 
 class PageGridCreate(CreateView):
     model = GridObject
-    fields = ['slug', 'horizontalSize', 'Title', 'Content']
+    fields = ['horizontalPosition','horizontalSize','verticalPosition','verticalSize']
     success_url = reverse_lazy('pages:grid')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
 class PageGridUpdate(UpdateView):
     model = GridObject
-    fields = ['slug', 'horizontalSize', 'Title', 'Content']
+    fields = ['slug', 'horizontalSize', 'name', 'content']
     success_url = reverse_lazy('pages:grid')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
 class PageGridDelete(DeleteView):
     model = GridObject
-    fields = ['slug', 'horizontalSize', 'Title', 'Content']
+    fields = ['slug', 'horizontalSize', 'name', 'content']
     success_url = reverse_lazy('pages:grid')
     template_name = 'pages/semantic-ui/page-grid-delete.html'
-
-
-class GridCell(object):
-    def __init__(self, horizontal_position, vertical_position, horizontal_size, vertical_size):
-        self.horizontal_size = horizontal_size
-        self.vertical_size = vertical_size
-        self.horizontal_position = horizontal_position
-        self.vertical_position = vertical_position
-
-        self.data = [[0 for _ in range(self.horizontal_size)] for _ in range(self.vertical_size)]
-
-    def __str__(self):
-        result = ''
-        for row in self.data:
-            for _ in row:
-                result += 'x'
-            result += '\n'
-
-        return result
-
-
-class Grid(object):
-    height = 2
-    width = 16
-
-    def __init__(self):
-        self._data = [[0 for _ in range(self.width)] for _ in range(self.height)]
-        print(self._data)
-
-    def __str__(self):
-        result = ''
-        for row in range(0, self.height):
-            print('row', row)
-            for col in range(0, self.width):
-                print('col', self._data[row][col])
-                if self._data[row][col] == 0:
-                    result += '0'
-                else:
-                    result += '1'
-            result += '\n'
-        return result
-
-    def is_place_able(self, cell):
-        if (cell.horizontal_position + cell.horizontal_size) > self.width:
-            return False
-        else:
-            return True
-
-    def check_override(self, cell, save):
-        objects_in_row = 0
-        long_enough = False
-        print('all', self._data)
-        for row in self._data[cell.vertical_position]:
-            print('row', row)
-            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
-                print('col', self._data[row][col])
-                if self._data[row][col] == 0:
-                    if objects_in_row == cell.horizontal_size:
-                        long_enough = True
-                        if save:
-                            for colp in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
-                                self._data[row][colp] = 1
-                    else:
-                        objects_in_row += 1
-                        # print(objects_in_row)
-                else:
-                    print("e1, 1", self._data[row][col])
-                    pass
-        return long_enough
-
-    def remove_cell(self, cell, save):
-        objects_in_row = 0
-        long_enough = False
-        for row in self._data[cell.vertical_position]:
-            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
-                print('col', self._data[row][col])
-                if self._data[row][col] == 1:
-                    if objects_in_row == cell.horizontal_size:
-                        long_enough = True
-                        if save:
-                            for colp in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
-                                self._data[row][colp] = 0
-                    else:
-                        objects_in_row += 1
-                        # print(objects_in_row)
-                else:
-                    print("e1, 1", self._data[row][col])
-                    pass
-        return long_enough
-
-    def check_row_for_free_places(self, cell):
-        free_places = 0
-        for row in self._data[cell.vertical_position]:
-            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
-                print('col', self._data[row][col])
-                if self._data[row][col] == 0:
-                        free_places += 1
-                        # print(free_places)
-                else:
-                    pass
-        return free_places
-
-    def check_for_free_space(self, cell):
-        objects_in_row = 0
-        free_spaces = []
-        for row in self._data:
-            for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
-                if row[col] == 0:
-                    if objects_in_row == cell.horizontal_size:
-                        free_spaces += row
-                        objects_in_row = 0
-                    else:
-                        objects_in_row += 1
-
-        return free_spaces
-
-    def add_cell(self, cell):
-        if self.is_place_able(cell):  # false = fits
-            if self.check_override(cell, False):
-                # TODO add specific location for cells? and not randomly assigned
-                self.check_override(cell, True)
-                pass
-            else:
-                print("cell overrides another")
-        else:
-            print("cell is too wide")
-
-    def move_cell(self, cell):
-        if self.check_override(cell, False):
-            if self.remove_cell(cell, False):
-                self.remove_cell(cell, True)
-                # TODO make something to choose the new location
-                self.add_cell(cell)
-        else:
-            print("cell does not fit somewhere else")

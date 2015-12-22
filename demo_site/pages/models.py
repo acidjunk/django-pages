@@ -26,26 +26,7 @@ class AbstractPage(models.Model):
         abstract = True
 
 
-class GridRow(TimestampAble, AbstractPage):
-    horizontalSize = models.IntegerField(verbose_name='HorizontalSize')
-    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition')
-    verticalSize = models.IntegerField(verbose_name='VerticalSize')
-    verticalPosition = models.IntegerField(verbose_name='VerticalPosition')
-
-    class Meta:
-        abstract = True
-
-    def content_type(self):
-        return ''
-
-    def __str__(self):
-        return str(self.pk)
-
-
 class GridObject(TimestampAble, AbstractPage):
-
-    # TODO, make this dynamic.
-
     CHOICES = (
         (1, 'one'),
         (2, 'two'),
@@ -66,7 +47,7 @@ class GridObject(TimestampAble, AbstractPage):
     )
 
     horizontalSize = models.IntegerField(verbose_name='HorizontalSize', choices=CHOICES, default=1)
-    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', default=0)
+    horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', choices=CHOICES, default=1)
     verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
 
     verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
