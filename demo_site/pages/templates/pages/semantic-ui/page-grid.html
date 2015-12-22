@@ -66,20 +66,22 @@
 
             <h3>Preview</h3>
 
+{#            TODO: write cool grid previewer:#}
+{#            http://fremycompany.com/BG/2014/CSS-Grid-Polyfill-Level-1-346/#}
 
-    <div>
+    <div style="position: relative;">
     {% for cell in object_list %}
-        <div style="position: relative;
+        <div style="position: absolute;
                 width: {% widthratio cell.horizontalSize 1 64 %}px;
                 height: {% widthratio cell.verticalSize 1 30 %}px;
-                left: {% widthratio cell.horizontalPosition 1 64 %};
-                top: {% widthratio cell.verticalPosition 1 30 %};
-                border-style: solid; border-width: 1px; border-color: red;">{{ cell.verticalPosition }}</div>
+                left: {% widthratio cell.horizontalPosition 1 64 %}px;
+                top: {% widthratio cell.verticalPosition 1 30 %}px;
+                border-style: solid; border-width: 1px; border-color: red;"></div>
     {% endfor %}
-</div>
+    </div>
 
-
-        {% else %}
-            <div class="info">No grid cells/content found</div>
-        {% endif %}
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    {% else %}
+        <div class="info">No grid cells/content found</div>
+    {% endif %}
 {% endblock %}
