@@ -1,23 +1,58 @@
 
 <div class="ui inverted menu">
   <a class="item active">
-    Home
+    Overview
   </a>
-  <a class="item">
-    Grid
-  </a>
-  <a class="item">
-    Article
-  </a>
+    <div class="ui dropdown item">
+        Articles <i class="dropdown icon"></i>
+        <div class="menu">
+            <a href="{% url "pages:article-list" %}" class="item"> <i class="align justify icon"></i>View Articles</a>
+            <a href="{% url "pages:article-new" %}" class="item"> <i class="add icon"></i>Create Article</a>
+        </div>
+    </div>
+
+
+    <div class="ui dropdown item">
+        FAQ <i class="dropdown icon"></i>
+        <div class="menu">
+            <a href="{% url "pages:faq-list" %}" class="item"> <i class="align justify icon"></i>View FAQ</a>
+            <a href="{% url "pages:faq-new" %}" class="item"> <i class="add icon"></i>Create FAQ</a>
+        </div>
+    </div>
+
+    <div class="ui dropdown item">
+        Links <i class="dropdown icon"></i>
+        <div class="menu">
+            <a href="{% url "pages:link-list" %}" class="item"> <i class="align justify icon"></i>View Links</a>
+            <a href="{% url "pages:link-new" %}" class="item"> <i class="add icon"></i>Create Link</a>
+        </div>
+    </div>
+
+    <div class="ui dropdown item">
+        Facebook Links <i class="dropdown icon"></i>
+        <div class="menu">
+            <a href="{% url "pages:facebooklink-list" %}" class="item"> <i class="align justify icon"></i>View Facebook Links</a>
+            <a href="{% url "pages:facebooklink-new" %}" class="item"> <i class="add icon"></i>Create Facebook Link</a>
+        </div>
+    </div>
+
+    <div class="ui dropdown item">
+        Youtube Links <i class="dropdown icon"></i>
+        <div class="menu">
+            <a href="{% url "pages:youtubelink-list" %}" class="item"> <i class="align justify icon"></i>View Youtube Links</a>
+            <a href="{% url "pages:youtubelink-new" %}" class="item"> <i class="add icon"></i>Create Youtube Link</a>
+        </div>
+    </div>
+
+
+
 
  <-- Make this dynamic. With data from the template context processor...
     <div class="right menu">
         <div class="ui dropdown item">
-          Drop Down for more items. <i class="dropdown icon"></i>
+          Account <i class="dropdown icon"></i>
           <div class="menu">
-            <a class="item">1</a>
-            <a class="item">2</a>
-            <a class="item">3</a>
+            <a href="{% url "pages:logout" %}" class="item"> <i class="sign out icon"></i>Logout</a>
           </div>
         </div>
     </div>
