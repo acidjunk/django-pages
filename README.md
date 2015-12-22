@@ -18,10 +18,11 @@ A GRID can consist out of up to 16 columns. Cells can contain a variety of conte
 
 Populate stuff
 --------------
-.. code-block:none
+If you are testing the grid you populate it with some default pages and grid cells.  
+    
+    $ python manage.py populatepages
 
-    python manage.py populatepages
-
+Be warned, it will delete all content in the pages table.
 
 Todo
 ----
