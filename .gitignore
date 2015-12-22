@@ -7,6 +7,14 @@ __pycache__/
 # C extensions
 *.so
 
+#i# IDE stuff
+# Pycharm stuff
+*.iml
+/notes.md
+/.pycharmrc
+# Directory-based project format:
+.idea/
+
 # Distribution / packaging
 .Python
 env/

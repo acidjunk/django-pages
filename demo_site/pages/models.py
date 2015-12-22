@@ -146,8 +146,8 @@ class PageFacebookLink(TimestampAble, AbstractPage):
 
 class Page(TimestampAble, AbstractPage):
     name = models.CharField(max_length=255, verbose_name='Name')
-    slogan = models.CharField(max_length=255, verbose_name='Slogan')
-    url = models.SlugField(max_length=255, verbose_name='Url', unique=True)  # todo remove in favor of abstract slug
+    slogan = models.CharField(max_length=255, verbose_name='Slogan', blank=True, default='')
+    summary = models.TextField(blank=True)
     parent = models.ForeignKey('Page', blank=True, null=True, verbose_name='Parent')
     ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
     sidebar_right = models.BooleanField(default=True, verbose_name='Sidebar right?')
