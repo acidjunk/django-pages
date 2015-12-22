@@ -1,7 +1,7 @@
 {% extends "semantic-ui/base.html" %}
 {% block content %}
         <div>
-            <a href="{% url "page-article-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+            <a href="{% url "pages:article-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
         </div>
         {% if object_list %}
             <table class="ui blue unstackable striped table">
@@ -44,9 +44,9 @@
                         </td>
                         <td>
                             <div class="ui buttons">
-                                <a href="{% url "page-article-edit" article.id %}" class="ui positive button">Edit</a>
+                                <a href="{% url "pages:article-edit" article.id %}" class="ui positive button">Edit</a>
                               <div class="or"></div>
-                                <a href="{% url "page-article-delete" article.id %}" class="ui negative button">Delete</a>
+                                <a href="{% url "pages:article-delete" article.id %}" class="ui negative button">Delete</a>
                             </div>
                         </td>
                     </tr>

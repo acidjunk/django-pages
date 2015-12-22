@@ -2,7 +2,7 @@
 {% block content %}
 
         <div>
-            <a href="{% url "page-link-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+            <a href="{% url "pages:link-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
         </div>
         {% if object_list %}
             <table class="ui blue unstackable striped table">
@@ -41,9 +41,9 @@
                         </td>
                         <td>
                             <div class="ui buttons">
-                                <a href="{% url "page-link-edit" article.id %}" class="ui positive button">Edit</a>
+                                <a href="{% url "pages:link-edit" article.id %}" class="ui positive button">Edit</a>
                               <div class="or"></div>
-                                <a href="{% url "page-link-delete" article.id %}" class="ui negative button">Delete</a>
+                                <a href="{% url "pages:link-delete" article.id %}" class="ui negative button">Delete</a>
                             </div>
                         </td>
                     </tr>

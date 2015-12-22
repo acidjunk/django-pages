@@ -33,11 +33,11 @@
                         <div class="one wide red column" style="border: 1px solid;"> <p> {{faqs.Content}} </p>  </div>
                         {% if faqs.horizontalSize != 16 %}
                             <div class="tiny ui buttons">
-                                    <a href="{% url "page-grid-edit" faqs.id %}" class="ui positive button">Edit</a>
+                                    <a href="{% url "pages:grid-edit" faqs.id %}" class="ui positive button">Edit</a>
                                 <div class="or"></div>
-                                    <a href="{% url "page-grid-delete" faqs.id %}" class="ui negative button">Delete</a>
+                                    <a href="{% url "pages:grid-delete" faqs.id %}" class="ui negative button">Delete</a>
                                 <div class="or"></div>
-                                    <a href="{% url "page-grid-new" %}" class="blue ui button">Add</a>
+                                    <a href="{% url "pages:grid-new" %}" class="blue ui button">Add</a>
                             </div>
                         {%  endif %}
                     </div>
@@ -46,7 +46,7 @@
         </tbody>
     {% else %}
         <div>
-            <a href="{% url "page-grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+            <a href="{% url "pages:grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
         </div>
         <div class="info">No Grid Objects found</div>
     {% endif %}
