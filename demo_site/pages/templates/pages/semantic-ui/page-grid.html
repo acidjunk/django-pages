@@ -2,7 +2,7 @@
 
 {% block content %}
         <div>
-            <a href="{% url "pages:grid-new" %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+            <a href="{% url "pages:grid-new" page.slug %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
         </div>
 
         <h1 class="ui header">Editing grid for {{ page.name }}</h1>
@@ -59,8 +59,6 @@
                                     <a href="{% url "pages:grid-edit" cell.id %}" class="ui positive button">Edit</a>
                                 <div class="or"></div>
                                     <a href="{% url "pages:grid-delete" cell.id %}" class="ui negative button">Delete</a>
-                                <div class="or"></div>
-                                    <a href="{% url "pages:grid-new" %}" class="blue ui button">Add</a>
                             </div>
                         </td>
                     </tr>

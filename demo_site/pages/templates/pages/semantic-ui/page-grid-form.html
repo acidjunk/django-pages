@@ -7,7 +7,18 @@
         </div>
     </section>
 {% endblock %}
+
 {% block content %}
+    {% if object.pk %}
+        <h1>
+            Editing {{ object.page.name }}
+        </h1>
+    {% else %}
+        <h1>
+            Creating a cell for {{ page.name }}
+        </h1>
+    {% endif %}
+
     <div class="ui segment">
         <div class="row">
             {% if messages %}

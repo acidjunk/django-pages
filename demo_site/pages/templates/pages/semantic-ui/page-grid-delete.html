@@ -5,13 +5,16 @@
 {% block sidebar %}
 {% endblock %}
 {% block content %}
+    <h1>
+        Delete cell for {{ object.page.name }}
+    </h1>
     <div class="ui segment">
         <form method="post">{% csrf_token %}
             <div class="ui negative message">
                 <div class="header">
                     Confirm delete
                 </div>
-                <p>Are you sure you want to delete "{{ object.name }}" ?</p>
+                <p>Are you sure you want to delete "{{ object.id }}" ?</p>
             </div>
             <input class="ui red submit button" type="submit" value=" Delete "/>
         </form>

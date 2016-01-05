@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Page, PageArticle, PageFAQ, PageLink, PageYoutubeLink,\
     PageFacebookLink, GridCell
 
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -27,7 +27,7 @@ class PageArticleList(ListView):
     model = PageArticle
     fields = ['name', 'content']
     paginate_by = 10
-    template_name = 'pages/semantic-ui/page-article-list.html' #% = settings.DJANGO_PAGES_THEME
+    template_name = 'pages/semantic-ui/page-article-list.html'  # % = settings.DJANGO_PAGES_THEME
 
 
 class PageArticleCreate(CreateView):
@@ -197,8 +197,8 @@ class PageListCreate(CreateView):
     template_name = 'pages/semantic-ui/page-form.html'
 
     def form_valid(self, form):
-        self.object = form.save(commit = False)
-        # get highest current order nummer
+        self.object = form.save(commit=False)
+        # get highest current order number
         max_order = Page.objects.all().aggregate(Max('ordering'))['ordering__max']
         self.object.ordering = (max_order or 0) + 1
         self.object.save()
@@ -223,7 +223,7 @@ class PageDetail(DetailView):
     model = Page
 
 
-class PageGrid(ListView):
+class PageGridList(ListView):
     model = GridCell
     fields = ['page', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     paginate_by = 10
@@ -237,7 +237,7 @@ class PageGrid(ListView):
         return GridCell.objects.filter(page=self.page)
 
     def get_context_data(self, **kwargs):
-        context = super(PageGrid, self).get_context_data(**kwargs)
+        context = super(PageGridList, self).get_context_data(**kwargs)
         context['page'] = self.page
         return context
 
@@ -248,24 +248,51 @@ class PageGridCreate(CreateView):
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
+    @cached_property
+    def page(self):
+         return get_object_or_404(Page, slug=self.kwargs['slug'])
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.page = self.page
+        self.object.save()
+        return super(PageGridCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(PageGridCreate, self).get_context_data(**kwargs)
+        context['page'] = self.page
+        return context
+
+    def get_success_url(self):
+        return reverse('pages:grid-list', kwargs={'slug': self.page.slug})
+
 
 class PageGridUpdate(UpdateView):
     model = GridCell
-    fields = ['slug', 'horizontalSize', 'name', 'content']
-    success_url = reverse_lazy('pages:grid')
+    fields = ['horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
+    # success_url = reverse_lazy('pages:article-list')
+
     template_name = 'pages/semantic-ui/page-grid-form.html'
+
+    # @cached_property
+    # def page(self):
+    #     return get_object_or_404(Page, slug=self.kwargs['slug'])
+    #
+    def get_success_url(self):
+        return reverse('pages:grid-list', kwargs={'slug': self.object.page})
 
 
 class PageGridDelete(DeleteView):
     model = GridCell
     fields = ['slug', 'horizontalSize', 'name', 'content']
-    success_url = reverse_lazy("pages:grid-list")
+    success_url = reverse_lazy("pages:article-list")
     template_name = 'pages/semantic-ui/page-grid-delete.html'
 
-
-class Preview(DetailView):
-    model = Page
-    slug_field = 'slug'
-    template_name = 'pages/semantic-ui/preview.html'
+    def page(self):
+        return get_object_or_404(Page, slug=self.kwargs['slug'])
 
 
+# class Preview(DetailView):
+#     model = Page
+#     slug_field = 'slug'
+#     template_name = 'pages/semantic-ui/preview.html'
