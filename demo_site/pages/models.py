@@ -123,6 +123,7 @@ class GridCell(TimestampAble):
     )
 
     page = models.ForeignKey(Page, related_name='grid_cells') # todo: add editable=False
+
     horizontalSize = models.IntegerField(verbose_name='HorizontalSize', choices=CHOICES, default=1)
     horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', choices=CHOICES, default=1)
     verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)

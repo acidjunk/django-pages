@@ -200,7 +200,7 @@ class PageListCreate(CreateView):
         self.object = form.save(commit = False)
         # get highest current order nummer
         max_order = Page.objects.all().aggregate(Max('ordering'))['ordering__max']
-        self.object.ordering = max_order + 1
+        self.object.ordering = (max_order or 0) + 1
         self.object.save()
         return super(PageListCreate, self).form_valid(form)
 
@@ -244,8 +244,8 @@ class PageGrid(ListView):
 
 class PageGridCreate(CreateView):
     model = GridCell
-    fields = ['page', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
-    success_url = reverse_lazy('pages:grid')
+    fields = ['horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
+    success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 
 
@@ -259,7 +259,7 @@ class PageGridUpdate(UpdateView):
 class PageGridDelete(DeleteView):
     model = GridCell
     fields = ['slug', 'horizontalSize', 'name', 'content']
-    success_url = reverse_lazy('pages:grid')
+    success_url = reverse_lazy("pages:grid-list")
     template_name = 'pages/semantic-ui/page-grid-delete.html'
 
 
