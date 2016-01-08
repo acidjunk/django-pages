@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-
+from .grid_validator import Grid, GridCell
 
 class TimestampAble(models.Model):
     created_on = models.DateTimeField(_("date/time created"), editable=False, auto_now_add=True)
@@ -128,6 +128,9 @@ class GridCell(TimestampAble):
     verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
 
     verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
+
+    # def validate_unique(self, exclude=None):
+    #     Grid.add_cell(self)
 
     class Meta:
         verbose_name = 'Grid'

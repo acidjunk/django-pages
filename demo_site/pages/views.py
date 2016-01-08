@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404
 from .models import Page, PageArticle, PageFAQ, PageLink, PageYoutubeLink,\
     PageFacebookLink, GridCell
 
+from .grid_validator import Grid, GridCell
+
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -254,9 +256,23 @@ class PageGridCreate(CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
+
+        # if Grid.add_cell(self.object):
+        #     self.object.page = self.page
+        #     self.object.save()
+
         self.object.page = self.page
         self.object.save()
         return super(PageGridCreate, self).form_valid(form)
+
+    def check_grid(self):
+        if Grid.add_cell(self.object):
+
+            pass
+            # Valid.
+        else:
+            pass
+            # Invalid
 
     def get_context_data(self, **kwargs):
         context = super(PageGridCreate, self).get_context_data(**kwargs)
@@ -278,6 +294,15 @@ class PageGridUpdate(UpdateView):
     # def page(self):
     #     return get_object_or_404(Page, slug=self.kwargs['slug'])
     #
+    def check_grid(self):
+        if Grid.move_cell(self.object):
+
+            pass
+            # Valid.
+        else:
+            pass
+            # Invalid
+
     def get_success_url(self):
         return reverse('pages:grid-list', kwargs={'slug': self.object.page})
 
