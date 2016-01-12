@@ -5,8 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-# Todo rename to GridValidator
-#from .grid_validator import Grid, GridCell
+from .grid_validator import GridValidator, GridCellValidator
+
 
 class TimestampAble(models.Model):
     created_on = models.DateTimeField(_("date/time created"), editable=False, auto_now_add=True)
@@ -21,7 +21,7 @@ class TimestampAble(models.Model):
 
 
 class AbstractPage(models.Model):
-    #language = models.CharField()
+    # language = models.CharField()
     slug = models.SlugField(max_length=255, verbose_name='Url', unique=True)
 
     class Meta:
@@ -36,10 +36,6 @@ class PageFAQ(TimestampAble, AbstractPage):
         verbose_name = 'FAQ'
         verbose_name_plural = 'FAQs'
 
-    # Todo remove unneeded property
-    def content_type(self):
-        return 'question', 'answer'
-
     def __str__(self):
         return str(self.pk)
 
@@ -52,8 +48,8 @@ class PageLink(TimestampAble, AbstractPage):
         verbose_name = 'Link'
         verbose_name_plural = 'Links'
 
-    def content_type(self):
-        return 'title','link'
+    # def content_type(self):
+    #     return 'title','link'
 
     def __str__(self):
         return str(self.pk)
@@ -67,10 +63,6 @@ class PageYoutubeLink(TimestampAble, AbstractPage):
         verbose_name = 'Youtube link'
         verbose_name_plural = 'Youtube links'
 
-    # Todo remove unneeded property
-    def content_type(self):
-        return 'title','link'
-
     def __str__(self):
         return str(self.pk)
 
@@ -82,10 +74,6 @@ class PageFacebookLink(TimestampAble, AbstractPage):
     class Meta:
         verbose_name = 'Facebook link'
         verbose_name_plural = 'Facebook links'
-
-    # Todo remove unneeded property
-    def content_type(self):
-        return 'title','link'
 
     def __str__(self):
         return str(self.pk)
@@ -160,40 +148,9 @@ class GridCell(TimestampAble):
             args=(self.content_type_id, self.object_pk)
         )
 
-
     def __str__(self):
         # Todo expand with content_type en object_id
         return 'Model:{0}, ID:{1}'.format(self.content_type, self.object_pk)
-
-
-# Todo: remove obsolete class in favor of Grid?
-class Row(TimestampAble):
-    page = models.ForeignKey('Page', null=False, blank=False, verbose_name='Page')
-    ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
-
-    class Meta:
-        verbose_name = 'Row'
-        verbose_name_plural = 'Rows'
-
-    def __str__(self):
-        return self.page.name + ' - ' + str(self.pk)
-
-
-# Todo: remove obsolete class in favor of Grid?
-class Column(TimestampAble):
-    row = models.ForeignKey(Row, verbose_name='Row')
-    width = models.PositiveSmallIntegerField()
-    content_type = models.ForeignKey(ContentType, null=True)
-    object_id = models.PositiveIntegerField(null=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
-    ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
-
-    class Meta:
-        verbose_name = 'Column'
-        verbose_name_plural = 'Columns'
-
-    def __str__(self):
-        return str(self.row.pk) + ' - ' + str(self.pk) + ' - ' + str(self.width)
 
 
 class PageArticle(TimestampAble, AbstractPage):
@@ -203,9 +160,6 @@ class PageArticle(TimestampAble, AbstractPage):
     class Meta:
         verbose_name = 'Content'
         verbose_name_plural = 'Content'
-
-    def content_type(self):
-        return 'title','content'
 
     def __str__(self):
         return str(self.pk)
@@ -219,9 +173,6 @@ class PageFile(TimestampAble, AbstractPage):
         verbose_name = 'File'
         verbose_name_plural = 'Files'
 
-    def content_type(self):
-        return 'file'
-
     def __str__(self):
         return self.name
 
@@ -234,9 +185,6 @@ class PagePhoto(TimestampAble, AbstractPage):
         verbose_name = 'Photo'
         verbose_name_plural = 'Photo\'s'
 
-    def content_type(self):
-        return 'photo'
-
     def __str__(self):
         return self.name
 
@@ -247,9 +195,6 @@ class PageForm(TimestampAble, AbstractPage):
     class Meta:
         verbose_name = 'Form'
         verbose_name_plural = 'Forms'
-
-    def content_type(self):
-        return 'form'
 
     def __str__(self):
         return str(self.pk)

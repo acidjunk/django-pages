@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^grid/(?P<slug>[-\w\d]+)/new$', views.PageGridCreate.as_view(), name='grid-new'),
     url(r'^grid/edit/(?P<pk>\d+)$', views.PageGridUpdate.as_view(), name='grid-edit'),
     url(r'^grid/delete/(?P<pk>\d+)$', views.PageGridDelete.as_view(), name='grid-delete'),
-
     # Real stuff
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
@@ -16,8 +15,6 @@ urlpatterns = [
     url(r'^page/new/', views.PageListCreate.as_view(), name='page-new'),
     url(r'^page/edit/(?P<pk>\d+)$', views.PageUpdate.as_view(), name='page-edit'),
     url(r'^page/delete/(?P<pk>\d+)$', views.PageDelete.as_view(),name='page-delete'),
-
-
     url(r'^article$', views.PageArticleList.as_view(), name='article-list'),
     url(r'^article/(?P<pk>\d+)$', views.PageArticleDetail.as_view(), name='article-detail'),
     url(r'^article/new$', views.PageArticleCreate.as_view(), name='article-new'),

@@ -21,8 +21,6 @@ def media_url(request):
     # return render_to_response("my_app/my_template.html",{'some_var': 'foo'}, context_instance=RequestContext(request))
 
 
-
-
 def csrf(request):
     def _get_val():
         token = get_token(request)

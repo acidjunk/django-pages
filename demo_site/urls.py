@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-
-
+from django.views.generic.base import RedirectView
 
 urlpatterns = patterns(
     '',
@@ -13,6 +12,6 @@ urlpatterns = patterns(
     # optionally add possibility to load short url pages.
     # Todo: import pages an get working short URL
     # url(r'^(?P<slug>[-\w\d]+)$', views.PageView, name='page'),
-
+    url(r'^.*$', RedirectView.as_view(url='pages/page', permanent=False), name='index')
 )
 
