@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Page, Row, Column, PageArticle, PagePhoto, PageForm, PageFormElement, PageFile
+from .models import Page, PageArticle, PagePhoto, PageForm, PageFormElement, PageFile
 
 
 class PageAdmin(admin.ModelAdmin):
@@ -35,8 +35,6 @@ class PageFileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Page, PageAdmin)
-admin.site.register(Row, RowAdmin)
-admin.site.register(Column, ColumnAdmin)
 admin.site.register(PageArticle, PageArticleAdmin)
 admin.site.register(PagePhoto, PagePhotoAdmin)
 admin.site.register(PageForm, PageFormAdmin)

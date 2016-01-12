@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='gridcell',
             name='content_type',
-            field=models.ForeignKey(related_name='content_type_set_for_gridcell', default=1, verbose_name='content type', to='contenttypes.ContentType'),
+            field=models.ForeignKey(related_name='content_type_set_for_gridcell', default=1, verbose_name='content type'
+                                    , to='contenttypes.ContentType'),
             preserve_default=False,
         ),
         migrations.AddField(
