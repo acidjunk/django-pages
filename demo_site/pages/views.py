@@ -228,7 +228,6 @@ class PageDetail(DetailView): #1 list, 2 dicts
         context['items'] = GridCell.objects.all()
         context['item_ids'] = {} # GridCell.objects.all().filter("object_pk")  # []  # wil contain gridcell id's
         test = {}
-
         test.update({PageYoutubeLink.objects.all()[0]: 1})
         test.update({PageYoutubeLink.objects.all()[1]: 2})
 
