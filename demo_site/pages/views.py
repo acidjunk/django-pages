@@ -3,8 +3,6 @@ from django.shortcuts import render, get_object_or_404
 from .models import Page, PageArticle, PageFAQ, PageLink, PageYoutubeLink,\
     PageFacebookLink, GridCell
 
-from .grid_validator import Grid, GridCell
-
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
@@ -227,6 +225,7 @@ class PageDetail(DetailView):
 
 class PageGridList(ListView):
     model = GridCell
+    # todo: add stuff in view or tempalte so you know what content is linked
     fields = ['page', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-grid.html'
@@ -246,7 +245,7 @@ class PageGridList(ListView):
 
 class PageGridCreate(CreateView):
     model = GridCell
-    fields = ['horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
+    fields = ['content_type', 'object_pk', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     success_url = reverse_lazy('pages:article-list')
     template_name = 'pages/semantic-ui/page-grid-form.html'
 

@@ -87,6 +87,7 @@ class Grid(object):
         return long_enough
 
     def check_row_for_free_places(self, cell):
+        # Todo: documentation?
         free_places = 0
         for row in self._data[cell.vertical_position]:
             for col in range(cell.horizontal_position, cell.horizontal_position+cell.horizontal_size):
@@ -99,6 +100,7 @@ class Grid(object):
         return free_places
 
     def check_for_free_space(self, cell):
+        # Todo: documentation?
         objects_in_row = 0
         free_spaces = []
         for row in self._data:
@@ -113,21 +115,26 @@ class Grid(object):
         return free_spaces
 
     def add_cell(self, cell):
+        """
+        Method to check if a cell can be placed in the grid.
+
+        :param cell: an instance of a grid cell
+        :return: return True if cell is placeable, False otherwise
+        """
         if self.is_place_able(cell):  # false = fits
             if self.check_override(cell, False):
-                # TODO add specific location for cells? and not randomly assigned
                 self.check_override(cell, True)
-                pass
+                return True
             else:
                 print("cell overrides another")
         else:
             print("cell is too wide")
+        return False
 
     def move_cell(self, cell):
         if self.check_override(cell, False):
             if self.remove_cell(cell, False):
                 self.remove_cell(cell, True)
-                # TODO make something to choose the new location
                 self.add_cell(cell)
         else:
             print("cell does not fit somewhere else")

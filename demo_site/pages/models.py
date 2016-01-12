@@ -1,10 +1,12 @@
+from django.core import urlresolvers
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from .grid_validator import Grid, GridCell
+# Todo rename to GridValidator
+#from .grid_validator import Grid, GridCell
 
 class TimestampAble(models.Model):
     created_on = models.DateTimeField(_("date/time created"), editable=False, auto_now_add=True)
@@ -34,6 +36,7 @@ class PageFAQ(TimestampAble, AbstractPage):
         verbose_name = 'FAQ'
         verbose_name_plural = 'FAQs'
 
+    # Todo remove unneeded property
     def content_type(self):
         return 'question', 'answer'
 
@@ -64,6 +67,7 @@ class PageYoutubeLink(TimestampAble, AbstractPage):
         verbose_name = 'Youtube link'
         verbose_name_plural = 'Youtube links'
 
+    # Todo remove unneeded property
     def content_type(self):
         return 'title','link'
 
@@ -79,6 +83,7 @@ class PageFacebookLink(TimestampAble, AbstractPage):
         verbose_name = 'Facebook link'
         verbose_name_plural = 'Facebook links'
 
+    # Todo remove unneeded property
     def content_type(self):
         return 'title','link'
 
@@ -121,8 +126,17 @@ class GridCell(TimestampAble):
         (15, 'fifteen'),
         (16, 'sixteen'),
     )
+    # Link Cell to a page
     page = models.ForeignKey(Page, related_name='grid_cells')  # todo: add editable=False
 
+    # Content object
+    content_type = models.ForeignKey(ContentType,
+                                     verbose_name=_('content type'),
+                                     related_name="content_type_set_for_%(class)s")
+    object_pk = models.TextField(_('object ID'))
+    content_object = GenericForeignKey(ct_field="content_type", fk_field="object_pk")
+
+    # Cell properties
     horizontalSize = models.IntegerField(verbose_name='HorizontalSize', choices=CHOICES, default=1)
     horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', choices=CHOICES, default=1)
     verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
@@ -135,12 +149,21 @@ class GridCell(TimestampAble):
     class Meta:
         verbose_name = 'Grid'
         verbose_name_plural = 'Grids'
+    # Todo add url resolving (for the generic content_type)
 
-    def content_type(self):
-        return 'horizontalSize', 'Title', 'Content'
+    def get_content_object_url(self):
+        """
+        Get a URL suitable for redirecting to the content object.
+        """
+        return urlresolvers.reverse(
+            "comments-url-redirect",
+            args=(self.content_type_id, self.object_pk)
+        )
+
 
     def __str__(self):
-        return str(self.pk)
+        # Todo expand with content_type en object_id
+        return 'Model:{0}, ID:{1}'.format(self.content_type, self.object_pk)
 
 
 # Todo: remove obsolete class in favor of Grid?

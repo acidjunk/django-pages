@@ -41,17 +41,17 @@ class Command(BaseCommand):
             if sum(sizes) <= 16:
                 done = True
 
-        for i in range(1, cols):
-            pos = 0
-            cell = GridCell()
-            cell.page = page
-            cell.horizontalPosition = pos
-            cell.horizontalSize = sizes.pop()
-            pos += cell.horizontalSize
-            cell.verticalPosition = vertical_position
-            cell.verticalSize = 1
-            cell.save()
-            i += 1
+        # for i in range(1, cols):
+        #     pos = 0
+        #     cell = GridCell()
+        #     cell.page = page
+        #     cell.horizontalPosition = pos
+        #     cell.horizontalSize = sizes.pop()
+        #     pos += cell.horizontalSize
+        #     cell.verticalPosition = vertical_position
+        #     cell.verticalSize = 1
+        #     cell.save()
+        #     i += 1
 
     def create_page(self, slug, name, slogan='', summary='', parent_page=None, sidebar_right=True):
         """
