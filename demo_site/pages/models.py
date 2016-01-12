@@ -41,7 +41,7 @@ class PageFAQ(TimestampAble, AbstractPage):
         return 'question', 'answer'
 
     def __str__(self):
-        return str(self.pk)
+        return 'FAQ: {0}'.format(self.question)
 
 
 class PageLink(TimestampAble, AbstractPage):
@@ -56,7 +56,7 @@ class PageLink(TimestampAble, AbstractPage):
         return 'title','link'
 
     def __str__(self):
-        return str(self.pk)
+        return 'Internal Link: {0}'.format(self.name)
 
 
 class PageYoutubeLink(TimestampAble, AbstractPage):
@@ -72,7 +72,7 @@ class PageYoutubeLink(TimestampAble, AbstractPage):
         return 'title','link'
 
     def __str__(self):
-        return str(self.pk)
+        return 'Youtube Link: {0}'.format(self.name)
 
 
 class PageFacebookLink(TimestampAble, AbstractPage):
@@ -208,7 +208,7 @@ class PageArticle(TimestampAble, AbstractPage):
         return 'title','content'
 
     def __str__(self):
-        return str(self.pk)
+        return 'Article: {0}'.format(self.name)
 
 
 class PageFile(TimestampAble, AbstractPage):
