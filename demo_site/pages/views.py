@@ -219,8 +219,17 @@ class PageDelete(DeleteView):
     template_name = 'pages/semantic-ui/page-delete.html'
 
 
-class PageDetail(DetailView):
+class PageDetail(DetailView): #1 list, 2 dicts
     model = Page
+    template_name = 'pages/semantic-ui/page-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PageDetail, self).get_context_data(**kwargs)
+        context['items'] = GridCell.objects.all()
+        context['item_ids'] = [] #GridCell.objects.all().filter("object_pk")  # []  # wil contain gridcell id's
+        context['items_content'] = {}  # id: instance
+
+        return context
 
 
 class PageGridList(ListView):
@@ -251,27 +260,13 @@ class PageGridCreate(CreateView):
 
     @cached_property
     def page(self):
-         return get_object_or_404(Page, slug=self.kwargs['slug'])
+        return get_object_or_404(Page, slug=self.kwargs['slug'])
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-
-        # if Grid.add_cell(self.object):
-        #     self.object.page = self.page
-        #     self.object.save()
-
         self.object.page = self.page
         self.object.save()
         return super(PageGridCreate, self).form_valid(form)
-
-    def check_grid(self):
-        if Grid.add_cell(self.object):
-
-            pass
-            # Valid.
-        else:
-            pass
-            # Invalid
 
     def get_context_data(self, **kwargs):
         context = super(PageGridCreate, self).get_context_data(**kwargs)
@@ -292,15 +287,6 @@ class PageGridUpdate(UpdateView):
     # @cached_property
     # def page(self):
     #     return get_object_or_404(Page, slug=self.kwargs['slug'])
-    #
-    def check_grid(self):
-        if Grid.move_cell(self.object):
-
-            pass
-            # Valid.
-        else:
-            pass
-            # Invalid
 
     def get_success_url(self):
         return reverse('pages:grid-list', kwargs={'slug': self.object.page})
@@ -314,7 +300,6 @@ class PageGridDelete(DeleteView):
 
     def page(self):
         return get_object_or_404(Page, slug=self.kwargs['slug'])
-
 
 # class Preview(DetailView):
 #     model = Page

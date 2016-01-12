@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from .grid_validator import GridValidator, GridCellValidator
+# from .grid_validator import GridValidator, GridCellValidator
 
 
 class TimestampAble(models.Model):
@@ -83,7 +83,7 @@ class Page(TimestampAble, AbstractPage):
     name = models.CharField(max_length=255, verbose_name='Name')
     slogan = models.CharField(max_length=255, verbose_name='Slogan', blank=True, default='')
     summary = models.TextField(blank=True)
-    parent = models.ForeignKey('Page', blank=True, null=True, verbose_name='Parent')
+    parent = models.ForeignKey('Page', blank=True, null=True, verbose_name='Parent', related_name="Child")
     ordering = models.PositiveSmallIntegerField(verbose_name='Ordering')
     sidebar_right = models.BooleanField(default=True, verbose_name='Sidebar right?')
 
@@ -115,7 +115,7 @@ class GridCell(TimestampAble):
         (16, 'sixteen'),
     )
     # Link Cell to a page
-    page = models.ForeignKey(Page, related_name='grid_cells')  # todo: add editable=False
+    page = models.ForeignKey(Page, related_name='grid_cells', editable=False)
 
     # Content object
     content_type = models.ForeignKey(ContentType,
@@ -201,7 +201,7 @@ class PageForm(TimestampAble, AbstractPage):
 
 
 class PageFormElement(TimestampAble):
-    form = models.ForeignKey(PageForm, verbose_name='Form')
+    form = models.ForeignKey(PageForm, verbose_name='Form', related_name="FormElement")
     name = models.CharField(max_length=255, verbose_name='Element name')
     required = models.BooleanField(verbose_name='Required?')
 

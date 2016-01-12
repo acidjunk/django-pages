@@ -24,6 +24,5 @@ If you are testing the grid you populate it with some default pages and grid cel
 
 Be warned, it will delete all content in the pages table.
 
-Todo
 ----
 More tests, documentation via Sphinx and the release of v0.1
