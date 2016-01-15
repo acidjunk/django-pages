@@ -226,13 +226,17 @@ class PageDetail(DetailView): #1 list, 2 dicts
     def get_context_data(self, **kwargs):
         context = super(PageDetail, self).get_context_data(**kwargs)
         context['items'] = GridCell.objects.all()
-        context['item_ids'] = {} # GridCell.objects.all().filter("object_pk")  # []  # wil contain gridcell id's
+
+        context['items2'] = GridCell.content_object
+        # Possible: Get the content type of the object and then use a filter to get the required data, change fields to
+        # 'generic' field, but need to find more info about that.
+
+        context['item ids'] = {} # GridCell.objects.all().filter("object_pk")  # []  # wil contain gridcell id's
         test = {}
         test.update({PageYoutubeLink.objects.all()[0]: 1})
         test.update({PageYoutubeLink.objects.all()[1]: 2})
 
-        context['test'] = test
-        context['items_content'] = {}  # id: instance
+        context['items_content'] = test  # id: instance
 
         return context
 

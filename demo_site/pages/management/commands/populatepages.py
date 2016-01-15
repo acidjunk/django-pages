@@ -62,7 +62,6 @@ class Command(BaseCommand):
         return youtube
 
     def _create_random_grid_row(self, page, vertical_position):
-        # Todo: rewrite to use Brian Grid validator (from the model)
         cols = random.randint(1, 5)  # 1-4 cols
         done = False
         while not done:
