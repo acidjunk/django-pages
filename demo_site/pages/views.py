@@ -226,6 +226,8 @@ class PageDetail(DetailView): #1 list, 2 dicts
     def get_context_data(self, **kwargs):
         context = super(PageDetail, self).get_context_data(**kwargs)
         context['items'] = GridCell.objects.all()
+        context['grid_items'] = Page.objects.all()
+
 
         context['items2'] = GridCell.content_object
         # Possible: Get the content type of the object and then use a filter to get the required data, change fields to
@@ -237,6 +239,14 @@ class PageDetail(DetailView): #1 list, 2 dicts
         test.update({PageYoutubeLink.objects.all()[1]: 2})
 
         context['items_content'] = test  # id: instance
+
+        # GridCell.content_type
+        #
+        # content_ids = []
+        # content_ids.append(self,)
+
+        # content = {'1', article_instance_met_id1 , '5', faq_instance_met_id5, '1': article_instance_met_id1}
+        # context['all_content'] = content
 
         return context
 

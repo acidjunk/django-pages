@@ -1,10 +1,42 @@
-{{ page.slug }}
-<br />
-{{ page.modified_by }}
-<br />
-{{ page.modified_on }}
+{% extends "semantic-ui/base.html" %}
+{% block content %}
 
-<br />
-{{ items_content }}
-<br />
-{{ items2 }}
+<div class="ui grid">
+  <div class="four wide olive column"></div>
+  <div class="four wide black column"></div>
+  <div class="four wide olive column"></div>
+  <div class="four wide black column"></div>
+</div>
+
+    {% for items in object_list %}
+        {{ item }}
+    {% endfor %}
+
+    {{ page.slug }}
+    <br />
+    {{ page.modified_by }}
+    <br />
+    {{ page.modified_on }}
+
+    <br />
+    {{ items_content }}
+    <br />
+    {{ items2 }}
+    <br />
+    --------------------------
+    <br />
+    {% for item in grid_items %}
+        {{ item }}
+    {% endfor %}
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
