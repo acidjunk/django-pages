@@ -1,7 +1,7 @@
 {% extends "semantic-ui/base.html" %}
 {% block content %}
 
-    <div class="ui message">
+    <div class="ui hidden message">
       <i class="close icon"></i>
       <div class="header">
         Preview Page
@@ -10,15 +10,60 @@
     </div>
 
     <script>
+        $('.message ')
+            .transition('flash')
+        ;
         $('.message .close')
           .on('click', function() {
             $(this)
               .closest('.message')
-              .transition('fade')
+              .transition('scale')
             ;
           })
         ;
     </script>
+
+    <div class="ui basic modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Archive Old Messages
+      </div>
+      <div class="image content">
+        <div class="image">
+          <i class="archive icon"></i>
+        </div>
+        <div class="description">
+          <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="two fluid ui buttons">
+          <div class="ui red basic button">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <div class="ui green basic button">
+            <i class="checkmark icon"></i>
+            Yes
+          </div>
+        </div>
+      </div>
+    </div>
+
+{#    <script>#}
+{#        $('.ui.basic.modal')#}
+{#          .modal({#}
+{#              closable  : false,#}
+{#              onDeny    : function(){#}
+{#                  window.alert('Wait not yet!');#}
+{#              },#}
+{#              onApprove : function() {#}
+{##}
+{#              }#}
+{#          })#}
+{#          .modal('show')#}
+{#        ;#}
+{#    </script>#}
 
     {{ page.slug }}
     <br />
