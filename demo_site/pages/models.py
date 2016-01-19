@@ -137,7 +137,6 @@ class GridCell(TimestampAble):
     class Meta:
         verbose_name = 'Grid'
         verbose_name_plural = 'Grids'
-    # Todo add url resolving (for the generic content_type)
 
     def get_content_object_url(self):
         """
@@ -149,7 +148,6 @@ class GridCell(TimestampAble):
         )
 
     def __str__(self):
-        # Todo expand with content_type en object_id
         return 'Model:{0}, ID:{1}'.format(self.content_type, self.object_pk)
 
 

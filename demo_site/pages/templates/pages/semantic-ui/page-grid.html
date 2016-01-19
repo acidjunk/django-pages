@@ -3,6 +3,7 @@
 {% block content %}
         <div>
             <a href="{% url "pages:grid-new" page.slug %}" class="blue ui labeled icon button"><i class="add icon"></i>New</a>
+            <a href="{% url "page-detail" preview_page %}" class="purple ui button">Preview</a>
         </div>
 
         <h1 class="ui header">Editing grid for {{ page.name }}</h1>
@@ -72,7 +73,7 @@
                 </tbody>
             </table>
 
-            <h3>Preview</h3>
+            <h3>Grid layout preview</h3>
 
     <div style="position: relative;">
     {% for cell in object_list %}

@@ -219,29 +219,36 @@ class PageDelete(DeleteView):
     template_name = 'pages/semantic-ui/page-delete.html'
 
 
-class PageDetail(DetailView): #1 list, 2 dicts
+class PageDetail(DetailView):
     model = Page
     template_name = 'pages/semantic-ui/page-detail.html'
 
+    @cached_property
+    def page(self):
+        return get_object_or_404(Page, slug=self.kwargs['slug'])
+
     def get_context_data(self, **kwargs):
         context = super(PageDetail, self).get_context_data(**kwargs)
-        context['items'] = GridCell.objects.all()
-        context['grid_items'] = Page.objects.all()
 
+        context['grid_items'] = GridCell.objects.filter(page=self.page)
 
-        context['items2'] = GridCell.content_object
-        # Possible: Get the content type of the object and then use a filter to get the required data, change fields to
-        # 'generic' field, but need to find more info about that.
+        object_instances = []
+        for instance in GridCell.objects.filter(page=self.page):
+            if instance.content_type_id == 9:
+                object_instances.append(PageYoutubeLink.objects.filter(id=instance.id))
+            else:
+                if instance.content_type_id == 7:
+                    object_instances.append(PageFAQ.objects.filter(id=instance.id))
+                else:
+                    if instance.content_type_id == 8:
+                        pass
 
-        context['item ids'] = {} # GridCell.objects.all().filter("object_pk")  # []  # wil contain gridcell id's
-        test = {}
-        test.update({PageYoutubeLink.objects.all()[0]: 1})
-        test.update({PageYoutubeLink.objects.all()[1]: 2})
+        context['item_instances'] = object_instances
 
-        context['items_content'] = test  # id: instance
-
-        # GridCell.content_type
+        # test.update({PageYoutubeLink.objects.all()[1]: 2})
         #
+        # context['items_content'] = test  # id: instance
+
         # content_ids = []
         # content_ids.append(self,)
 
@@ -253,7 +260,6 @@ class PageDetail(DetailView): #1 list, 2 dicts
 
 class PageGridList(ListView):
     model = GridCell
-    # todo: add stuff in view or tempalte so you know what content is linked
     fields = ['page', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     paginate_by = 10
     template_name = 'pages/semantic-ui/page-grid.html'
@@ -268,6 +274,7 @@ class PageGridList(ListView):
     def get_context_data(self, **kwargs):
         context = super(PageGridList, self).get_context_data(**kwargs)
         context['page'] = self.page
+        context['preview_page'] = self.page.slug
         return context
 
 
@@ -308,17 +315,20 @@ class PageGridUpdate(UpdateView):
     #     return get_object_or_404(Page, slug=self.kwargs['slug'])
 
     def get_success_url(self):
-        return reverse('pages:grid-list', kwargs={'slug': self.object.page})
+        return reverse('pages:grid-list', kwargs={'slug': self.object.page.slug})
 
 
 class PageGridDelete(DeleteView):
     model = GridCell
     fields = ['slug', 'horizontalSize', 'name', 'content']
-    success_url = reverse_lazy("pages:article-list")
+    # success_url = reverse_lazy("pages:article-list")
     template_name = 'pages/semantic-ui/page-grid-delete.html'
 
     def page(self):
         return get_object_or_404(Page, slug=self.kwargs['slug'])
+
+    def get_success_url(self):
+        return reverse('pages:grid-list', kwargs={'slug': self.object.page.slug})
 
 # class Preview(DetailView):
 #     model = Page

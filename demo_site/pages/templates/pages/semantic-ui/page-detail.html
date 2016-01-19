@@ -1,42 +1,47 @@
 {% extends "semantic-ui/base.html" %}
 {% block content %}
 
-<div class="ui grid">
-  <div class="four wide olive column"></div>
-  <div class="four wide black column"></div>
-  <div class="four wide olive column"></div>
-  <div class="four wide black column"></div>
-</div>
+    <div class="ui message">
+      <i class="close icon"></i>
+      <div class="header">
+        Preview Page
+      </div>
+      <p>This how the actual page will look like</p>
+    </div>
 
-    {% for items in object_list %}
-        {{ item }}
-    {% endfor %}
+    <script>
+        $('.message .close')
+          .on('click', function() {
+            $(this)
+              .closest('.message')
+              .transition('fade')
+            ;
+          })
+        ;
+    </script>
 
     {{ page.slug }}
     <br />
     {{ page.modified_by }}
     <br />
     {{ page.modified_on }}
-
-    <br />
-    {{ items_content }}
-    <br />
-    {{ items2 }}
     <br />
     --------------------------
     <br />
-    {% for item in grid_items %}
-        {{ item }}
-    {% endfor %}
 
+    <div class="ui grid">
+        {% for item in grid_items %}
+{#            {{ item.object_pk }}#}
+{#            {{ item.content_type }}#}
+{#            {{ item.CHOICES }}#}
+            <div class="one wide red column"></div>
+        {% endfor %}
+    </div>
+
+    <br />
+    --------------------------
+    <br />
+
+    {{ item_instances }}
 
 {% endblock %}
-
-
-
-
-
-
-
-
-

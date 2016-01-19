@@ -20,6 +20,22 @@
 
 </head>
 <body>
+{#    <div class="ui inline cookie nag">#}
+{#      <span class="title">#}
+{#        We use cookies to ensure you get the best experience on our website#}
+{#      </span>#}
+{#      <i class="close icon"></i>#}
+{#    </div>#}
+{##}
+{#    <script>#}
+{#        $('.cookie.nag')#}
+{#          .nag({#}
+{#            key      : 'accepts-cookies',#}
+{#            value    : true#}
+{#          })#}
+{#        ;#}
+{#    </script>#}
+
     {% block menu_header %}
         {% include "semantic-ui/menu_header.html" %}
     {% endblock %}
@@ -27,7 +43,6 @@
     {% block statusbar %}
         {% include "semantic-ui/statusbar.html" %}
     {% endblock %}
-
 
     <div class="ui segment">
     {% block content %}
