@@ -23,48 +23,6 @@
         ;
     </script>
 
-    <div class="ui basic modal">
-      <i class="close icon"></i>
-      <div class="header">
-        Archive Old Messages
-      </div>
-      <div class="image content">
-        <div class="image">
-          <i class="archive icon"></i>
-        </div>
-        <div class="description">
-          <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="two fluid ui buttons">
-          <div class="ui red basic button">
-            <i class="remove icon"></i>
-            No
-          </div>
-          <div class="ui green basic button">
-            <i class="checkmark icon"></i>
-            Yes
-          </div>
-        </div>
-      </div>
-    </div>
-
-{#    <script>#}
-{#        $('.ui.basic.modal')#}
-{#          .modal({#}
-{#              closable  : false,#}
-{#              onDeny    : function(){#}
-{#                  window.alert('Wait not yet!');#}
-{#              },#}
-{#              onApprove : function() {#}
-{##}
-{#              }#}
-{#          })#}
-{#          .modal('show')#}
-{#        ;#}
-{#    </script>#}
-
     {{ page.slug }}
     <br />
     {{ page.modified_by }}
@@ -74,19 +32,75 @@
     --------------------------
     <br />
 
+{#    <div class="ui grid">#}
+{#        {% for item in grid_items %}#}
+{#            <div class="four wide red column">#}
+{##}
+{#                {% if item.content_type_id == 7 %}#}
+{##}
+{#                    {% for content_item in item_instances %}#}
+{#                       #}
+{#                        {{ content_item.id }}#}
+{#                        {% if content_item.id == item.object_pk %}#}
+{#                            hdgshg#}
+{#                            <h3> {{ content_item }} </h3>#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+{##}
+{##}
+{##}
+{#                {% endif %}#}
+{##}
+{##}
+{##}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+
+
     <div class="ui grid">
         {% for item in grid_items %}
-{#            {{ item.object_pk }}#}
-{#            {{ item.content_type }}#}
-{#            {{ item.CHOICES }}#}
-            <div class="one wide red column"></div>
+            <div class="four wide red column">
+
+{#                {% if item.content_type_id == 7 %}#}
+
+                    {% for content_item in item_instances %}
+                        {% for content in content_item %}
+
+                           a {{ content.id }}
+                            <br/>
+                            {{ item.object_pk }}
+                            <br/>
+
+
+                            {% if item.object_pk == content.id %}
+                                <p>match</p>
+{#                                <h3> {{ content }} </h3>#}
+                            {% else %}
+                                <p> no match</p>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endfor %}
+
+
+
+{#                {% endif %}#}
+
+
+
+            </div>
         {% endfor %}
     </div>
+
+
 
     <br />
     --------------------------
     <br />
 
-    {{ item_instances }}
+
+{{ item_instances }}
+
 
 {% endblock %}

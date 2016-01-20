@@ -235,13 +235,13 @@ class PageDetail(DetailView):
         object_instances = []
         for instance in GridCell.objects.filter(page=self.page):
             if instance.content_type_id == 9:
-                object_instances.append(PageYoutubeLink.objects.filter(id=instance.id))
+                object_instances.append(PageYoutubeLink.objects.filter(id=instance.object_pk))
             else:
                 if instance.content_type_id == 7:
-                    object_instances.append(PageFAQ.objects.filter(id=instance.id))
+                    object_instances.append(PageFAQ.objects.filter(id=instance.object_pk))
                 else:
                     if instance.content_type_id == 8:
-                        pass
+                        object_instances.append(PageLink.objects.filter(id=instance.object_pk))
 
         context['item_instances'] = object_instances
 
