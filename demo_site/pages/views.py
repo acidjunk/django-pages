@@ -242,6 +242,9 @@ class PageDetail(DetailView):
                 else:
                     if instance.content_type_id == 8:
                         object_instances.append(PageLink.objects.filter(id=instance.object_pk))
+                    else:
+                        if instance.content_type_id == 15:
+                            object_instances.append(PageArticle.objects.filter(id=instance.object_pk))
 
         context['item_instances'] = object_instances
 
