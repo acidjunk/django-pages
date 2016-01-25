@@ -234,18 +234,20 @@ class PageDetail(DetailView):
 
         object_instances = []
         for instance in GridCell.objects.filter(page=self.page):
-            if instance.content_type_id == 9:
+            print(instance.content_type.name)
+            if instance.content_type.name == 'Youtube link':
                 object_instances.append(PageYoutubeLink.objects.filter(id=instance.object_pk))
             else:
-                if instance.content_type_id == 7:
+                if instance.content_type.name == "FAQ":
                     object_instances.append(PageFAQ.objects.filter(id=instance.object_pk))
                 else:
-                    if instance.content_type_id == 8:
+                    if instance.content_type.name == "Link":
                         object_instances.append(PageLink.objects.filter(id=instance.object_pk))
                     else:
-                        if instance.content_type_id == 15:
+                        if instance.content_type.name == "Content":
                             object_instances.append(PageArticle.objects.filter(id=instance.object_pk))
-
+        # https://wiki.python.org/moin/DictionaryKeys
+        # http://learnpythonthehardway.org/book/ex39.html
         context['item_instances'] = object_instances
 
         # test.update({PageYoutubeLink.objects.all()[1]: 2})

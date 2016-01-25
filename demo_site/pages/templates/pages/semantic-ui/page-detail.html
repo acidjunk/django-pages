@@ -60,18 +60,22 @@
 
     <div class="ui grid">
         {% for item in grid_items %}
+
             <div class="four wide red column">
 
-{#                {% if item.content_type_id == 7 %}#}
+                {% if item.content_type.name == 'FAQ' %}
 
                     {% for content_item in item_instances %}
                         {% for content in content_item %}
 
                            a {{ content.id }}
                             <br/>
-                            {{ item.object_pk }}
+                            {{ item.object_pk. }}
+                            <br/>
+                            {{ item.content_type.name }}
                             <br/>
 
+{#                            {{ content_item }}#}
 
                             {% if item.object_pk == content.id %} <!-- find a solution for this... -->
                                 <p>match</p>
@@ -83,23 +87,38 @@
                         {% endfor %}
                     {% endfor %}
 
+                {% else %}
+                    {% if item.content_type.name == 'Youtube link' %}
+
+                        ytu
+
+{#                        <div class="ui video" data-image="" data-id="pjl4U3Esw6o" data-source="youtube"></div>#}
+
+                        <div class="ui video" data-source="youtube" data-id="pjl4U3Esw6o"></div>
+
+                        <script>
+                            $('.ui.video').video();
+                        </script>
 
 
-{#                {% endif %}#}
+                    {% else %}
+                         {% if item.content_type.name == 'Link' %}
+
+                            link
+
+
+                        {% else %}
+                            {% if item.content_type.name == 'Content' %}
+
+                                content
 
 
 
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
             </div>
         {% endfor %}
     </div>
-
-
-    <br />
-    --------------------------
-    <br />
-
-
-{{ item_instances }}
-
-
 {% endblock %}
