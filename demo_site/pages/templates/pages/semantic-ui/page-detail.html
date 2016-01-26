@@ -1,7 +1,7 @@
 {% extends "semantic-ui/base.html" %}
 {% block content %}
 
-    <div class="ui hidden message">
+    <div class="ui error message">
       <i class="close icon"></i>
       <div class="header">
         Preview Page
@@ -9,19 +9,7 @@
       <p>This how the actual page will look like</p>
     </div>
 
-    <script>
-        $('.message ')
-            .transition('flash')
-        ;
-        $('.message .close')
-          .on('click', function() {
-            $(this)
-              .closest('.message')
-              .transition('scale')
-            ;
-          })
-        ;
-    </script>
+
 
     {{ page.slug }}
     <br />
@@ -32,93 +20,107 @@
     --------------------------
     <br />
 
-{#    <div class="ui grid">#}
-{#        {% for item in grid_items %}#}
-{#            <div class="four wide red column">#}
-{##}
-{#                {% if item.content_type_id == 7 %}#}
-{##}
-{#                    {% for content_item in item_instances %}#}
-{#                       #}
-{#                        {{ content_item.id }}#}
-{#                        {% if content_item.id == item.object_pk %}#}
-{#                            hdgshg#}
-{#                            <h3> {{ content_item }} </h3>#}
-{#                        {% endif %}#}
-{#                    {% endfor %}#}
-{##}
-{##}
-{##}
-{#                {% endif %}#}
-{##}
-{##}
-{##}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-
-
     <div class="ui grid">
         {% for item in grid_items %}
 
             <div class="four wide red column">
 
                 {% if item.content_type.name == 'FAQ' %}
-
                     {% for content_item in item_instances %}
                         {% for content in content_item %}
+                            {% if item.object_pk|add:0 == content.id|add:0 %}
 
-                           a {{ content.id }}
-                            <br/>
-                            {{ item.object_pk. }}
-                            <br/>
-                            {{ item.content_type.name }}
-                            <br/>
+                                <div class="ui accordion">
+                                  <div class="title">
+                                    <i class="dropdown icon"></i>
+                                    {{ content.question }}
+                                  </div>
+                                  <div class="content">
+                                    <p>{{ content.answer|safe }}</p>
+                                  </div>
+                                </div>
 
-{#                            {{ content_item }}#}
-
-                            {% if item.object_pk == content.id %} <!-- find a solution for this... -->
-                                <p>match</p>
-{#                                <h3> {{ content }} </h3>#}
-                            {% else %}
-                                <p> no match</p>
                             {% endif %}
-
                         {% endfor %}
                     {% endfor %}
-
-                {% else %}
-                    {% if item.content_type.name == 'Youtube link' %}
-
-                        ytu
-
-{#                        <div class="ui video" data-image="" data-id="pjl4U3Esw6o" data-source="youtube"></div>#}
-
-                        <div class="ui video" data-source="youtube" data-id="pjl4U3Esw6o"></div>
-
-                        <script>
-                            $('.ui.video').video();
-                        </script>
+                {% endif %}
 
 
-                    {% else %}
-                         {% if item.content_type.name == 'Link' %}
+                {% if item.content_type.name == 'Youtube link' %}
+                    {% for content_item in item_instances %}
+                        {% for content in content_item %}
+                            {% if item.object_pk|add:0 == content.id|add:0 %}
+                                    <div class="ui embed" data-url="{{ content.link }}" data-placeholder="http://lizkhoo.com/content/play-icon.png"></div>
+{#                                <iframe width="100" height="60" src="{{ content.link }}" frameborder="0" allowfullscreen></iframe>#}
 
-                            link
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
 
-
-                        {% else %}
-                            {% if item.content_type.name == 'Content' %}
-
-                                content
+                {% if item.content_type.name == 'Content' %}
+                    {% for content_item in item_instances %}
+                        {% for content in content_item %}
+                            {% if item.object_pk|add:0 == content.id|add:0 %}
 
 
 
                             {% endif %}
-                        {% endif %}
-                    {% endif %}
+                        {% endfor %}
+                    {% endfor %}
                 {% endif %}
+
+
+
+
+
+
+{#                {% else %}#}
+{#                    {% if item.content_type.name == 'Youtube link' %}#}
+{##}
+{#                        ytu#}
+{##}
+{#                        <div class="ui video" data-image="" data-id="pjl4U3Esw6o" data-source="youtube"></div>#}
+{##}
+{#                        <div class="ui video" data-source="youtube" data-id="pjl4U3Esw6o"></div>#}
+{##}
+{#                        <script>#}
+{#                            $('.ui.video').video();#}
+{#                        </script>#}
+{##}
+{##}
+{#                    {% else %}#}
+{#                         {% if item.content_type.name == 'Link' %}#}
+{##}
+{#                            link#}
+{##}
+{##}
+{#                        {% else %}#}
+{#                            {% if item.content_type.name == 'Content' %}#}
+{##}
+{#                                content#}
+{##}
+{##}
+{##}
+{#                            {% endif %}#}
+{#                        {% endif %}#}
+{#                    {% endif %}#}
+{#                {% endif %}#}
             </div>
         {% endfor %}
     </div>
+
+
+
+        <script>
+        $('.ui.embed').embed();
+        $('.message .close').on('click', function () {
+            $(this).closest('.message').fadeOut();
+        });
+$('.ui.accordion')
+  .accordion()
+;
+    </script>
+
+
 {% endblock %}
