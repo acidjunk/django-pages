@@ -6,8 +6,15 @@ urlpatterns = [
     # Test stuff
     url(r'^grid/(?P<slug>[-\w\d]+)$', views.PageGridList.as_view(), name='grid-list'),
     url(r'^grid/(?P<slug>[-\w\d]+)/new$', views.PageGridCreate.as_view(), name='grid-new'),
+
+
     url(r'^grid/edit/(?P<pk>\d+)$', views.PageGridUpdate.as_view(), name='grid-edit'),
     url(r'^grid/delete/(?P<pk>\d+)$', views.PageGridDelete.as_view(), name='grid-delete'),
+
+
+    url(r'^grid/edit/preview/(?P<pk>\d+)$', views.PageGridUpdate2.as_view(), name='grid-edit2'),
+    url(r'^grid/delete/preview/(?P<pk>\d+)$', views.PageGridDelete2.as_view(), name='grid-delete2'),
+
     # Real stuff
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),

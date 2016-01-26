@@ -246,19 +246,8 @@ class PageDetail(DetailView):
                     else:
                         if instance.content_type.name == "Content":
                             object_instances.append(PageArticle.objects.filter(id=instance.object_pk))
-        # https://wiki.python.org/moin/DictionaryKeys
-        # http://learnpythonthehardway.org/book/ex39.html
+
         context['item_instances'] = object_instances
-
-        # test.update({PageYoutubeLink.objects.all()[1]: 2})
-        #
-        # context['items_content'] = test  # id: instance
-
-        # content_ids = []
-        # content_ids.append(self,)
-
-        # content = {'1', article_instance_met_id1 , '5', faq_instance_met_id5, '1': article_instance_met_id1}
-        # context['all_content'] = content
 
         return context
 
@@ -310,7 +299,7 @@ class PageGridCreate(CreateView):
 
 class PageGridUpdate(UpdateView):
     model = GridCell
-    fields = ['horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
+    fields = ['content_type', 'object_pk', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
     # success_url = reverse_lazy('pages:article-list')
 
     template_name = 'pages/semantic-ui/page-grid-form.html'
@@ -335,7 +324,31 @@ class PageGridDelete(DeleteView):
     def get_success_url(self):
         return reverse('pages:grid-list', kwargs={'slug': self.object.page.slug})
 
-# class Preview(DetailView):
-#     model = Page
-#     slug_field = 'slug'
-#     template_name = 'pages/semantic-ui/preview.html'
+
+class PageGridUpdate2(UpdateView):
+    model = GridCell
+    fields = ['content_type', 'object_pk', 'horizontalPosition', 'horizontalSize', 'verticalPosition', 'verticalSize']
+    # success_url = reverse_lazy('pages:article-list')
+
+    template_name = 'pages/semantic-ui/page-grid-form.html'
+
+    # @cached_property
+    # def page(self):
+    #     return get_object_or_404(Page, slug=self.kwargs['slug'])
+
+    def get_success_url(self):
+        # <a href="{% url "page-detail" preview_page %}" class="purple ui button">Preview</a>
+        return reverse('page-detail', kwargs={'slug': self.object.page.slug})
+
+
+class PageGridDelete2(DeleteView):
+    model = GridCell
+    fields = ['slug', 'horizontalSize', 'name', 'content']
+    # success_url = reverse_lazy("pages:article-list")
+    template_name = 'pages/semantic-ui/page-grid-delete.html'
+
+    def page(self):
+        return get_object_or_404(Page, slug=self.kwargs['slug'])
+
+    def get_success_url(self):
+        return reverse('grid-list', kwargs={'slug': self.object.page.slug})
