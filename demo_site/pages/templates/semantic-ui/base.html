@@ -60,7 +60,11 @@
 {% block javascript_footer %}{% endblock %}
 <script>
     $('#version_popup').popup({position : 'bottom right'});
-    $('.ui.dropdown').dropdown();
+    $('.dropdown')
+      .dropdown({
+        transition: 'drop'
+      })
+    ;
 </script>
 </body>
 </html>
