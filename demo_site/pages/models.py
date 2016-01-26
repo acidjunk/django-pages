@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from smartfields import fields
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-# from .grid_validator import GridValidator, GridCellValidator
+from .grid_validator import GridValidator, GridCellValidator
 
 
 class TimestampAble(models.Model):
@@ -47,9 +47,6 @@ class PageLink(TimestampAble, AbstractPage):
     class Meta:
         verbose_name = 'Link'
         verbose_name_plural = 'Links'
-
-    # def content_type(self):
-    #     return 'title','link'
 
     def __str__(self):
         return 'Internal Link: {0}'.format(self.name)
@@ -124,15 +121,17 @@ class GridCell(TimestampAble):
     object_pk = models.TextField(_('object ID'))
     content_object = GenericForeignKey(ct_field="content_type", fk_field="object_pk")
 
-    # Cell properties
     horizontalSize = models.IntegerField(verbose_name='HorizontalSize', choices=CHOICES, default=1)
     horizontalPosition = models.IntegerField(verbose_name='HorizontalPosition', choices=CHOICES, default=1)
     verticalSize = models.IntegerField(verbose_name='VerticalSize', default=1)
-
     verticalPosition = models.IntegerField(verbose_name='VerticalPosition', default=0)
 
-    # def validate_unique(self, exclude=None):
-    #     Grid.add_cell(self)
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        cell = GridCellValidator(self.horizontalPosition,self.verticalPosition,self.horizontalSize,self.verticalSize)
+        grid = GridValidator()
+        if not grid.add_cell(cell):
+            raise ValidationError('Invalid location.')
 
     class Meta:
         verbose_name = 'Grid'

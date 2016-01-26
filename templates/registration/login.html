@@ -1,13 +1,77 @@
+{#{% extends "semantic-ui/base.html" %}#}
+{#{% block content %}#}
+{#    <h2>Inloggen</h2>#}
+{#    <div class="block">#}
+{#    fsdfsdfsd#}
+{#    <form method="post" class="form">#}
+{#        {% csrf_token %}#}
+{#        <table style="width: 400px">#}
+{#            {{ form.as_table }}#}
+{#        </table>#}
+{#        <input type="submit" value="Login" class="btn btn-default btn-sm">#}
+{#    </form>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+
 {% extends "semantic-ui/base.html" %}
+{% load i18n %}
+
 {% block content %}
-    <h2>Inloggen</h2>
-    <div class="block">
-    <form method="post" class="form">
-        {% csrf_token %}
-        <table style="width: 400px">
-            {{ form.as_table }}
-        </table>
-        <input type="submit" value="Login" class="btn btn-default btn-sm">
-    </form>
+    {% if form.errors %}
+{#        <p>{% trans "Your username and password didn't match. Please try again." %}</p>#}
+
+    <div class="ui error message">
+      <i class="close icon"></i>
+      <div class="header">
+        Some forms were incorrect!
+      </div>
+      <p>Your username and password didn't match. Please try again.</p>
     </div>
+
+    {% endif %}
+    <div class="ui two column centered grid">
+        <div class="column">
+            <div class="ui blue raised segment">
+                <h2 class="ui dividing header">Login</h2>
+
+                <div class="ui form">
+                    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+                        {% csrf_token %}
+
+                        <div class="required field">
+                            <label>{% trans "Username" %}</label>
+
+                            <div class="ui icon input">
+                                {{ form.username }}
+                                <i class="user icon"></i>
+                            </div>
+                        </div>
+                        <div class="required field">
+                            <label>{% trans "Password" %}</label>
+
+                            <div class="ui icon input">
+                                {{ form.password }}
+                                <i class="lock icon"></i>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                        <input class="ui blue submit button" type="submit" value=" Sign in "/>
+                    </form>
+                </div>
+            </div>
+{#            <p>{% trans "Forgot password" %}? <a href="{% url 'password_reset' %}">{% trans "Reset it" %}</a>!</p>#}
+
+        </div>
+    </div>
+
+    <script>
+        $('.ui.embed').embed();
+        $('.message .close').on('click', function () {
+            $(this).closest('.message').fadeOut();
+        });
+        $('.ui.accordion').accordion();
+    </script>
+
 {% endblock %}

@@ -17,23 +17,17 @@
     <br />
     <br />
 
-    <div class="ui padded grid">
+    <div class="ui stackable grid">
+    <div class="stretched row">
         {% for item in grid_items %}
-
-            <div class="four wide column">
+            <div class="{{ item.get_horizontalSize_display }} wide column">
 
                 <div class="ui raised segment">
 
                     {% if item.content_type.name == 'FAQ' %}
-                        {% for content_item in item_instances %}
+                        {% for content_item in item_instances1 %}
                             {% for content in content_item %}
                                 {% if item.object_pk|add:0 == content.id|add:0 %}
-
-                                    <div class="tiny ui buttons">
-                                        <a href="{% url "pages:grid-edit2" item.id %}" class="ui positive button">Edit</a>
-                                    <div class="or"></div>
-                                        <a href="{% url "pages:grid-delete2" item.id %}" class="ui negative button">Delete</a>
-                                    </div>
 
                                     <div class="ui accordion">
                                       <div class="title">
@@ -43,6 +37,12 @@
                                       <div class="content">
                                         <p>{{ content.answer|safe }}</p>
                                       </div>
+                                    </div>
+
+                                    <div class="tiny ui buttons">
+                                        <a href="{% url "pages:grid-edit2" item.id %}" class="ui positive button">Edit</a>
+                                    <div class="or"></div>
+                                        <a href="{% url "pages:grid-delete2" item.id %}" class="ui negative button">Delete</a>
                                     </div>
 
                                 {% endif %}
@@ -55,13 +55,14 @@
                             {% for content in content_item %}
                                 {% if item.object_pk|add:0 == content.id|add:0 %}
 
+                                    <iframe src="{{ content.link }}" frameborder="0"></iframe>
+
+                                    <br />
                                     <div class="tiny ui buttons">
                                         <a href="{% url "pages:grid-edit2" item.id %}" class="ui positive button">Edit</a>
                                     <div class="or"></div>
                                         <a href="{% url "pages:grid-delete2" item.id %}" class="ui negative button">Delete</a>
                                     </div>
-
-                                    <iframe src="{{ content.link }}" frameborder="0"></iframe>
 
                                 {% endif %}
                             {% endfor %}
@@ -69,9 +70,12 @@
                     {% endif %}
 
                     {% if item.content_type.name == 'Content' %}
-                        {% for content_item in item_instances %}
+                        {% for content_item in item_instances3 %}
                             {% for content in content_item %}
+
                                 {% if item.object_pk|add:0 == content.id|add:0 %}
+                                    <h3>{{ content.name }}</h3>
+                                    {{ content.content|safe }}
 
                                     <div class="tiny ui buttons">
                                         <a href="{% url "pages:grid-edit2" item.id %}" class="ui positive button">Edit</a>
@@ -79,27 +83,26 @@
                                         <a href="{% url "pages:grid-delete2" item.id %}" class="ui negative button">Delete</a>
                                     </div>
 
-                                    <h3>{{ content.name }}</h3>
-                                    {{ content.content|safe }}
-
                                 {% endif %}
+
                             {% endfor %}
                         {% endfor %}
                     {% endif %}
 
                     {% if item.content_type.name == 'Link' %}
-                        {% for content_item in item_instances %}
+                        {% for content_item in item_instances2 %}
                             {% for content in content_item %}
                                 {% if item.object_pk|add:0 == content.id|add:0 %}
 
+                                    <h3>{{ content.name }}</h3>
+                                    {{ content.link|safe }}
+
+                                    <br />
                                     <div class="tiny ui buttons">
                                         <a href="{% url "pages:grid-edit2" item.id %}" class="ui positive button">Edit</a>
                                     <div class="or"></div>
                                         <a href="{% url "pages:grid-delete2" item.id %}" class="ui negative button">Delete</a>
                                     </div>
-
-                                    <h3>{{ content.name }}</h3>
-                                    {{ content.link|safe }}
 
                                 {% endif %}
                             {% endfor %}
@@ -110,6 +113,7 @@
             </div>
 
         {% endfor %}
+    </div>
     </div>
 
     <script>

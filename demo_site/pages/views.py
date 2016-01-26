@@ -233,21 +233,26 @@ class PageDetail(DetailView):
         context['grid_items'] = GridCell.objects.filter(page=self.page)
 
         object_instances = []
+        object_instances1 = []
+        object_instances2 = []
+        object_instances3 = []
         for instance in GridCell.objects.filter(page=self.page):
-            print(instance.content_type.name)
             if instance.content_type.name == 'Youtube link':
                 object_instances.append(PageYoutubeLink.objects.filter(id=instance.object_pk))
             else:
                 if instance.content_type.name == "FAQ":
-                    object_instances.append(PageFAQ.objects.filter(id=instance.object_pk))
+                    object_instances1.append(PageFAQ.objects.filter(id=instance.object_pk))
                 else:
                     if instance.content_type.name == "Link":
-                        object_instances.append(PageLink.objects.filter(id=instance.object_pk))
+                        object_instances2.append(PageLink.objects.filter(id=instance.object_pk))
                     else:
                         if instance.content_type.name == "Content":
-                            object_instances.append(PageArticle.objects.filter(id=instance.object_pk))
+                            object_instances3.append(PageArticle.objects.filter(id=instance.object_pk))
 
         context['item_instances'] = object_instances
+        context['item_instances1'] = object_instances1
+        context['item_instances2'] = object_instances2
+        context['item_instances3'] = object_instances3
 
         return context
 
